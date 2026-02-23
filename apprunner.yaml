@@ -1,0 +1,17 @@
+version: 1.0
+runtime: docker
+build:
+  commands:
+    build:
+      - echo "Building from Dockerfile"
+run:
+  runtime-version: 3
+  command: dotnet PlantillasApp.dll
+  network:
+    port: 8080
+    env: PORT
+  env:
+    - name: ASPNETCORE_URLS
+      value: "http://+:8080"
+    - name: ASPNETCORE_ENVIRONMENT
+      value: "Production"
