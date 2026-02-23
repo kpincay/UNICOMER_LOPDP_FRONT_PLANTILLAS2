@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: plantillas-api
+    runtime: docker
+    region: ohio
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: AWS__Region
+        value: us-east-1
+      - key: AWS__AccessKey
+        sync: false
+      - key: AWS__SecretKey
+        sync: false
+      - key: Jwt__Key
+        sync: false
+      - key: Jwt__Issuer
+        value: PlantillasApp
+      - key: Jwt__Audience
+        value: PlantillasApp
+      - key: Auth__Username
+        sync: false
+      - key: Auth__Password
+        sync: false
