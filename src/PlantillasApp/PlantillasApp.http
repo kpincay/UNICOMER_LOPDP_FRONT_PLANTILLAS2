@@ -1,0 +1,6 @@
+@PlantillasApp_HostAddress = http://localhost:5051
+
+GET {{PlantillasApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

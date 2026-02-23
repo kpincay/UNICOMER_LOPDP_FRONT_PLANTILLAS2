@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de gestión de plantillas de documentos">
+    <title>Plantillas — Gestión de Documentos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <!-- ══════════════════════ LOADING OVERLAY ══════════════════════ -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- ══════════════════════ TOAST NOTIFICATIONS ══════════════════════ -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ══════════════════════ LOGIN VIEW ══════════════════════ -->
+    <section id="login-view" class="view">
+        <div class="login-wrapper">
+            <div class="login-branding">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <h1>Plantillas</h1>
+                <p class="subtitle">Sistema de Gestión de Documentos</p>
+            </div>
+
+            <form id="login-form" class="glass-card login-card" autocomplete="off">
+                <h2>Iniciar Sesión</h2>
+                <div class="form-group">
+                    <label for="login-username">Usuario</label>
+                    <input type="text" id="login-username" name="username" placeholder="Ingrese su usuario" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" name="password" placeholder="Ingrese su contraseña" required autocomplete="current-password">
+                        <button type="button" class="toggle-password" id="toggle-password" aria-label="Mostrar contraseña">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="login-error" class="error-message hidden"></div>
+                <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+                    <span class="btn-text">Ingresar</span>
+                    <span class="btn-loader hidden"></span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ══════════════════════ DASHBOARD VIEW ══════════════════════ -->
+    <section id="dashboard-view" class="view hidden">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="brand-mini">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <span>Plantillas</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span class="user-avatar" id="user-avatar">A</span>
+                    <span class="user-name" id="user-name">Admin</span>
+                </div>
+                <button class="btn btn-ghost" id="logout-btn" title="Cerrar sesión">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="content-header">
+                <div>
+                    <h2>Gestión de Plantillas</h2>
+                    <p class="content-subtitle">Administra las plantillas de documentos del sistema</p>
+                </div>
+                <button class="btn btn-primary" id="btn-new-plantilla">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Nueva Plantilla
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-row">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon" style="--accent: #6366f1;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="stat-total">0</span>
+                        <span class="stat-label">Total Plantillas</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon" style="--accent: #10b981;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="stat-aceptacion">0</span>
+                        <span class="stat-label">Requieren Aceptación</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon" style="--accent: #f59e0b;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="stat-solicitar">0</span>
+                        <span class="stat-label">Solicitar Aceptación</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-container glass-card">
+                <div class="table-header-bar">
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="search-input" placeholder="Buscar plantillas...">
+                    </div>
+                    <button class="btn btn-ghost" id="btn-refresh" title="Refrescar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="plantillas-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Código</th>
+                                <th>Versión</th>
+                                <th>Req. Aceptación</th>
+                                <th>Sol. Aceptación</th>
+                                <th class="th-actions">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plantillas-tbody">
+                            <!-- Rows rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="empty-state" class="empty-state hidden">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <p>No hay plantillas registradas</p>
+                    <button class="btn btn-primary btn-sm" id="btn-empty-new">Crear primera plantilla</button>
+                </div>
+
+                <div id="table-loading" class="table-loading hidden">
+                    <div class="spinner spinner-sm"></div>
+                    <span>Cargando plantillas...</span>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- ══════════════════════ MODAL — CREATE / EDIT ══════════════════════ -->
+    <div id="plantilla-modal" class="modal-overlay hidden">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Nueva Plantilla</h3>
+                <button class="btn btn-ghost btn-close" id="modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form id="plantilla-form" class="modal-body">
+                <input type="hidden" id="form-id">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-nombre">Nombre <span class="required">*</span></label>
+                        <input type="text" id="form-nombre" required maxlength="200" placeholder="Nombre de la plantilla">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-codigo">Código <span class="required">*</span></label>
+                        <input type="text" id="form-codigo" required maxlength="50" placeholder="Ej: PLT-001">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-version">Versión</label>
+                        <input type="text" id="form-version" maxlength="20" placeholder="Ej: 1.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="form-url">URL</label>
+                        <input type="url" id="form-url" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-contenido">Contenido</label>
+                    <textarea id="form-contenido" rows="4" placeholder="Contenido o descripción de la plantilla..."></textarea>
+                </div>
+
+                <div class="form-row checkbox-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="form-requiere-aceptacion">
+                        <span class="checkmark"></span>
+                        Requiere Aceptación
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="form-solicitar-aceptacion">
+                        <span class="checkmark"></span>
+                        Solicitar Aceptación
+                    </label>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ghost" id="modal-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="modal-submit">
+                        <span class="btn-text">Guardar</span>
+                        <span class="btn-loader hidden"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════════════════ MODAL — DELETE CONFIRM ══════════════════════ -->
+    <div id="delete-modal" class="modal-overlay hidden">
+        <div class="modal glass-card modal-sm">
+            <div class="modal-header">
+                <h3>Confirmar Eliminación</h3>
+                <button class="btn btn-ghost btn-close" id="delete-modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-warning">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <p>¿Estás seguro de que deseas eliminar la plantilla <strong id="delete-name"></strong>?</p>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" id="delete-cancel">Cancelar</button>
+                <button class="btn btn-danger" id="delete-confirm">
+                    <span class="btn-text">Eliminar</span>
+                    <span class="btn-loader hidden"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════ MODAL — VIEW DETAIL ══════════════════════ -->
+    <div id="detail-modal" class="modal-overlay hidden">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h3 id="detail-title">Detalle de Plantilla</h3>
+                <button class="btn btn-ghost btn-close" id="detail-modal-close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="detail-body">
+                <!-- Rendered by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" id="detail-close-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

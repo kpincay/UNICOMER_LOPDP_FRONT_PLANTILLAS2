@@ -1,0 +1,15 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "No frontend dependencies to install (vanilla HTML/CSS/JS)"
+    build:
+      commands:
+        - echo "Frontend is static, no build step needed"
+  artifacts:
+    baseDirectory: src/PlantillasApp/wwwroot
+    files:
+      - '**/*'
+  cache:
+    paths: []
