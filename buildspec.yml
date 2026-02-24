@@ -1,0 +1,16 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 943435462541.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t plantillas-api .
+      - docker tag plantillas-api:latest 943435462541.dkr.ecr.us-east-1.amazonaws.com/plantillas-api:latest
+  post_build:
+    commands:
+      - echo Pushing Docker image to ECR...
+      - docker push 943435462541.dkr.ecr.us-east-1.amazonaws.com/plantillas-api:latest
+      - echo Build completed on `date`
