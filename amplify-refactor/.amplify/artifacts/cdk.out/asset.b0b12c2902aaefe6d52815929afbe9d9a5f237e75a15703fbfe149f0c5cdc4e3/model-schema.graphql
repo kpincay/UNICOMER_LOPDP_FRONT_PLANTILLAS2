@@ -1,0 +1,10 @@
+type Plantilla @model @auth(rules: [{allow: owner, ownerField: "owner"}])
+{
+  nombre: String!
+  codigo: String!
+  version: String
+  url: String
+  contenido: String
+  requiereAceptacion: Boolean
+  solicitarAceptacion: Boolean
+}

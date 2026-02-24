@@ -1,0 +1,17 @@
+{
+    "AuthenticationConfiguration": {
+        "ConnectionArn": "arn:aws:apprunner:us-east-1:943435462541:connection/plantillas-github/b6d871859770424f944ae6e7dc27fc6f"
+    },
+    "AutoDeploymentsEnabled": true,
+    "CodeRepository": {
+        "RepositoryUrl": "https://github.com/kpincay/UNICOMER_LOPDP_FRONT_PLANTILLAS2",
+        "SourceCodeVersion": {
+            "Type": "BRANCH",
+            "Value": "master"
+        },
+        "SourceDirectory": "/",
+        "CodeConfiguration": {
+            "ConfigurationSource": "REPOSITORY"
+        }
+    }
+}
