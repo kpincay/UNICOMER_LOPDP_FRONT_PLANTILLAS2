@@ -4,11 +4,12 @@ import type { Schema } from '../../amplify/data/resource';
 
 interface PlantillaFormProps {
     plantilla?: Schema['Plantilla']['type'] | null;
+    procesos: Schema['Proceso']['type'][];
     onClose: () => void;
     onSave: (data: any) => Promise<void>;
 }
 
-export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, onClose, onSave }) => {
+export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, procesos, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         nombre: '',
         codigo: '',
@@ -16,7 +17,8 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, onClose
         url: '',
         contenido: '',
         requiereAceptacion: false,
-        solicitarAceptacion: false
+        solicitarAceptacion: false,
+        procesoId: '' as string | null
     });
     const [submitting, setSubmitting] = useState(false);
 
@@ -29,7 +31,8 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, onClose
                 url: plantilla.url || '',
                 contenido: plantilla.contenido || '',
                 requiereAceptacion: !!plantilla.requiereAceptacion,
-                solicitarAceptacion: !!plantilla.solicitarAceptacion
+                solicitarAceptacion: !!plantilla.solicitarAceptacion,
+                procesoId: plantilla.procesoId || ''
             });
         }
     }, [plantilla]);
@@ -37,7 +40,9 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, onClose
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
-        await onSave(formData);
+        const { procesoId, ...rest } = formData;
+        const dataToSave = procesoId ? { ...rest, procesoId } : rest;
+        await onSave(dataToSave);
         setSubmitting(false);
     };
 
@@ -51,6 +56,21 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, onClose
                     </button>
                 </div>
                 <form className="modal-body" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Proceso Asociado</label>
+                        <select
+                            value={formData.procesoId || ''}
+                            onChange={(e) => setFormData({ ...formData, procesoId: e.target.value || null })}
+                        >
+                            <option value="">-- Sin Proceso (Independiente) --</option>
+                            {procesos.map(proceso => (
+                                <option key={proceso.id} value={proceso.id}>
+                                    {proceso.nombre}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
                     <div className="form-row">
                         <div className="form-group">
                             <label>Nombre <span className="required">*</span></label>

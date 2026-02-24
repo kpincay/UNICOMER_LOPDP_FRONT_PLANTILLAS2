@@ -5,6 +5,17 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
  * @see https://docs.amplify.aws/gen2/build-a-backend/data/set-up-data/
  */
 const schema = a.schema({
+  Proceso: a
+    .model({
+      nombre: a.string().required(),
+      descripcion: a.string(),
+      plantillas: a.hasMany('Plantilla', 'procesoId'),
+    })
+    .authorization((allow) => [
+      allow.owner(),
+      allow.publicApiKey().to(['read'])
+    ]),
+
   Plantilla: a
     .model({
       nombre: a.string().required(),
@@ -14,8 +25,13 @@ const schema = a.schema({
       contenido: a.string(),
       requiereAceptacion: a.boolean(),
       solicitarAceptacion: a.boolean(),
+      procesoId: a.id(),
+      proceso: a.belongsTo('Proceso', 'procesoId'),
     })
-    .authorization((allow) => [allow.owner()]),
+    .authorization((allow) => [
+      allow.owner(),
+      allow.publicApiKey().to(['read'])
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
