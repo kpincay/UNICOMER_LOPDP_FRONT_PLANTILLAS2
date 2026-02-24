@@ -1,0 +1,2907 @@
+{
+  "Version": 1,
+  "Hash": "kxhYZ9Ep+e1kfHkBV6B3jpwF/eg9sWon+MXf001HDyI=",
+  "Source": "PlantillasApp",
+  "BasePath": "_content/PlantillasApp",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "PlantillasApp\\wwwroot",
+      "Source": "PlantillasApp",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\",
+      "BasePath": "_content/PlantillasApp",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\3ki1pldn2e-d4ujc88gi8.gz",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/api#[.{fingerprint=d4ujc88gi8}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "mgtpaji110",
+      "Integrity": "Zje71YNaHEF4oe1uCeSu2yjEaUWbJNYErBxYs6Hqj6A=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\541vavuwmp-2vom6bq1ot.gz",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "index#[.{fingerprint=2vom6bq1ot}]?.html.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "2yezyjyiy1",
+      "Integrity": "lpuux+BBc4bNqNP3JpaO+SVwGfj2gcDolljDxljgKCw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\dioylf95d0-jjws2vvy5d.gz",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/app#[.{fingerprint=jjws2vvy5d}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "loumojlo1n",
+      "Integrity": "KyfPYclrWVTKnSp3LO22C3jsmeiRsc5kFx5AxwQN+PY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\nifma5iwjh-a70z1qszf3.gz",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "css/styles#[.{fingerprint=a70z1qszf3}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "zk5jq4nlrc",
+      "Integrity": "Az0DTGxTXxdCWGcdxm8GYWyjj9RNIzh2NbvSDIGr4VY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\otatnb1iet-dkl3pr4vw5.gz",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/auth#[.{fingerprint=dkl3pr4vw5}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "0hy2mlhis6",
+      "Integrity": "/ArGFcNCSjuDiVu9PDQoQKuy3zdlM1ga6xvvQE4r+FA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\3ki1pldn2e-d4ujc88gi8.br",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/api#[.{fingerprint=d4ujc88gi8}]?.js.br",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "br",
+      "Fingerprint": "er3wl3w5hu",
+      "Integrity": "CjzTlo+mY3R2lEnqe1ZgwDilGx4ztO7Kw8lP+Imwqaw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\541vavuwmp-2vom6bq1ot.br",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "index#[.{fingerprint=2vom6bq1ot}]?.html.br",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "br",
+      "Fingerprint": "pk4m0xlaz4",
+      "Integrity": "V0ujGK4fLvDnBuW7haohgD2KlpU89kyc62ryoYA4s58=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\dioylf95d0-jjws2vvy5d.br",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/app#[.{fingerprint=jjws2vvy5d}]?.js.br",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "br",
+      "Fingerprint": "0m3d8gsw9f",
+      "Integrity": "eKQc1fAT6arItUCl9m/jHhQv4JkqCBRitw+Xb38Vkm8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\nifma5iwjh-a70z1qszf3.br",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "css/styles#[.{fingerprint=a70z1qszf3}]?.css.br",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "br",
+      "Fingerprint": "m5opeswhpp",
+      "Integrity": "ikRUNPdpA3IMOe9U2ey3X5Chj3Ih5M5BqbBMoBFn7rg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\otatnb1iet-dkl3pr4vw5.br",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/auth#[.{fingerprint=dkl3pr4vw5}]?.js.br",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "br",
+      "Fingerprint": "scbycmcxfn",
+      "Integrity": "BO7THgzlMCqwBI+1/bu4Ep5jdhHO5LIjfQQ2iWQvTk4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "css/styles#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "a70z1qszf3",
+      "Integrity": "Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "2vom6bq1ot",
+      "Integrity": "oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/api#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "d4ujc88gi8",
+      "Integrity": "PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\api.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/app#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "jjws2vvy5d",
+      "Integrity": "vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\app.js"
+    },
+    {
+      "Identity": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js",
+      "SourceId": "PlantillasApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\",
+      "BasePath": "_content/PlantillasApp",
+      "RelativePath": "js/auth#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "dkl3pr4vw5",
+      "Integrity": "7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\auth.js"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "css/styles.a70z1qszf3.css",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\nifma5iwjh-a70z1qszf3.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000226039783"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4423"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Az0DTGxTXxdCWGcdxm8GYWyjj9RNIzh2NbvSDIGr4VY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a70z1qszf3"
+        },
+        {
+          "Name": "label",
+          "Value": "css/styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.a70z1qszf3.css",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\nifma5iwjh-a70z1qszf3.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000265322367"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3768"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ikRUNPdpA3IMOe9U2ey3X5Chj3Ih5M5BqbBMoBFn7rg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a70z1qszf3"
+        },
+        {
+          "Name": "label",
+          "Value": "css/styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.a70z1qszf3.css",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "19870"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a70z1qszf3"
+        },
+        {
+          "Name": "label",
+          "Value": "css/styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.a70z1qszf3.css.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\nifma5iwjh-a70z1qszf3.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3768"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ikRUNPdpA3IMOe9U2ey3X5Chj3Ih5M5BqbBMoBFn7rg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a70z1qszf3"
+        },
+        {
+          "Name": "label",
+          "Value": "css/styles.css.br"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ikRUNPdpA3IMOe9U2ey3X5Chj3Ih5M5BqbBMoBFn7rg="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.a70z1qszf3.css.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\nifma5iwjh-a70z1qszf3.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4423"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Az0DTGxTXxdCWGcdxm8GYWyjj9RNIzh2NbvSDIGr4VY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "a70z1qszf3"
+        },
+        {
+          "Name": "label",
+          "Value": "css/styles.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Az0DTGxTXxdCWGcdxm8GYWyjj9RNIzh2NbvSDIGr4VY="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.css",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\nifma5iwjh-a70z1qszf3.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000226039783"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4423"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Az0DTGxTXxdCWGcdxm8GYWyjj9RNIzh2NbvSDIGr4VY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.css",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\nifma5iwjh-a70z1qszf3.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000265322367"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3768"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ikRUNPdpA3IMOe9U2ey3X5Chj3Ih5M5BqbBMoBFn7rg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.css",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "19870"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Oktll65ZJ7vv8TZcEBDVaBeGbf6CNLSFET37hwN8rCQ="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.css.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\nifma5iwjh-a70z1qszf3.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3768"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ikRUNPdpA3IMOe9U2ey3X5Chj3Ih5M5BqbBMoBFn7rg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ikRUNPdpA3IMOe9U2ey3X5Chj3Ih5M5BqbBMoBFn7rg="
+        }
+      ]
+    },
+    {
+      "Route": "css/styles.css.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\nifma5iwjh-a70z1qszf3.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4423"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Az0DTGxTXxdCWGcdxm8GYWyjj9RNIzh2NbvSDIGr4VY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Az0DTGxTXxdCWGcdxm8GYWyjj9RNIzh2NbvSDIGr4VY="
+        }
+      ]
+    },
+    {
+      "Route": "index.2vom6bq1ot.html",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\541vavuwmp-2vom6bq1ot.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000325839036"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3068"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lpuux+BBc4bNqNP3JpaO+SVwGfj2gcDolljDxljgKCw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2vom6bq1ot"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw="
+        }
+      ]
+    },
+    {
+      "Route": "index.2vom6bq1ot.html",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\541vavuwmp-2vom6bq1ot.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000410004100"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2438"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"V0ujGK4fLvDnBuW7haohgD2KlpU89kyc62ryoYA4s58=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2vom6bq1ot"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw="
+        }
+      ]
+    },
+    {
+      "Route": "index.2vom6bq1ot.html",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16482"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2vom6bq1ot"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw="
+        }
+      ]
+    },
+    {
+      "Route": "index.2vom6bq1ot.html.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\541vavuwmp-2vom6bq1ot.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2438"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"V0ujGK4fLvDnBuW7haohgD2KlpU89kyc62ryoYA4s58=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2vom6bq1ot"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html.br"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-V0ujGK4fLvDnBuW7haohgD2KlpU89kyc62ryoYA4s58="
+        }
+      ]
+    },
+    {
+      "Route": "index.2vom6bq1ot.html.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\541vavuwmp-2vom6bq1ot.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3068"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lpuux+BBc4bNqNP3JpaO+SVwGfj2gcDolljDxljgKCw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2vom6bq1ot"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lpuux+BBc4bNqNP3JpaO+SVwGfj2gcDolljDxljgKCw="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\541vavuwmp-2vom6bq1ot.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000325839036"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3068"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lpuux+BBc4bNqNP3JpaO+SVwGfj2gcDolljDxljgKCw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\541vavuwmp-2vom6bq1ot.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000410004100"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2438"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"V0ujGK4fLvDnBuW7haohgD2KlpU89kyc62ryoYA4s58=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16482"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-oiZPHEFnq8HDKHl4ciSLdLVAhUprA4HATh3v1ZnIQZw="
+        }
+      ]
+    },
+    {
+      "Route": "index.html.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\541vavuwmp-2vom6bq1ot.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2438"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"V0ujGK4fLvDnBuW7haohgD2KlpU89kyc62ryoYA4s58=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-V0ujGK4fLvDnBuW7haohgD2KlpU89kyc62ryoYA4s58="
+        }
+      ]
+    },
+    {
+      "Route": "index.html.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\541vavuwmp-2vom6bq1ot.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3068"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lpuux+BBc4bNqNP3JpaO+SVwGfj2gcDolljDxljgKCw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lpuux+BBc4bNqNP3JpaO+SVwGfj2gcDolljDxljgKCw="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.d4ujc88gi8.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\3ki1pldn2e-d4ujc88gi8.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001055966209"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "946"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Zje71YNaHEF4oe1uCeSu2yjEaUWbJNYErBxYs6Hqj6A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d4ujc88gi8"
+        },
+        {
+          "Name": "label",
+          "Value": "js/api.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.d4ujc88gi8.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\3ki1pldn2e-d4ujc88gi8.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.001233045623"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "810"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CjzTlo+mY3R2lEnqe1ZgwDilGx4ztO7Kw8lP+Imwqaw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d4ujc88gi8"
+        },
+        {
+          "Name": "label",
+          "Value": "js/api.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.d4ujc88gi8.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2889"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d4ujc88gi8"
+        },
+        {
+          "Name": "label",
+          "Value": "js/api.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.d4ujc88gi8.js.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\3ki1pldn2e-d4ujc88gi8.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "810"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CjzTlo+mY3R2lEnqe1ZgwDilGx4ztO7Kw8lP+Imwqaw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d4ujc88gi8"
+        },
+        {
+          "Name": "label",
+          "Value": "js/api.js.br"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-CjzTlo+mY3R2lEnqe1ZgwDilGx4ztO7Kw8lP+Imwqaw="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.d4ujc88gi8.js.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\3ki1pldn2e-d4ujc88gi8.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "946"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Zje71YNaHEF4oe1uCeSu2yjEaUWbJNYErBxYs6Hqj6A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d4ujc88gi8"
+        },
+        {
+          "Name": "label",
+          "Value": "js/api.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Zje71YNaHEF4oe1uCeSu2yjEaUWbJNYErBxYs6Hqj6A="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\3ki1pldn2e-d4ujc88gi8.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001055966209"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "946"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Zje71YNaHEF4oe1uCeSu2yjEaUWbJNYErBxYs6Hqj6A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\3ki1pldn2e-d4ujc88gi8.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.001233045623"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "810"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CjzTlo+mY3R2lEnqe1ZgwDilGx4ztO7Kw8lP+Imwqaw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2889"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-PUtF4+nx+GUJUm3dkSngEAj8sEUxLtlbHj/XJp3sQo8="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.js.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\3ki1pldn2e-d4ujc88gi8.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "810"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"CjzTlo+mY3R2lEnqe1ZgwDilGx4ztO7Kw8lP+Imwqaw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-CjzTlo+mY3R2lEnqe1ZgwDilGx4ztO7Kw8lP+Imwqaw="
+        }
+      ]
+    },
+    {
+      "Route": "js/api.js.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\3ki1pldn2e-d4ujc88gi8.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "946"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Zje71YNaHEF4oe1uCeSu2yjEaUWbJNYErBxYs6Hqj6A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Zje71YNaHEF4oe1uCeSu2yjEaUWbJNYErBxYs6Hqj6A="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.jjws2vvy5d.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\dioylf95d0-jjws2vvy5d.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000322372663"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3101"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KyfPYclrWVTKnSp3LO22C3jsmeiRsc5kFx5AxwQN+PY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jjws2vvy5d"
+        },
+        {
+          "Name": "label",
+          "Value": "js/app.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.jjws2vvy5d.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\dioylf95d0-jjws2vvy5d.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000377786173"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2646"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eKQc1fAT6arItUCl9m/jHhQv4JkqCBRitw+Xb38Vkm8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jjws2vvy5d"
+        },
+        {
+          "Name": "label",
+          "Value": "js/app.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.jjws2vvy5d.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14606"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jjws2vvy5d"
+        },
+        {
+          "Name": "label",
+          "Value": "js/app.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.jjws2vvy5d.js.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\dioylf95d0-jjws2vvy5d.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2646"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eKQc1fAT6arItUCl9m/jHhQv4JkqCBRitw+Xb38Vkm8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jjws2vvy5d"
+        },
+        {
+          "Name": "label",
+          "Value": "js/app.js.br"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-eKQc1fAT6arItUCl9m/jHhQv4JkqCBRitw+Xb38Vkm8="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.jjws2vvy5d.js.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\dioylf95d0-jjws2vvy5d.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3101"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KyfPYclrWVTKnSp3LO22C3jsmeiRsc5kFx5AxwQN+PY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jjws2vvy5d"
+        },
+        {
+          "Name": "label",
+          "Value": "js/app.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-KyfPYclrWVTKnSp3LO22C3jsmeiRsc5kFx5AxwQN+PY="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\dioylf95d0-jjws2vvy5d.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000322372663"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3101"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KyfPYclrWVTKnSp3LO22C3jsmeiRsc5kFx5AxwQN+PY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\dioylf95d0-jjws2vvy5d.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000377786173"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2646"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eKQc1fAT6arItUCl9m/jHhQv4JkqCBRitw+Xb38Vkm8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14606"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-vyHCc2feEzQ7n4dIQgiavXbOG7Ay8VyzmcNXT01SIsU="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.js.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\dioylf95d0-jjws2vvy5d.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2646"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eKQc1fAT6arItUCl9m/jHhQv4JkqCBRitw+Xb38Vkm8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-eKQc1fAT6arItUCl9m/jHhQv4JkqCBRitw+Xb38Vkm8="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.js.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\dioylf95d0-jjws2vvy5d.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3101"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KyfPYclrWVTKnSp3LO22C3jsmeiRsc5kFx5AxwQN+PY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-KyfPYclrWVTKnSp3LO22C3jsmeiRsc5kFx5AxwQN+PY="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.dkl3pr4vw5.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\otatnb1iet-dkl3pr4vw5.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000728332119"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1372"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/ArGFcNCSjuDiVu9PDQoQKuy3zdlM1ga6xvvQE4r+FA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dkl3pr4vw5"
+        },
+        {
+          "Name": "label",
+          "Value": "js/auth.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.dkl3pr4vw5.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\otatnb1iet-dkl3pr4vw5.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000883392226"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1131"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BO7THgzlMCqwBI+1/bu4Ep5jdhHO5LIjfQQ2iWQvTk4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dkl3pr4vw5"
+        },
+        {
+          "Name": "label",
+          "Value": "js/auth.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.dkl3pr4vw5.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4801"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dkl3pr4vw5"
+        },
+        {
+          "Name": "label",
+          "Value": "js/auth.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.dkl3pr4vw5.js.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\otatnb1iet-dkl3pr4vw5.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1131"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BO7THgzlMCqwBI+1/bu4Ep5jdhHO5LIjfQQ2iWQvTk4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dkl3pr4vw5"
+        },
+        {
+          "Name": "label",
+          "Value": "js/auth.js.br"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-BO7THgzlMCqwBI+1/bu4Ep5jdhHO5LIjfQQ2iWQvTk4="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.dkl3pr4vw5.js.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\otatnb1iet-dkl3pr4vw5.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1372"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/ArGFcNCSjuDiVu9PDQoQKuy3zdlM1ga6xvvQE4r+FA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "dkl3pr4vw5"
+        },
+        {
+          "Name": "label",
+          "Value": "js/auth.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/ArGFcNCSjuDiVu9PDQoQKuy3zdlM1ga6xvvQE4r+FA="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\otatnb1iet-dkl3pr4vw5.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000728332119"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1372"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/ArGFcNCSjuDiVu9PDQoQKuy3zdlM1ga6xvvQE4r+FA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\otatnb1iet-dkl3pr4vw5.br",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "br",
+          "Quality": "0.000883392226"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1131"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BO7THgzlMCqwBI+1/bu4Ep5jdhHO5LIjfQQ2iWQvTk4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.js",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4801"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7ZTMWsqoMS5mXYjw93J3P4urLXJbdCdaQQmvMy4TK/I="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.js.br",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\publish\\otatnb1iet-dkl3pr4vw5.br",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1131"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"BO7THgzlMCqwBI+1/bu4Ep5jdhHO5LIjfQQ2iWQvTk4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "br"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-BO7THgzlMCqwBI+1/bu4Ep5jdhHO5LIjfQQ2iWQvTk4="
+        }
+      ]
+    },
+    {
+      "Route": "js/auth.js.gz",
+      "AssetFile": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\obj\\Release\\net9.0\\linux-x64\\compressed\\otatnb1iet-dkl3pr4vw5.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1372"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/ArGFcNCSjuDiVu9PDQoQKuy3zdlM1ga6xvvQE4r+FA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 23 Feb 2026 18:57:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/ArGFcNCSjuDiVu9PDQoQKuy3zdlM1ga6xvvQE4r+FA="
+        }
+      ]
+    }
+  ]
+}

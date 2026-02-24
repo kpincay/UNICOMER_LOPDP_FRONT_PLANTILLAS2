@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\css\\styles.css",
+      "PackagePath": "staticwebassets\\css\\styles.css"
+    },
+    {
+      "Id": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\api.js",
+      "PackagePath": "staticwebassets\\js\\api.js"
+    },
+    {
+      "Id": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\app.js",
+      "PackagePath": "staticwebassets\\js\\app.js"
+    },
+    {
+      "Id": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\wwwroot\\js\\auth.js",
+      "PackagePath": "staticwebassets\\js\\auth.js"
+    },
+    {
+      "Id": "obj\\Release\\net9.0\\linux-x64\\staticwebassets\\msbuild.PlantillasApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0\\linux-x64\\staticwebassets\\msbuild.PlantillasApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0\\linux-x64\\staticwebassets\\msbuild.build.PlantillasApp.props",
+      "PackagePath": "build\\PlantillasApp.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0\\linux-x64\\staticwebassets\\msbuild.buildMultiTargeting.PlantillasApp.props",
+      "PackagePath": "buildMultiTargeting\\PlantillasApp.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0\\linux-x64\\staticwebassets\\msbuild.buildTransitive.PlantillasApp.props",
+      "PackagePath": "buildTransitive\\PlantillasApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,15 +1,22 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - npm ci
+        - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
 frontend:
   phases:
     preBuild:
       commands:
-        - echo "No frontend dependencies to install (vanilla HTML/CSS/JS)"
+        - npm ci
     build:
       commands:
-        - echo "Frontend is static, no build step needed"
+        - npm run build
   artifacts:
-    baseDirectory: src/PlantillasApp/wwwroot
+    baseDirectory: dist
     files:
       - '**/*'
   cache:
-    paths: []
+    paths:
+      - .npm/**/*

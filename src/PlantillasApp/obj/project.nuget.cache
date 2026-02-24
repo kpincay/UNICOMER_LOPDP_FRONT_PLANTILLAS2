@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "dgSpecHash": "EB5KR9JBtgs=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\pincayk\\Downloads\\plantillas\\UNICOMER_LOPDP_FRONT_PLANTILLAS\\src\\PlantillasApp\\PlantillasApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\pincayk\\.nuget\\packages\\awssdk.core\\4.0.3.12\\awssdk.core.4.0.3.12.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\awssdk.dynamodbv2\\4.0.14.1\\awssdk.dynamodbv2.4.0.14.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.0\\microsoft.aspnetcore.authentication.jwtbearer.9.0.0.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.0.1\\microsoft.identitymodel.abstractions.8.0.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.0.1\\microsoft.identitymodel.jsonwebtokens.8.0.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.identitymodel.logging\\8.0.1\\microsoft.identitymodel.logging.8.0.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.identitymodel.protocols\\8.0.1\\microsoft.identitymodel.protocols.8.0.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\8.0.1\\microsoft.identitymodel.protocols.openidconnect.8.0.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.0.1\\microsoft.identitymodel.tokens.8.0.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\swashbuckle.aspnetcore\\6.9.0\\swashbuckle.aspnetcore.6.9.0.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.9.0\\swashbuckle.aspnetcore.swagger.6.9.0.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.9.0\\swashbuckle.aspnetcore.swaggergen.6.9.0.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.9.0\\swashbuckle.aspnetcore.swaggerui.6.9.0.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.0.1\\system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\9.0.4\\microsoft.netcore.app.runtime.linux-x64.9.0.4.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\9.0.4\\microsoft.aspnetcore.app.runtime.linux-x64.9.0.4.nupkg.sha512",
+    "C:\\Users\\pincayk\\.nuget\\packages\\microsoft.netcore.app.host.linux-x64\\9.0.4\\microsoft.netcore.app.host.linux-x64.9.0.4.nupkg.sha512"
+  ],
+  "logs": []
+}
