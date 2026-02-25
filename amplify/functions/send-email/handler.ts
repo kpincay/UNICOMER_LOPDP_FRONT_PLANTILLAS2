@@ -1,34 +1,38 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-
-const ses = new SESClient({ region: process.env.AWS_REGION });
+import nodemailer from 'nodemailer';
 
 export const handler = async (event: any) => {
   const { to, subject, body } = event.arguments || event;
 
-  const command = new SendEmailCommand({
-    Destination: {
-      ToAddresses: [to],
+  // These should be set in Amplify environment variables
+  const user = process.env.SMTP_USER || 'eduardofaustos@gmail.com'; 
+  const pass = process.env.SMTP_PASS;
+
+  if (!pass) {
+    console.error('SMTP_PASS is not configured');
+    return { success: false, error: 'Configuración de correo incompleta' };
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: user,
+      pass: pass,
     },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: body,
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: subject,
-      },
-    },
-    Source: "notificaciones@unicomer-test.com", // This must be a verified identity in SES
   });
 
+  const mailOptions = {
+    from: `"Notificaciones LOPDP" <${user}>`,
+    to,
+    subject,
+    html: body,
+  };
+
   try {
-    await ses.send(command);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
     return { success: true };
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email via SMTP:', error);
     return { success: false, error: (error as Error).message };
   }
 };

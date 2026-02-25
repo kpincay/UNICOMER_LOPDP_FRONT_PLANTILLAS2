@@ -13,11 +13,3 @@ const backend = defineBackend({
   data,
   sendEmail,
 });
-
-// Grant SES permissions to the sendEmail function
-backend.sendEmail.resources.lambda.addToRolePolicy(
-  new PolicyStatement({
-    actions: ['ses:SendEmail', 'ses:SendRawEmail'],
-    resources: ['*'], // In production, narrow this to the verified identity ARN
-  })
-);

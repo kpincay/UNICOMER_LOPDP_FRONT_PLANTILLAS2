@@ -13,6 +13,7 @@
     "@aws-amplify/ui-react": "^6.15.0",
     "@aws-sdk/client-ses": "^3.997.0",
     "lucide-react": "^0.575.0",
+    "nodemailer": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -21,6 +22,7 @@
     "@aws-amplify/backend-cli": "^1.8.2",
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
+    "@types/nodemailer": "^7.0.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^5.1.1",
