@@ -18,7 +18,19 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         const loadTransactionData = async () => {
             try {
                 // 1. Get transaction from external backend
-                const transData = await lopdService.getTransactionById(transactionId);
+                let response = await lopdService.getTransactionById(transactionId);
+
+                // Handle inconsistent API: if response has a stringified body, unwrap it
+                let transData = response;
+                if (response.body && typeof response.body === 'string') {
+                    try {
+                        const parsedBody = JSON.parse(response.body);
+                        transData = (parsedBody.data && parsedBody.data.length > 0) ? parsedBody.data[0] : parsedBody;
+                    } catch (e) {
+                        console.warn('Failed to parse response body string, using raw response', e);
+                    }
+                }
+
                 setTransaction(transData);
 
                 // 2. Fetch templates for the process associated with this transaction
@@ -27,8 +39,9 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 // or just fetch all templates of the process if the backend provides the procesoId.
                 const { data: allPlantillas } = await client.models.Plantilla.list();
 
-                // If the transaction has a specific list of template IDs or a process ID
-                const processId = (transData.proceso && transData.proceso.length > 0) ? transData.proceso[0] : transData.procesoId;
+                // Extract processId (Checking 'process' array as seen in successful GET response)
+                const processId = (transData.process && transData.process.length > 0) ? transData.process[0] :
+                    ((transData.proceso && transData.proceso.length > 0) ? transData.proceso[0] : transData.procesoId);
 
                 if (transData.plantillas && transData.plantillas.length > 0) {
                     setPlantillas(allPlantillas.filter(p => transData.plantillas.includes(p.id)));

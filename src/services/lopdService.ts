@@ -46,7 +46,8 @@ export const lopdService = {
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-key': API_KEY
-            }
+            },
+            body: JSON.stringify({}) // Added empty body as Postman seems to include it
         });
 
         if (!response.ok) {
