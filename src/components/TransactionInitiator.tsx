@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Send, User, IdCard, Mail, Phone, Hash, CheckCircle, Copy } from 'lucide-react';
+import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
 import type { Schema } from '../../amplify/data/resource';
+
+const client = generateClient<Schema>();
 
 interface TransactionInitiatorProps {
     procesos: Schema['Proceso']['type'][];
@@ -20,8 +23,21 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         procesoId: '',
     });
 
+    const validateEmail = (email: string) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    };
+
+    const isEmailValid = validateEmail(formData.correo);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!isEmailValid) {
+            alert('Por favor ingresa un correo electrónico válido');
+            return;
+        }
+
         if (!formData.procesoId) {
             alert('Por favor selecciona un proceso');
             return;
@@ -54,9 +70,33 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             const transactionId = result.id || result.data?.id; // Adjust based on actual API response
             const landingUrl = `${window.location.origin}?id=${transactionId}`;
 
-            // 2. Logic to send email (Local Logic as requested)
-            // Note: This would typically call a local API or SES directly
-            console.log(`Simulando envío de correo a ${formData.correo} con la URL: ${landingUrl}`);
+            // 2. Logic to send email (Real integration via SES)
+            const emailBody = `
+                <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+                    <h2 style="color: #2563eb;">Autorización de Protección de Datos (LOPDP)</h2>
+                    <p>Hola <strong>${formData.nombres}</strong>,</p>
+                    <p>Para continuar con tu solicitud en UNICOMER, por favor revisa y acepta los términos de protección de datos en el siguiente enlace:</p>
+                    <div style="margin: 30px 0; text-align: center;">
+                        <a href="${landingUrl}" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Revisar y Aceptar Documentos</a>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666;">Si el botón no funciona, puedes copiar y pegar este enlace en tu navegador:</p>
+                    <p style="font-size: 0.8rem; color: #999; word-break: break-all;">${landingUrl}</p>
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+                    <p style="font-size: 0.75rem; color: #999;">Este es un mensaje automático, por favor no responda directamente.</p>
+                </div>
+            `;
+
+            try {
+                await (client.mutations as any).sendEmail({
+                    to: formData.correo,
+                    subject: 'Autorización LOPDP - UNICOMER',
+                    body: emailBody
+                });
+                console.log(`Correo enviado exitosamente a ${formData.correo}`);
+            } catch (emailError) {
+                console.error('Error al enviar correo via SES:', emailError);
+                // No lanzamos error aquí para permitir mostrar la URL en pantalla como respaldo
+            }
 
             setGeneratedUrl(landingUrl);
             onSuccess(landingUrl);
@@ -141,7 +181,13 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                             value={formData.correo}
                             onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
                             placeholder="ejemplo@correo.com"
+                            className={formData.correo && !isEmailValid ? 'input-error' : ''}
                         />
+                        {formData.correo && !isEmailValid && (
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-danger)', marginTop: '4px', display: 'block' }}>
+                                Formato de correo inválido
+                            </span>
+                        )}
                     </div>
 
                     <div className="form-group">
@@ -174,7 +220,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     <button type="button" className="btn btn-ghost" onClick={onClose} disabled={loading}>
                         Cancelar
                     </button>
-                    <button type="submit" className="btn btn-primary" disabled={loading}>
+                    <button type="submit" className="btn btn-primary" disabled={loading || !isEmailValid}>
                         {loading ? (
                             <>
                                 <div className="spinner spinner-xs"></div>

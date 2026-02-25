@@ -13,7 +13,7 @@ export interface TransactionData {
     telefono: string;
     channel: string;
     storeId: string;
-    proceso: string[]; // Changed from plantillas
+    proceso: string[]; 
 }
 
 export const lopdService = {

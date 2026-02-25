@@ -32,6 +32,17 @@ const schema = a.schema({
       allow.owner(),
       allow.publicApiKey().to(['read'])
     ]),
+
+  sendEmail: a
+    .mutation()
+    .arguments({
+      to: a.string().required(),
+      subject: a.string().required(),
+      body: a.string().required(),
+    })
+    .returns(a.json())
+    .handler(a.handler.function('send-email'))
+    .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
