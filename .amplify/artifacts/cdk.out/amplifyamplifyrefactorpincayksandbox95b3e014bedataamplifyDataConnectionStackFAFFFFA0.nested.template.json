@@ -1,0 +1,595 @@
+{
+ "Resources": {
+  "Procesoplantillasauth0FunctionProcesoplantillasauth0FunctionAppSyncFunction1A8E8498": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "Procesoplantillasauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5b76230ddca90214a01050b60af72361023d26ae9f8b9f3ac2b9df9b331548ff.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/Procesoplantillasauth0Function/Procesoplantillasauth0Function.AppSyncFunction"
+   }
+  },
+  "ProcesoPlantillasDataResolverFnProcesoPlantillasDataResolverFnAppSyncFunctionC69D1CDF": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaNestedStackPlantillaNestedStackResourceD8FF36E2Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaPlantillaDataSource7F195606Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "ProcesoPlantillasDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/013999920e2643e55d24b3c446f2274f71dae34480070d77b627ab02480539e7.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/49e7a1f2fb4c809b82bed6b0242a2a3bcfa2c5276ebd2539ff330fee36f8fe18.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/ProcesoPlantillasDataResolverFn/ProcesoPlantillasDataResolverFn.AppSyncFunction"
+   }
+  },
+  "ProcesoplantillasResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+    },
+    "FieldName": "plantillas",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "Procesoplantillasauth0FunctionProcesoplantillasauth0FunctionAppSyncFunction1A8E8498",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "ProcesoPlantillasDataResolverFnProcesoPlantillasDataResolverFnAppSyncFunctionC69D1CDF",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Proceso\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"plantillas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaNestedStackPlantillaNestedStackResourceD8FF36E2Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaPlantillaTable85BAA78FTableArn"
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthauthenticatedUserRole8A0AE7A0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthunauthenticatedUserRoleF0616E89Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthIdentityPool947B00B6Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Proceso"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/procesoPlantillasResolver"
+   }
+  },
+  "Plantillaprocesoauth0FunctionPlantillaprocesoauth0FunctionAppSyncFunction7246CB0E": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "Plantillaprocesoauth0Function",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5b76230ddca90214a01050b60af72361023d26ae9f8b9f3ac2b9df9b331548ff.vtl"
+    },
+    "ResponseMappingTemplate": "$util.toJson({})"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/Plantillaprocesoauth0Function/Plantillaprocesoauth0Function.AppSyncFunction"
+   }
+  },
+  "PlantillaProcesoDataResolverFnPlantillaProcesoDataResolverFnAppSyncFunction83DCBE95": {
+   "Type": "AWS::AppSync::FunctionConfiguration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+    },
+    "DataSourceName": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoNestedStackProcesoNestedStackResource0FF4C6C0Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoProcesoDataSource5B1DB074Name"
+    },
+    "FunctionVersion": "2018-05-29",
+    "Name": "PlantillaProcesoDataResolverFn",
+    "RequestMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a1d22e7415d14f22e76327ce0f9a7114317de080614879491cc4a417e957788d.vtl"
+    },
+    "ResponseMappingTemplateS3Location": {
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/dcb70e4856bc9a423e02b8b9e9c2ab3f71479784572d4c04a02d1f5b61a9f9ac.vtl"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/PlantillaProcesoDataResolverFn/PlantillaProcesoDataResolverFn.AppSyncFunction"
+   }
+  },
+  "PlantillaprocesoResolver": {
+   "Type": "AWS::AppSync::Resolver",
+   "Properties": {
+    "ApiId": {
+     "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+    },
+    "FieldName": "proceso",
+    "Kind": "PIPELINE",
+    "PipelineConfig": {
+     "Functions": [
+      {
+       "Fn::GetAtt": [
+        "Plantillaprocesoauth0FunctionPlantillaprocesoauth0FunctionAppSyncFunction7246CB0E",
+        "FunctionId"
+       ]
+      },
+      {
+       "Fn::GetAtt": [
+        "PlantillaProcesoDataResolverFnPlantillaProcesoDataResolverFnAppSyncFunction83DCBE95",
+        "FunctionId"
+       ]
+      }
+     ]
+    },
+    "RequestMappingTemplate": {
+     "Fn::Join": [
+      "",
+      [
+       "$util.qr($ctx.stash.put(\"typeName\", \"Plantilla\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"proceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Fn::Select": [
+             5,
+             {
+              "Fn::Split": [
+               ":",
+               {
+                "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoNestedStackProcesoNestedStackResource0FF4C6C0Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoProcesoTable8EBAB76ETableArn"
+               }
+              ]
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthauthenticatedUserRole8A0AE7A0Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":sts::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":assumed-role/",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthunauthenticatedUserRoleF0616E89Ref"
+       },
+       "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"",
+       {
+        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthIdentityPool947B00B6Ref"
+       },
+       "\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})"
+      ]
+     ]
+    },
+    "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
+    "TypeName": "Plantilla"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/plantillaProcesoResolver"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/yXMQQ6CMBBA0bOwLyMWLyAkLl3AAchYBjKAU8K0EEO4u0FXL3/zLdhbBlmCm6auHdOJX7A/SQO1dUA3Gty02TVvUJWCwv3EaA5FdCOFApUMzrN+xMFedvKI4gJ7Kb103McFzzBlJxWpn1ZajsP8HnXAnqU/jPiWYNDLai1cc7gmgzKnS5TAb4Lq7xfzwN5wpwAAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaNestedStackPlantillaNestedStackResourceD8FF36E2Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaPlantillaDataSource7F195606Name": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaNestedStackPlantillaNestedStackResourceD8FF36E2Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaPlantillaTable85BAA78FTableArn": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthauthenticatedUserRole8A0AE7A0Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthunauthenticatedUserRoleF0616E89Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthIdentityPool947B00B6Ref": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoNestedStackProcesoNestedStackResource0FF4C6C0Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoProcesoDataSource5B1DB074Name": {
+   "Type": "String"
+  },
+  "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoNestedStackProcesoNestedStackResource0FF4C6C0Outputsamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoProcesoTable8EBAB76ETableArn": {
+   "Type": "String"
+  }
+ }
+}

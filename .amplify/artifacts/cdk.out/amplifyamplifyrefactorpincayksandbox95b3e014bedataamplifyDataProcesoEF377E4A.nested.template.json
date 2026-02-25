@@ -349,7 +349,7 @@
   }
  },
  "Resources": {
-  "PlantillaTable": {
+  "ProcesoTable": {
    "Type": "Custom::AmplifyDynamoDBTable",
    "Properties": {
     "ServiceToken": {
@@ -359,7 +359,7 @@
      "Fn::Join": [
       "",
       [
-       "Plantilla-",
+       "Proceso-",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -371,46 +371,12 @@
      {
       "attributeName": "id",
       "attributeType": "S"
-     },
-     {
-      "attributeName": "procesoId",
-      "attributeType": "S"
      }
     ],
     "keySchema": [
      {
       "attributeName": "id",
       "keyType": "HASH"
-     }
-    ],
-    "globalSecondaryIndexes": [
-     {
-      "indexName": "gsi-Proceso.plantillas",
-      "keySchema": [
-       {
-        "attributeName": "procesoId",
-        "keyType": "HASH"
-       }
-      ],
-      "projection": {
-       "projectionType": "ALL"
-      },
-      "provisionedThroughput": {
-       "Fn::If": [
-        "ShouldUsePayPerRequestBilling",
-        {
-         "Ref": "AWS::NoValue"
-        },
-        {
-         "ReadCapacityUnits": {
-          "Ref": "DynamoDBModelTableReadIOPS"
-         },
-         "WriteCapacityUnits": {
-          "Ref": "DynamoDBModelTableWriteIOPS"
-         }
-        }
-       ]
-      }
      }
     ],
     "provisionedThroughput": {
@@ -462,10 +428,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/PlantillaTable/Default/Default"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/ProcesoTable/Default/Default"
    }
   },
-  "PlantillaIAMRoleDA1CD824": {
+  "ProcesoIAMRole3C8D1768": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -509,7 +475,7 @@
               "Fn::Join": [
                "",
                [
-                "Plantilla-",
+                "Proceso-",
                 {
                  "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
                 },
@@ -528,7 +494,7 @@
               "Fn::Join": [
                "",
                [
-                "Plantilla-",
+                "Proceso-",
                 {
                  "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
                 },
@@ -551,7 +517,7 @@
      "Fn::Join": [
       "",
       [
-       "PlantillaIAMRole671a06-",
+       "ProcesoIAMRole0a348b-",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -577,10 +543,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/PlantillaIAMRole/Resource"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/ProcesoIAMRole/Resource"
    }
   },
-  "PlantillaDataSource": {
+  "ProcesoDataSource": {
    "Type": "AWS::AppSync::DataSource",
    "Properties": {
     "ApiId": {
@@ -604,7 +570,7 @@
              ":",
              {
               "Fn::GetAtt": [
-               "PlantillaTable",
+               "ProcesoTable",
                "TableArn"
               ]
              }
@@ -617,25 +583,25 @@
       ]
      }
     },
-    "Name": "PlantillaTable",
+    "Name": "ProcesoTable",
     "ServiceRoleArn": {
      "Fn::GetAtt": [
-      "PlantillaIAMRoleDA1CD824",
+      "ProcesoIAMRole3C8D1768",
       "Arn"
      ]
     },
     "Type": "AMAZON_DYNAMODB"
    },
    "DependsOn": [
-    "PlantillaIAMRoleDA1CD824"
+    "ProcesoIAMRole3C8D1768"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/PlantillaDataSource/Resource"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/ProcesoDataSource/Resource"
    }
   },
-  "QuerygetPlantillaauth0FunctionQuerygetPlantillaauth0FunctionAppSyncFunction42EB3BFE": {
+  "QuerygetProcesoauth0FunctionQuerygetProcesoauth0FunctionAppSyncFunction38AF9B8C": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -645,7 +611,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "QuerygetPlantillaauth0Function",
+    "Name": "QuerygetProcesoauth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b3e5411cda152c2308dac0a81ffb999cc9c81ea2a1f51e6ce05a377bef8c4dfd.vtl"
     },
@@ -654,10 +620,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/QuerygetPlantillaauth0Function/QuerygetPlantillaauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/QuerygetProcesoauth0Function/QuerygetProcesoauth0Function.AppSyncFunction"
    }
   },
-  "QuerygetPlantillapostAuth0FunctionQuerygetPlantillapostAuth0FunctionAppSyncFunction692469B1": {
+  "QuerygetProcesopostAuth0FunctionQuerygetProcesopostAuth0FunctionAppSyncFunctionD1FC1477": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -667,7 +633,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "QuerygetPlantillapostAuth0Function",
+    "Name": "QuerygetProcesopostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -676,10 +642,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/QuerygetPlantillapostAuth0Function/QuerygetPlantillapostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/QuerygetProcesopostAuth0Function/QuerygetProcesopostAuth0Function.AppSyncFunction"
    }
   },
-  "QueryGetPlantillaDataResolverFnQueryGetPlantillaDataResolverFnAppSyncFunctionC4B0A0E6": {
+  "QueryGetProcesoDataResolverFnQueryGetProcesoDataResolverFnAppSyncFunction1C236F66": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -687,12 +653,12 @@
     },
     "DataSourceName": {
      "Fn::GetAtt": [
-      "PlantillaDataSource",
+      "ProcesoDataSource",
       "Name"
      ]
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "QueryGetPlantillaDataResolverFn",
+    "Name": "QueryGetProcesoDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/08f4d557693d96c1a4efba0f9dc91330e4b19772fd5477c156468843e3d9cb5e.vtl"
     },
@@ -701,39 +667,39 @@
     }
    },
    "DependsOn": [
-    "PlantillaDataSource"
+    "ProcesoDataSource"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/QueryGetPlantillaDataResolverFn/QueryGetPlantillaDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/QueryGetProcesoDataResolverFn/QueryGetProcesoDataResolverFn.AppSyncFunction"
    }
   },
-  "GetPlantillaResolver": {
+  "GetProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "getPlantilla",
+    "FieldName": "getProceso",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "QuerygetPlantillaauth0FunctionQuerygetPlantillaauth0FunctionAppSyncFunction42EB3BFE",
+        "QuerygetProcesoauth0FunctionQuerygetProcesoauth0FunctionAppSyncFunction38AF9B8C",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "QuerygetPlantillapostAuth0FunctionQuerygetPlantillapostAuth0FunctionAppSyncFunction692469B1",
+        "QuerygetProcesopostAuth0FunctionQuerygetProcesopostAuth0FunctionAppSyncFunctionD1FC1477",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "QueryGetPlantillaDataResolverFnQueryGetPlantillaDataResolverFnAppSyncFunctionC4B0A0E6",
+        "QueryGetProcesoDataResolverFnQueryGetProcesoDataResolverFnAppSyncFunction1C236F66",
         "FunctionId"
        ]
       }
@@ -743,7 +709,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getPlantilla\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"getProceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -762,7 +728,7 @@
                ":",
                {
                 "Fn::GetAtt": [
-                 "PlantillaTable",
+                 "ProcesoTable",
                  "TableArn"
                 ]
                }
@@ -812,10 +778,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/queryGetPlantillaResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/queryGetProcesoResolver"
    }
   },
-  "QuerylistPlantillasauth0FunctionQuerylistPlantillasauth0FunctionAppSyncFunctionAA23F9EF": {
+  "QuerylistProcesosauth0FunctionQuerylistProcesosauth0FunctionAppSyncFunctionD0698CAE": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -825,7 +791,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "QuerylistPlantillasauth0Function",
+    "Name": "QuerylistProcesosauth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b3e5411cda152c2308dac0a81ffb999cc9c81ea2a1f51e6ce05a377bef8c4dfd.vtl"
     },
@@ -834,10 +800,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/QuerylistPlantillasauth0Function/QuerylistPlantillasauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/QuerylistProcesosauth0Function/QuerylistProcesosauth0Function.AppSyncFunction"
    }
   },
-  "QuerylistPlantillaspostAuth0FunctionQuerylistPlantillaspostAuth0FunctionAppSyncFunction6ED91C0F": {
+  "QuerylistProcesospostAuth0FunctionQuerylistProcesospostAuth0FunctionAppSyncFunction4B3DC53A": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -847,7 +813,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "QuerylistPlantillaspostAuth0Function",
+    "Name": "QuerylistProcesospostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -856,10 +822,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/QuerylistPlantillaspostAuth0Function/QuerylistPlantillaspostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/QuerylistProcesospostAuth0Function/QuerylistProcesospostAuth0Function.AppSyncFunction"
    }
   },
-  "QueryListPlantillasDataResolverFnQueryListPlantillasDataResolverFnAppSyncFunction3908FEBA": {
+  "QueryListProcesosDataResolverFnQueryListProcesosDataResolverFnAppSyncFunctionAF7E0770": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -867,12 +833,12 @@
     },
     "DataSourceName": {
      "Fn::GetAtt": [
-      "PlantillaDataSource",
+      "ProcesoDataSource",
       "Name"
      ]
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "QueryListPlantillasDataResolverFn",
+    "Name": "QueryListProcesosDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9fcbe070ecd3023c5bf5b966fa9584757db9762eef123bad0820bd87591b2174.vtl"
     },
@@ -881,39 +847,39 @@
     }
    },
    "DependsOn": [
-    "PlantillaDataSource"
+    "ProcesoDataSource"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/QueryListPlantillasDataResolverFn/QueryListPlantillasDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/QueryListProcesosDataResolverFn/QueryListProcesosDataResolverFn.AppSyncFunction"
    }
   },
-  "ListPlantillaResolver": {
+  "ListProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "listPlantillas",
+    "FieldName": "listProcesos",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "QuerylistPlantillasauth0FunctionQuerylistPlantillasauth0FunctionAppSyncFunctionAA23F9EF",
+        "QuerylistProcesosauth0FunctionQuerylistProcesosauth0FunctionAppSyncFunctionD0698CAE",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "QuerylistPlantillaspostAuth0FunctionQuerylistPlantillaspostAuth0FunctionAppSyncFunction6ED91C0F",
+        "QuerylistProcesospostAuth0FunctionQuerylistProcesospostAuth0FunctionAppSyncFunction4B3DC53A",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "QueryListPlantillasDataResolverFnQueryListPlantillasDataResolverFnAppSyncFunction3908FEBA",
+        "QueryListProcesosDataResolverFnQueryListProcesosDataResolverFnAppSyncFunctionAF7E0770",
         "FunctionId"
        ]
       }
@@ -923,7 +889,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listPlantillas\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"listProcesos\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -942,7 +908,7 @@
                ":",
                {
                 "Fn::GetAtt": [
-                 "PlantillaTable",
+                 "ProcesoTable",
                  "TableArn"
                 ]
                }
@@ -992,10 +958,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/queryListPlantillasResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/queryListProcesosResolver"
    }
   },
-  "MutationcreatePlantillainit0FunctionMutationcreatePlantillainit0FunctionAppSyncFunctionDC472E65": {
+  "MutationcreateProcesoinit0FunctionMutationcreateProcesoinit0FunctionAppSyncFunctionD53704EF": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1005,7 +971,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationcreatePlantillainit0Function",
+    "Name": "MutationcreateProcesoinit0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a183ddccbd956316c38ef97177b8f088ef0826f62023323f5ae6053d348ccffc.vtl"
     },
@@ -1014,10 +980,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationcreatePlantillainit0Function/MutationcreatePlantillainit0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationcreateProcesoinit0Function/MutationcreateProcesoinit0Function.AppSyncFunction"
    }
   },
-  "MutationcreatePlantillaauth0FunctionMutationcreatePlantillaauth0FunctionAppSyncFunction307A0B8F": {
+  "MutationcreateProcesoauth0FunctionMutationcreateProcesoauth0FunctionAppSyncFunctionFD800AA1": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1027,19 +993,19 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationcreatePlantillaauth0Function",
+    "Name": "MutationcreateProcesoauth0Function",
     "RequestMappingTemplateS3Location": {
-     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bfcff0325eb8e8671c118b211551ad9dfb943af8962f84a36fa8bfce82006c4e.vtl"
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3c229a51eb40904505b59bb326d63955083eb6ae3cbf7d6d40c16ca7ee0228fd.vtl"
     },
     "ResponseMappingTemplate": "$util.toJson({})"
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationcreatePlantillaauth0Function/MutationcreatePlantillaauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationcreateProcesoauth0Function/MutationcreateProcesoauth0Function.AppSyncFunction"
    }
   },
-  "MutationcreatePlantillapostAuth0FunctionMutationcreatePlantillapostAuth0FunctionAppSyncFunction457FA712": {
+  "MutationcreateProcesopostAuth0FunctionMutationcreateProcesopostAuth0FunctionAppSyncFunction907BB39A": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1049,7 +1015,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationcreatePlantillapostAuth0Function",
+    "Name": "MutationcreateProcesopostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -1058,10 +1024,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationcreatePlantillapostAuth0Function/MutationcreatePlantillapostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationcreateProcesopostAuth0Function/MutationcreateProcesopostAuth0Function.AppSyncFunction"
    }
   },
-  "MutationCreatePlantillaDataResolverFnMutationCreatePlantillaDataResolverFnAppSyncFunctionF2439909": {
+  "MutationCreateProcesoDataResolverFnMutationCreateProcesoDataResolverFnAppSyncFunction4C409BCD": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1069,59 +1035,59 @@
     },
     "DataSourceName": {
      "Fn::GetAtt": [
-      "PlantillaDataSource",
+      "ProcesoDataSource",
       "Name"
      ]
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationCreatePlantillaDataResolverFn",
+    "Name": "MutationCreateProcesoDataResolverFn",
     "RequestMappingTemplateS3Location": {
-     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4ddcf27221a9176da0679662524cc1d566782e7f01ccea477b6eb298f23a9e2.vtl"
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0d7cfd1d1956f39a7f0f80f533f372c73b73222e6d097a5d74a35c952d8dc999.vtl"
     },
     "ResponseMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a52b72209a9dfa197b5e7367a5c378c5bb86de6e29ddd9e48b49a3fe54b249.vtl"
     }
    },
    "DependsOn": [
-    "PlantillaDataSource"
+    "ProcesoDataSource"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationCreatePlantillaDataResolverFn/MutationCreatePlantillaDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationCreateProcesoDataResolverFn/MutationCreateProcesoDataResolverFn.AppSyncFunction"
    }
   },
-  "CreatePlantillaResolver": {
+  "CreateProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "createPlantilla",
+    "FieldName": "createProceso",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "MutationcreatePlantillainit0FunctionMutationcreatePlantillainit0FunctionAppSyncFunctionDC472E65",
+        "MutationcreateProcesoinit0FunctionMutationcreateProcesoinit0FunctionAppSyncFunctionD53704EF",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationcreatePlantillaauth0FunctionMutationcreatePlantillaauth0FunctionAppSyncFunction307A0B8F",
+        "MutationcreateProcesoauth0FunctionMutationcreateProcesoauth0FunctionAppSyncFunctionFD800AA1",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationcreatePlantillapostAuth0FunctionMutationcreatePlantillapostAuth0FunctionAppSyncFunction457FA712",
+        "MutationcreateProcesopostAuth0FunctionMutationcreateProcesopostAuth0FunctionAppSyncFunction907BB39A",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationCreatePlantillaDataResolverFnMutationCreatePlantillaDataResolverFnAppSyncFunctionF2439909",
+        "MutationCreateProcesoDataResolverFnMutationCreateProcesoDataResolverFnAppSyncFunction4C409BCD",
         "FunctionId"
        ]
       }
@@ -1131,7 +1097,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createPlantilla\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"createProceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -1150,7 +1116,7 @@
                ":",
                {
                 "Fn::GetAtt": [
-                 "PlantillaTable",
+                 "ProcesoTable",
                  "TableArn"
                 ]
                }
@@ -1200,10 +1166,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/mutationCreatePlantillaResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/mutationCreateProcesoResolver"
    }
   },
-  "MutationupdatePlantillainit0FunctionMutationupdatePlantillainit0FunctionAppSyncFunction69D120B0": {
+  "MutationupdateProcesoinit0FunctionMutationupdateProcesoinit0FunctionAppSyncFunction744E2068": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1213,7 +1179,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationupdatePlantillainit0Function",
+    "Name": "MutationupdateProcesoinit0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/06db846fd14e6fc371f22b12b5545ba8e2dbfeda85d8c8d586c71c282166657b.vtl"
     },
@@ -1222,10 +1188,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationupdatePlantillainit0Function/MutationupdatePlantillainit0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationupdateProcesoinit0Function/MutationupdateProcesoinit0Function.AppSyncFunction"
    }
   },
-  "MutationupdatePlantillaauth0FunctionMutationupdatePlantillaauth0FunctionAppSyncFunction64B8F17F": {
+  "MutationupdateProcesoauth0FunctionMutationupdateProcesoauth0FunctionAppSyncFunction78925127": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1233,29 +1199,29 @@
     },
     "DataSourceName": {
      "Fn::GetAtt": [
-      "PlantillaDataSource",
+      "ProcesoDataSource",
       "Name"
      ]
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationupdatePlantillaauth0Function",
+    "Name": "MutationupdateProcesoauth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
     },
     "ResponseMappingTemplateS3Location": {
-     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c543224a620b860d53f395c1ebf928ba117f8f9271f97529df61ac8dc7857f1d.vtl"
+     "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5e5219a4df6356acaa98ef7eb0fd76869ee0d5e581e00be5042123422d179fb2.vtl"
     }
    },
    "DependsOn": [
-    "PlantillaDataSource"
+    "ProcesoDataSource"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationupdatePlantillaauth0Function/MutationupdatePlantillaauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationupdateProcesoauth0Function/MutationupdateProcesoauth0Function.AppSyncFunction"
    }
   },
-  "MutationupdatePlantillapostAuth0FunctionMutationupdatePlantillapostAuth0FunctionAppSyncFunctionA93C1E04": {
+  "MutationupdateProcesopostAuth0FunctionMutationupdateProcesopostAuth0FunctionAppSyncFunction9AAFAF2A": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1265,7 +1231,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationupdatePlantillapostAuth0Function",
+    "Name": "MutationupdateProcesopostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -1274,10 +1240,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationupdatePlantillapostAuth0Function/MutationupdatePlantillapostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationupdateProcesopostAuth0Function/MutationupdateProcesopostAuth0Function.AppSyncFunction"
    }
   },
-  "MutationUpdatePlantillaDataResolverFnMutationUpdatePlantillaDataResolverFnAppSyncFunction3E07B070": {
+  "MutationUpdateProcesoDataResolverFnMutationUpdateProcesoDataResolverFnAppSyncFunction27924673": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1285,12 +1251,12 @@
     },
     "DataSourceName": {
      "Fn::GetAtt": [
-      "PlantillaDataSource",
+      "ProcesoDataSource",
       "Name"
      ]
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationUpdatePlantillaDataResolverFn",
+    "Name": "MutationUpdateProcesoDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/474bf0776ec2164a13191d1a0a9e057154931e4918fea5086f49850d02a5371b.vtl"
     },
@@ -1299,45 +1265,45 @@
     }
    },
    "DependsOn": [
-    "PlantillaDataSource"
+    "ProcesoDataSource"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationUpdatePlantillaDataResolverFn/MutationUpdatePlantillaDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationUpdateProcesoDataResolverFn/MutationUpdateProcesoDataResolverFn.AppSyncFunction"
    }
   },
-  "UpdatePlantillaResolver": {
+  "UpdateProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "updatePlantilla",
+    "FieldName": "updateProceso",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "MutationupdatePlantillainit0FunctionMutationupdatePlantillainit0FunctionAppSyncFunction69D120B0",
+        "MutationupdateProcesoinit0FunctionMutationupdateProcesoinit0FunctionAppSyncFunction744E2068",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationupdatePlantillaauth0FunctionMutationupdatePlantillaauth0FunctionAppSyncFunction64B8F17F",
+        "MutationupdateProcesoauth0FunctionMutationupdateProcesoauth0FunctionAppSyncFunction78925127",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationupdatePlantillapostAuth0FunctionMutationupdatePlantillapostAuth0FunctionAppSyncFunctionA93C1E04",
+        "MutationupdateProcesopostAuth0FunctionMutationupdateProcesopostAuth0FunctionAppSyncFunction9AAFAF2A",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationUpdatePlantillaDataResolverFnMutationUpdatePlantillaDataResolverFnAppSyncFunction3E07B070",
+        "MutationUpdateProcesoDataResolverFnMutationUpdateProcesoDataResolverFnAppSyncFunction27924673",
         "FunctionId"
        ]
       }
@@ -1347,7 +1313,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updatePlantilla\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"updateProceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -1366,7 +1332,7 @@
                ":",
                {
                 "Fn::GetAtt": [
-                 "PlantillaTable",
+                 "ProcesoTable",
                  "TableArn"
                 ]
                }
@@ -1416,10 +1382,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/mutationUpdatePlantillaResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/mutationUpdateProcesoResolver"
    }
   },
-  "MutationdeletePlantillaauth0FunctionMutationdeletePlantillaauth0FunctionAppSyncFunction26FEE128": {
+  "MutationdeleteProcesoauth0FunctionMutationdeleteProcesoauth0FunctionAppSyncFunction069015A9": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1427,12 +1393,12 @@
     },
     "DataSourceName": {
      "Fn::GetAtt": [
-      "PlantillaDataSource",
+      "ProcesoDataSource",
       "Name"
      ]
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationdeletePlantillaauth0Function",
+    "Name": "MutationdeleteProcesoauth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f5fed297da9c32ae3af922bf3a38ccf23b956078887d16891ec06c20c64722c.vtl"
     },
@@ -1441,15 +1407,15 @@
     }
    },
    "DependsOn": [
-    "PlantillaDataSource"
+    "ProcesoDataSource"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationdeletePlantillaauth0Function/MutationdeletePlantillaauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationdeleteProcesoauth0Function/MutationdeleteProcesoauth0Function.AppSyncFunction"
    }
   },
-  "MutationdeletePlantillapostAuth0FunctionMutationdeletePlantillapostAuth0FunctionAppSyncFunction3DF68965": {
+  "MutationdeleteProcesopostAuth0FunctionMutationdeleteProcesopostAuth0FunctionAppSyncFunctionE7ECB986": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1459,7 +1425,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationdeletePlantillapostAuth0Function",
+    "Name": "MutationdeleteProcesopostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -1468,10 +1434,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationdeletePlantillapostAuth0Function/MutationdeletePlantillapostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationdeleteProcesopostAuth0Function/MutationdeleteProcesopostAuth0Function.AppSyncFunction"
    }
   },
-  "MutationDeletePlantillaDataResolverFnMutationDeletePlantillaDataResolverFnAppSyncFunction1123A428": {
+  "MutationDeleteProcesoDataResolverFnMutationDeleteProcesoDataResolverFnAppSyncFunctionFBDFA65C": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1479,12 +1445,12 @@
     },
     "DataSourceName": {
      "Fn::GetAtt": [
-      "PlantillaDataSource",
+      "ProcesoDataSource",
       "Name"
      ]
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "MutationDeletePlantillaDataResolverFn",
+    "Name": "MutationDeleteProcesoDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4f7907d1209a2c9953a0c053df402c634e359546d70c7cc5c2e8e21ea734880f.vtl"
     },
@@ -1493,39 +1459,39 @@
     }
    },
    "DependsOn": [
-    "PlantillaDataSource"
+    "ProcesoDataSource"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/MutationDeletePlantillaDataResolverFn/MutationDeletePlantillaDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/MutationDeleteProcesoDataResolverFn/MutationDeleteProcesoDataResolverFn.AppSyncFunction"
    }
   },
-  "DeletePlantillaResolver": {
+  "DeleteProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "deletePlantilla",
+    "FieldName": "deleteProceso",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "MutationdeletePlantillaauth0FunctionMutationdeletePlantillaauth0FunctionAppSyncFunction26FEE128",
+        "MutationdeleteProcesoauth0FunctionMutationdeleteProcesoauth0FunctionAppSyncFunction069015A9",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationdeletePlantillapostAuth0FunctionMutationdeletePlantillapostAuth0FunctionAppSyncFunction3DF68965",
+        "MutationdeleteProcesopostAuth0FunctionMutationdeleteProcesopostAuth0FunctionAppSyncFunctionE7ECB986",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "MutationDeletePlantillaDataResolverFnMutationDeletePlantillaDataResolverFnAppSyncFunction1123A428",
+        "MutationDeleteProcesoDataResolverFnMutationDeleteProcesoDataResolverFnAppSyncFunctionFBDFA65C",
         "FunctionId"
        ]
       }
@@ -1535,7 +1501,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deletePlantilla\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteProceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -1554,7 +1520,7 @@
                ":",
                {
                 "Fn::GetAtt": [
-                 "PlantillaTable",
+                 "ProcesoTable",
                  "TableArn"
                 ]
                }
@@ -1604,10 +1570,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/mutationDeletePlantillaResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/mutationDeleteProcesoResolver"
    }
   },
-  "SubscriptiononCreatePlantillaauth0FunctionSubscriptiononCreatePlantillaauth0FunctionAppSyncFunctionF7887A37": {
+  "SubscriptiononCreateProcesoauth0FunctionSubscriptiononCreateProcesoauth0FunctionAppSyncFunctionE760B12E": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1617,7 +1583,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptiononCreatePlantillaauth0Function",
+    "Name": "SubscriptiononCreateProcesoauth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/15280eef569babaeeee5f837ecf7400c728eec6ca2f4c0437bcbddfcb67fe27b.vtl"
     },
@@ -1626,10 +1592,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptiononCreatePlantillaauth0Function/SubscriptiononCreatePlantillaauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptiononCreateProcesoauth0Function/SubscriptiononCreateProcesoauth0Function.AppSyncFunction"
    }
   },
-  "SubscriptiononCreatePlantillapostAuth0FunctionSubscriptiononCreatePlantillapostAuth0FunctionAppSyncFunction8068414E": {
+  "SubscriptiononCreateProcesopostAuth0FunctionSubscriptiononCreateProcesopostAuth0FunctionAppSyncFunction8A9CA82C": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1639,7 +1605,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptiononCreatePlantillapostAuth0Function",
+    "Name": "SubscriptiononCreateProcesopostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -1648,10 +1614,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptiononCreatePlantillapostAuth0Function/SubscriptiononCreatePlantillapostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptiononCreateProcesopostAuth0Function/SubscriptiononCreateProcesopostAuth0Function.AppSyncFunction"
    }
   },
-  "SubscriptionOnCreatePlantillaDataResolverFnSubscriptionOnCreatePlantillaDataResolverFnAppSyncFunctionA30290B5": {
+  "SubscriptionOnCreateProcesoDataResolverFnSubscriptionOnCreateProcesoDataResolverFnAppSyncFunctionC74A1B81": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1661,7 +1627,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptionOnCreatePlantillaDataResolverFn",
+    "Name": "SubscriptionOnCreateProcesoDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
     },
@@ -1672,34 +1638,34 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptionOnCreatePlantillaDataResolverFn/SubscriptionOnCreatePlantillaDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptionOnCreateProcesoDataResolverFn/SubscriptionOnCreateProcesoDataResolverFn.AppSyncFunction"
    }
   },
-  "SubscriptiononCreatePlantillaResolver": {
+  "SubscriptiononCreateProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "onCreatePlantilla",
+    "FieldName": "onCreateProceso",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "SubscriptiononCreatePlantillaauth0FunctionSubscriptiononCreatePlantillaauth0FunctionAppSyncFunctionF7887A37",
+        "SubscriptiononCreateProcesoauth0FunctionSubscriptiononCreateProcesoauth0FunctionAppSyncFunctionE760B12E",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "SubscriptiononCreatePlantillapostAuth0FunctionSubscriptiononCreatePlantillapostAuth0FunctionAppSyncFunction8068414E",
+        "SubscriptiononCreateProcesopostAuth0FunctionSubscriptiononCreateProcesopostAuth0FunctionAppSyncFunction8A9CA82C",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "SubscriptionOnCreatePlantillaDataResolverFnSubscriptionOnCreatePlantillaDataResolverFnAppSyncFunctionA30290B5",
+        "SubscriptionOnCreateProcesoDataResolverFnSubscriptionOnCreateProcesoDataResolverFnAppSyncFunctionC74A1B81",
         "FunctionId"
        ]
       }
@@ -1709,7 +1675,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreatePlantilla\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onCreateProceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -1751,10 +1717,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/subscriptionOnCreatePlantillaResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/subscriptionOnCreateProcesoResolver"
    }
   },
-  "SubscriptiononUpdatePlantillaauth0FunctionSubscriptiononUpdatePlantillaauth0FunctionAppSyncFunctionC658A29D": {
+  "SubscriptiononUpdateProcesoauth0FunctionSubscriptiononUpdateProcesoauth0FunctionAppSyncFunction0351A4FE": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1764,7 +1730,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptiononUpdatePlantillaauth0Function",
+    "Name": "SubscriptiononUpdateProcesoauth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/15280eef569babaeeee5f837ecf7400c728eec6ca2f4c0437bcbddfcb67fe27b.vtl"
     },
@@ -1773,10 +1739,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptiononUpdatePlantillaauth0Function/SubscriptiononUpdatePlantillaauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptiononUpdateProcesoauth0Function/SubscriptiononUpdateProcesoauth0Function.AppSyncFunction"
    }
   },
-  "SubscriptiononUpdatePlantillapostAuth0FunctionSubscriptiononUpdatePlantillapostAuth0FunctionAppSyncFunction837DE570": {
+  "SubscriptiononUpdateProcesopostAuth0FunctionSubscriptiononUpdateProcesopostAuth0FunctionAppSyncFunction0DAD7D3A": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1786,7 +1752,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptiononUpdatePlantillapostAuth0Function",
+    "Name": "SubscriptiononUpdateProcesopostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -1795,10 +1761,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptiononUpdatePlantillapostAuth0Function/SubscriptiononUpdatePlantillapostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptiononUpdateProcesopostAuth0Function/SubscriptiononUpdateProcesopostAuth0Function.AppSyncFunction"
    }
   },
-  "SubscriptionOnUpdatePlantillaDataResolverFnSubscriptionOnUpdatePlantillaDataResolverFnAppSyncFunctionD373B75E": {
+  "SubscriptionOnUpdateProcesoDataResolverFnSubscriptionOnUpdateProcesoDataResolverFnAppSyncFunction3E2177B5": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1808,7 +1774,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptionOnUpdatePlantillaDataResolverFn",
+    "Name": "SubscriptionOnUpdateProcesoDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
     },
@@ -1819,34 +1785,34 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptionOnUpdatePlantillaDataResolverFn/SubscriptionOnUpdatePlantillaDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptionOnUpdateProcesoDataResolverFn/SubscriptionOnUpdateProcesoDataResolverFn.AppSyncFunction"
    }
   },
-  "SubscriptiononUpdatePlantillaResolver": {
+  "SubscriptiononUpdateProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "onUpdatePlantilla",
+    "FieldName": "onUpdateProceso",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "SubscriptiononUpdatePlantillaauth0FunctionSubscriptiononUpdatePlantillaauth0FunctionAppSyncFunctionC658A29D",
+        "SubscriptiononUpdateProcesoauth0FunctionSubscriptiononUpdateProcesoauth0FunctionAppSyncFunction0351A4FE",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "SubscriptiononUpdatePlantillapostAuth0FunctionSubscriptiononUpdatePlantillapostAuth0FunctionAppSyncFunction837DE570",
+        "SubscriptiononUpdateProcesopostAuth0FunctionSubscriptiononUpdateProcesopostAuth0FunctionAppSyncFunction0DAD7D3A",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "SubscriptionOnUpdatePlantillaDataResolverFnSubscriptionOnUpdatePlantillaDataResolverFnAppSyncFunctionD373B75E",
+        "SubscriptionOnUpdateProcesoDataResolverFnSubscriptionOnUpdateProcesoDataResolverFnAppSyncFunction3E2177B5",
         "FunctionId"
        ]
       }
@@ -1856,7 +1822,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdatePlantilla\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onUpdateProceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -1898,10 +1864,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/subscriptionOnUpdatePlantillaResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/subscriptionOnUpdateProcesoResolver"
    }
   },
-  "SubscriptiononDeletePlantillaauth0FunctionSubscriptiononDeletePlantillaauth0FunctionAppSyncFunctionB36231DF": {
+  "SubscriptiononDeleteProcesoauth0FunctionSubscriptiononDeleteProcesoauth0FunctionAppSyncFunction78B9FCC8": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1911,7 +1877,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptiononDeletePlantillaauth0Function",
+    "Name": "SubscriptiononDeleteProcesoauth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/15280eef569babaeeee5f837ecf7400c728eec6ca2f4c0437bcbddfcb67fe27b.vtl"
     },
@@ -1920,10 +1886,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptiononDeletePlantillaauth0Function/SubscriptiononDeletePlantillaauth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptiononDeleteProcesoauth0Function/SubscriptiononDeleteProcesoauth0Function.AppSyncFunction"
    }
   },
-  "SubscriptiononDeletePlantillapostAuth0FunctionSubscriptiononDeletePlantillapostAuth0FunctionAppSyncFunction56A6336B": {
+  "SubscriptiononDeleteProcesopostAuth0FunctionSubscriptiononDeleteProcesopostAuth0FunctionAppSyncFunctionDEE92873": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1933,7 +1899,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptiononDeletePlantillapostAuth0Function",
+    "Name": "SubscriptiononDeleteProcesopostAuth0Function",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1721bcd774e27c514d3454b5be4f9bdd094c0161b57ddf053d618e3b0086a77.vtl"
     },
@@ -1942,10 +1908,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptiononDeletePlantillapostAuth0Function/SubscriptiononDeletePlantillapostAuth0Function.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptiononDeleteProcesopostAuth0Function/SubscriptiononDeleteProcesopostAuth0Function.AppSyncFunction"
    }
   },
-  "SubscriptionOnDeletePlantillaDataResolverFnSubscriptionOnDeletePlantillaDataResolverFnAppSyncFunction33EFE577": {
+  "SubscriptionOnDeleteProcesoDataResolverFnSubscriptionOnDeleteProcesoDataResolverFnAppSyncFunctionA62AA5F8": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -1955,7 +1921,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "SubscriptionOnDeletePlantillaDataResolverFn",
+    "Name": "SubscriptionOnDeleteProcesoDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe3c43ada4b9d681a5e2312663ef7a73386424d73b73e51f8e2e9d4b50f7c502.vtl"
     },
@@ -1966,34 +1932,34 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/SubscriptionOnDeletePlantillaDataResolverFn/SubscriptionOnDeletePlantillaDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/SubscriptionOnDeleteProcesoDataResolverFn/SubscriptionOnDeleteProcesoDataResolverFn.AppSyncFunction"
    }
   },
-  "SubscriptiononDeletePlantillaResolver": {
+  "SubscriptiononDeleteProcesoResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
     },
-    "FieldName": "onDeletePlantilla",
+    "FieldName": "onDeleteProceso",
     "Kind": "PIPELINE",
     "PipelineConfig": {
      "Functions": [
       {
        "Fn::GetAtt": [
-        "SubscriptiononDeletePlantillaauth0FunctionSubscriptiononDeletePlantillaauth0FunctionAppSyncFunctionB36231DF",
+        "SubscriptiononDeleteProcesoauth0FunctionSubscriptiononDeleteProcesoauth0FunctionAppSyncFunction78B9FCC8",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "SubscriptiononDeletePlantillapostAuth0FunctionSubscriptiononDeletePlantillapostAuth0FunctionAppSyncFunction56A6336B",
+        "SubscriptiononDeleteProcesopostAuth0FunctionSubscriptiononDeleteProcesopostAuth0FunctionAppSyncFunctionDEE92873",
         "FunctionId"
        ]
       },
       {
        "Fn::GetAtt": [
-        "SubscriptionOnDeletePlantillaDataResolverFnSubscriptionOnDeletePlantillaDataResolverFnAppSyncFunction33EFE577",
+        "SubscriptionOnDeleteProcesoDataResolverFnSubscriptionOnDeleteProcesoDataResolverFnAppSyncFunctionA62AA5F8",
         "FunctionId"
        ]
       }
@@ -2003,7 +1969,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeletePlantilla\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Subscription\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"onDeleteProceso\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -2045,10 +2011,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/subscriptionOnDeletePlantillaResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/subscriptionOnDeleteProcesoResolver"
    }
   },
-  "PlantillaOwnerDataResolverFnPlantillaOwnerDataResolverFnAppSyncFunction7B877612": {
+  "ProcesoOwnerDataResolverFnProcesoOwnerDataResolverFnAppSyncFunction1720A54D": {
    "Type": "AWS::AppSync::FunctionConfiguration",
    "Properties": {
     "ApiId": {
@@ -2058,7 +2024,7 @@
      "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
     },
     "FunctionVersion": "2018-05-29",
-    "Name": "PlantillaOwnerDataResolverFn",
+    "Name": "ProcesoOwnerDataResolverFn",
     "RequestMappingTemplateS3Location": {
      "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/041534e5fd916595f752318f161512d7c7f83b9f2cf32d0f0be381c12253ff68.vtl"
     },
@@ -2069,10 +2035,10 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/PlantillaOwnerDataResolverFn/PlantillaOwnerDataResolverFn.AppSyncFunction"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/ProcesoOwnerDataResolverFn/ProcesoOwnerDataResolverFn.AppSyncFunction"
    }
   },
-  "PlantillaownerResolver": {
+  "ProcesoownerResolver": {
    "Type": "AWS::AppSync::Resolver",
    "Properties": {
     "ApiId": {
@@ -2084,7 +2050,7 @@
      "Functions": [
       {
        "Fn::GetAtt": [
-        "PlantillaOwnerDataResolverFnPlantillaOwnerDataResolverFnAppSyncFunction7B877612",
+        "ProcesoOwnerDataResolverFnProcesoOwnerDataResolverFnAppSyncFunction1720A54D",
         "FunctionId"
        ]
       }
@@ -2094,7 +2060,7 @@
      "Fn::Join": [
       "",
       [
-       "$util.qr($ctx.stash.put(\"typeName\", \"Plantilla\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"owner\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+       "$util.qr($ctx.stash.put(\"typeName\", \"Proceso\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"owner\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"NONE\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
@@ -2131,12 +2097,12 @@
      ]
     },
     "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)",
-    "TypeName": "Plantilla"
+    "TypeName": "Proceso"
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/plantillaOwnerResolver"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/procesoOwnerResolver"
    }
   },
   "CDKMetadata": {
@@ -2145,17 +2111,17 @@
     "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOQW6DQAxFz5L9xE2gF2hAXbYVdB+ZGYMmgAeNPYkixN0rSJWqq+8nP9k/g+z1AIcd3mRvXb8ffAPzB4mSqxVtb4qWvzDiSEpxhSKw8+oDm4okpGjJFEk0jH/Y8nPGm5xnd2ccg2vgG5uBTihkPI4wV2F42GGgxeA0yZ0tzOWml02JivXz5H96T2zXEkXg1ncp4tbo9/NwpbgYyc8oQirwtoaRHE7J9qRrgWV1P5NOSc22rhU7z91iODiCi7xcswyOORx3F/F+HxOrHwmqR/4A5+YYQDYBAAA="
    },
    "Metadata": {
-    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Plantilla/CDKMetadata/Default"
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/Proceso/CDKMetadata/Default"
    },
    "Condition": "CDKMetadataAvailable"
   }
  },
  "Outputs": {
-  "GetAttPlantillaTableStreamArn": {
+  "GetAttProcesoTableStreamArn": {
    "Description": "Your DynamoDB table StreamArn.",
    "Value": {
     "Fn::GetAtt": [
-     "PlantillaTable",
+     "ProcesoTable",
      "TableStreamArn"
     ]
    },
@@ -2167,19 +2133,19 @@
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
-       "GetAtt:PlantillaTable:StreamArn"
+       "GetAtt:ProcesoTable:StreamArn"
       ]
      ]
     }
    }
   },
-  "GetAttPlantillaTableName": {
+  "GetAttProcesoTableName": {
    "Description": "Your DynamoDB table name.",
    "Value": {
     "Fn::Join": [
      "",
      [
-      "Plantilla-",
+      "Proceso-",
       {
        "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
       },
@@ -2195,24 +2161,24 @@
        {
         "Ref": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
        },
-       "GetAtt:PlantillaTable:Name"
+       "GetAtt:ProcesoTable:Name"
       ]
      ]
     }
    }
   },
-  "amplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaPlantillaDataSource7F195606Name": {
+  "amplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoProcesoDataSource5B1DB074Name": {
    "Value": {
     "Fn::GetAtt": [
-     "PlantillaDataSource",
+     "ProcesoDataSource",
      "Name"
     ]
    }
   },
-  "amplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataPlantillaPlantillaTable85BAA78FTableArn": {
+  "amplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataProcesoProcesoTable8EBAB76ETableArn": {
    "Value": {
     "Fn::GetAtt": [
-     "PlantillaTable",
+     "ProcesoTable",
      "TableArn"
     ]
    }

@@ -1,0 +1,21 @@
+type Proceso @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: public, provider: apiKey, operations: [read]}])
+{
+  nombre: String!
+  descripcion: String
+  plantillas: [Plantilla] @hasMany(references: ["procesoId"])
+}
+
+type Plantilla @model @auth(rules: [{allow: owner, ownerField: "owner"},
+  {allow: public, provider: apiKey, operations: [read]}])
+{
+  nombre: String!
+  codigo: String!
+  version: String
+  url: String
+  contenido: String
+  requiereAceptacion: Boolean
+  solicitarAceptacion: Boolean
+  procesoId: ID
+  proceso: Proceso @belongsTo(references: ["procesoId"])
+}
