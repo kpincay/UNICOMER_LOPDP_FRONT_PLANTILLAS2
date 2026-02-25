@@ -27,11 +27,13 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 // or just fetch all templates of the process if the backend provides the procesoId.
                 const { data: allPlantillas } = await client.models.Plantilla.list();
 
-                // If the transaction has a specific list of template IDs
+                // If the transaction has a specific list of template IDs or a process ID
+                const processId = (transData.proceso && transData.proceso.length > 0) ? transData.proceso[0] : transData.procesoId;
+
                 if (transData.plantillas && transData.plantillas.length > 0) {
                     setPlantillas(allPlantillas.filter(p => transData.plantillas.includes(p.id)));
-                } else if (transData.procesoId) {
-                    setPlantillas(allPlantillas.filter(p => p.procesoId === transData.procesoId));
+                } else if (processId) {
+                    setPlantillas(allPlantillas.filter(p => p.procesoId === processId));
                 } else {
                     // Fallback to all for demo/safety if nothing else found
                     setPlantillas(allPlantillas);
@@ -67,9 +69,11 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     const handleSubmit = async () => {
         setSubmitting(true);
         try {
-            // 1. Update transaction state in external backend to 'procesado'
+            // 1. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
             await lopdService.updateTransaction(transactionId, {
-                estado: 'procesado',
+                nombres: transaction?.nombres || '',
+                correo: transaction?.correo || '',
+                estado: 'aprobado',
                 fechaAceptacion: new Date().toISOString(),
                 aceptaciones: checkedItems
             });

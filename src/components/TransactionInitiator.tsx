@@ -42,7 +42,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                 telefono: formData.telefono,
                 channel: 'web',
                 storeId: 'MAIN_STORE', // Default or from context if available
-                plantillas: [] // Backend might handle this or we can fetch them here
+                proceso: [formData.procesoId]
             };
 
             // 1. Create transaction in external backend
