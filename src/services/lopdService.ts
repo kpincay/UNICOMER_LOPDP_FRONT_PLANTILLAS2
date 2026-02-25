@@ -3,7 +3,7 @@
  */
 
 const LOPD_BASE_URL = 'https://0sikyas0mf.execute-api.us-east-1.amazonaws.com/v1';
-const API_KEY = '6FWGvXEKV38x9nuqGDayV6bfxZBe7Zvc997J05hn'; // Updated from user providing Postman image
+const API_KEY = '6FWGvXEkV38x9nuqGDayV6bfxZBe7Zvc997JO5hn'; // Updated from user providing Postman image
 
 export interface TransactionData {
     cedula: string;
