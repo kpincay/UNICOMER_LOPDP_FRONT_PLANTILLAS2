@@ -42,7 +42,7 @@ export default function App() {
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-    const path = window.location.pathname;
+    const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash for comparison
 
     if (id) {
       setTransactionId(id);
