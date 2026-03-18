@@ -46,10 +46,11 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
                 if (processId) {
                     try {
-                        const { data: pData } = await client.models.Proceso.get({ id: processId });
+                        const { data: pData, errors } = await client.models.Proceso.get({ id: processId });
+                        if (errors) console.error('GraphQL Errors fetching proceso:', errors);
                         setProcesoConfig(pData);
                     } catch (e) {
-                        console.error('Error fetching proceso config:', e);
+                        console.error('Network Error fetching proceso config:', e);
                     }
                 }
 
@@ -84,10 +85,10 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         if (!text) return text;
         let replaced = text;
         if (transData) {
-            if (transData.nombres) replaced = replaced.replace(/\[[Nn]ombre\]/g, transData.nombres);
-            if (transData.cedula || transData.documento) replaced = replaced.replace(/\[((Número)|(Numero)|(Cedula)|(Cédula))\]/gi, transData.cedula || transData.documento);
-            if (transData.correo) replaced = replaced.replace(/\[[Cc]orreo\]/g, transData.correo);
-            if (transData.telefono) replaced = replaced.replace(/\[[Tt]el[ée]fono\]/g, transData.telefono);
+            if (transData.nombres) replaced = replaced.replace(/\[\s*[Nn]ombre\s*\]/g, transData.nombres);
+            if (transData.cedula || transData.documento) replaced = replaced.replace(/\[\s*((Número)|(Numero)|(Cedula)|(Cédula)|(numero)|(cedula))\s*\]/gi, transData.cedula || transData.documento);
+            if (transData.correo) replaced = replaced.replace(/\[\s*[Cc]orreo\s*\]/gi, transData.correo);
+            if (transData.telefono) replaced = replaced.replace(/\[\s*[Tt]el[ée]fono\s*\]/gi, transData.telefono);
         }
         return replaced;
     };
@@ -151,13 +152,21 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         <div className="landing-container">
             <header className="landing-header">
                 <ShieldCheck size={32} className="brand-icon" />
-                <h1>{procesoConfig?.tituloLanding || 'Autorización de Protección de Datos (LOPDP)'}</h1>
+                <h1>{replacePlaceholders(procesoConfig?.tituloLanding, transaction) || 'Autorización de Protección de Datos (LOPDP)'}</h1>
             </header>
 
             <main className="landing-content animate-fadeIn">
                 <div className="customer-info glass-card">
-                    <h3>Hola, {transaction?.nombres}</h3>
-                    <p>{procesoConfig?.encabezadoLanding || 'Para continuar con tu solicitud, por favor revisa y acepta los siguientes términos y condiciones de protección de datos.'}</p>
+                    {procesoConfig?.encabezadoLanding ? (
+                        <p style={{ whiteSpace: 'pre-wrap', margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
+                            {replacePlaceholders(procesoConfig.encabezadoLanding, transaction)}
+                        </p>
+                    ) : (
+                        <>
+                            <h3>Hola, {transaction?.nombres}</h3>
+                            <p>Para continuar con tu solicitud, por favor revisa y acepta los siguientes términos y condiciones de protección de datos.</p>
+                        </>
+                    )}
                 </div>
 
                 <div className="plantillas-list">
