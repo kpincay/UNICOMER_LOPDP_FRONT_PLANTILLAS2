@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "us-east-1_TkBJ1IZMr",
+    "user_pool_id": "us-east-1_hS9C8O9Jw",
     "aws_region": "us-east-1",
-    "user_pool_client_id": "5o6gs30b5p7o06sno6mg69t76g",
-    "identity_pool_id": "us-east-1:2642b5a3-e8de-4003-b852-e69ac4aa7e7a",
+    "user_pool_client_id": "5ht6harci38udr159g4q1bk40q",
+    "identity_pool_id": "us-east-1:c6ea44aa-233d-4781-a284-6fbd8a7752e9",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -26,15 +26,114 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://im4ikoomzrdzba4jq7vv4tev74.appsync-api.us-east-1.amazonaws.com/graphql",
+    "url": "https://oufcxu7fx5g63pwbene72grzbm.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_region": "us-east-1",
-    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
+    "api_key": "da2-4kv3pcl7vbdwdez7wqhnavkpxi",
+    "default_authorization_type": "API_KEY",
     "authorization_types": [
+      "AMAZON_COGNITO_USER_POOLS",
       "AWS_IAM"
     ],
     "model_introspection": {
       "version": 1,
       "models": {
+        "Proceso": {
+          "name": "Proceso",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "nombre": {
+              "name": "nombre",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "descripcion": {
+              "name": "descripcion",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "plantillas": {
+              "name": "plantillas",
+              "isArray": true,
+              "type": {
+                "model": "Plantilla"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "procesoId"
+                ]
+              }
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "Procesos",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "identityClaim": "cognito:username",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  },
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "Plantilla": {
           "name": "Plantilla",
           "fields": {
@@ -94,6 +193,28 @@
               "isRequired": false,
               "attributes": []
             },
+            "procesoId": {
+              "name": "procesoId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "proceso": {
+              "name": "proceso",
+              "isArray": false,
+              "type": {
+                "model": "Proceso"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "procesoId"
+                ]
+              }
+            },
             "createdAt": {
               "name": "createdAt",
               "isArray": false,
@@ -133,6 +254,13 @@
                       "delete",
                       "read"
                     ]
+                  },
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
                   }
                 ]
               }
@@ -146,7 +274,35 @@
         }
       },
       "enums": {},
-      "nonModels": {}
+      "nonModels": {},
+      "mutations": {
+        "sendEmail": {
+          "name": "sendEmail",
+          "isArray": false,
+          "type": "AWSJSON",
+          "isRequired": false,
+          "arguments": {
+            "to": {
+              "name": "to",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "subject": {
+              "name": "subject",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "body": {
+              "name": "body",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        }
+      }
     }
   },
   "version": "1.4"

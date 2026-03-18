@@ -45,6 +45,12 @@
     "awsAppsyncApiKey",
     "awsAppsyncAdditionalAuthenticationTypes"
    ]
+  },
+  "AWS::Amplify::Function": {
+   "version": "1",
+   "stackOutputs": [
+    "definedFunctions"
+   ]
   }
  },
  "Outputs": {
@@ -212,6 +218,23 @@
   },
   "awsAppsyncAdditionalAuthenticationTypes": {
    "Value": "AMAZON_COGNITO_USER_POOLS,AWS_IAM"
+  },
+  "definedFunctions": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "[\"",
+      {
+       "Fn::GetAtt": [
+        "function1351588B",
+        "Outputs.amplifyamplifyrefactorpincayksandbox95b3e014befunctionsendemaillambdaBDFA4AFCRef"
+       ]
+      },
+      "\"]"
+     ]
+    ]
+   }
   }
  },
  "Resources": {
@@ -312,7 +335,7 @@
        {
         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
        },
-       "/2e27147d95cbd1461baabf724c8f1d26d54f9bad8e8648dc8488ef36f2683808.json"
+       "/f21cf68628a5a7f37517c12dd80f21188156a1fd55da5a6454bbad0a7403272e.json"
       ]
      ]
     }
@@ -322,6 +345,48 @@
    "Metadata": {
     "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data.NestedStack/data.NestedStackResource",
     "aws:asset:path": "amplifyamplifyrefactorpincayksandbox95b3e014bedata9A104632.nested.template.json",
+    "aws:asset:property": "TemplateURL"
+   }
+  },
+  "function1351588B": {
+   "Type": "AWS::CloudFormation::Stack",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "amplify:deployment-type",
+      "Value": "sandbox"
+     },
+     {
+      "Key": "created-by",
+      "Value": "amplify"
+     }
+    ],
+    "TemplateURL": {
+     "Fn::Join": [
+      "",
+      [
+       "https://s3.",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".",
+       {
+        "Ref": "AWS::URLSuffix"
+       },
+       "/",
+       {
+        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+       },
+       "/f90b864fa0c4ea7aa5588479ca42e9b7087b3fb34ecf3d885ec9bb0ac9320acf.json"
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function.NestedStack/function.NestedStackResource",
+    "aws:asset:path": "amplifyamplifyrefactorpincayksandbox95b3e014befunctionAE2DEF31.nested.template.json",
     "aws:asset:property": "TemplateURL"
    }
   },

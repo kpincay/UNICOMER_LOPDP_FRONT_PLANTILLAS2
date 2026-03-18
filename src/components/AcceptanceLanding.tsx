@@ -11,6 +11,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     const [submitting, setSubmitting] = useState(false);
     const [completed, setCompleted] = useState(false);
     const [transaction, setTransaction] = useState<any>(null);
+    const [procesoConfig, setProcesoConfig] = useState<Schema['Proceso']['type'] | null>(null);
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
@@ -43,6 +44,15 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 const processId = (transData.process && transData.process.length > 0) ? transData.process[0] :
                     ((transData.proceso && transData.proceso.length > 0) ? transData.proceso[0] : transData.procesoId);
 
+                if (processId) {
+                    try {
+                        const { data: pData } = await client.models.Proceso.get({ id: processId });
+                        setProcesoConfig(pData);
+                    } catch (e) {
+                        console.error('Error fetching proceso config:', e);
+                    }
+                }
+
                 if (transData.plantillas && transData.plantillas.length > 0) {
                     setPlantillas(allPlantillas.filter(p => transData.plantillas.includes(p.id)));
                 } else if (processId) {
@@ -69,6 +79,18 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
         loadTransactionData();
     }, [transactionId]);
+
+    const replacePlaceholders = (text: string | null | undefined, transData: any) => {
+        if (!text) return text;
+        let replaced = text;
+        if (transData) {
+            if (transData.nombres) replaced = replaced.replace(/\[[Nn]ombre\]/g, transData.nombres);
+            if (transData.cedula || transData.documento) replaced = replaced.replace(/\[((Número)|(Numero)|(Cedula)|(Cédula))\]/gi, transData.cedula || transData.documento);
+            if (transData.correo) replaced = replaced.replace(/\[[Cc]orreo\]/g, transData.correo);
+            if (transData.telefono) replaced = replaced.replace(/\[[Tt]el[ée]fono\]/g, transData.telefono);
+        }
+        return replaced;
+    };
 
     const handleCheck = (id: string) => {
         setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
@@ -129,13 +151,13 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         <div className="landing-container">
             <header className="landing-header">
                 <ShieldCheck size={32} className="brand-icon" />
-                <h1>Autorización de Protección de Datos (LOPDP)</h1>
+                <h1>{procesoConfig?.tituloLanding || 'Autorización de Protección de Datos (LOPDP)'}</h1>
             </header>
 
             <main className="landing-content animate-fadeIn">
                 <div className="customer-info glass-card">
                     <h3>Hola, {transaction?.nombres}</h3>
-                    <p>Para continuar con tu solicitud, por favor revisa y acepta los siguientes términos y condiciones de protección de datos.</p>
+                    <p>{procesoConfig?.encabezadoLanding || 'Para continuar con tu solicitud, por favor revisa y acepta los siguientes términos y condiciones de protección de datos.'}</p>
                 </div>
 
                 <div className="plantillas-list">
@@ -147,7 +169,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                                 {p.requiereAceptacion && <span className="badge badge-warning">Requerido</span>}
                             </div>
                             <div className="plantilla-body">
-                                <p>{p.contenido || 'Contenido de la política de privacidad...'}</p>
+                                <p>{replacePlaceholders(p.contenido, transaction) || 'Contenido de la política de privacidad...'}</p>
                                 {p.url && <a href={p.url} target="_blank" rel="noreferrer">Ver documento completo</a>}
                             </div>
                             <div className="plantilla-footer">

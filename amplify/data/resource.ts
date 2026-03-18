@@ -9,6 +9,8 @@ const schema = a.schema({
     .model({
       nombre: a.string().required(),
       descripcion: a.string(),
+      tituloLanding: a.string(),
+      encabezadoLanding: a.string(),
       plantillas: a.hasMany('Plantilla', 'procesoId'),
     })
     .authorization((allow) => [

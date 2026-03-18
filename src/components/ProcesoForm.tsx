@@ -11,7 +11,9 @@ interface ProcesoFormProps {
 export const ProcesoForm: React.FC<ProcesoFormProps> = ({ proceso, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         nombre: '',
-        descripcion: ''
+        descripcion: '',
+        tituloLanding: '',
+        encabezadoLanding: ''
     });
     const [loading, setLoading] = useState(false);
 
@@ -19,7 +21,9 @@ export const ProcesoForm: React.FC<ProcesoFormProps> = ({ proceso, onClose, onSa
         if (proceso) {
             setFormData({
                 nombre: proceso.nombre,
-                descripcion: proceso.descripcion || ''
+                descripcion: proceso.descripcion || '',
+                tituloLanding: proceso.tituloLanding || '',
+                encabezadoLanding: proceso.encabezadoLanding || ''
             });
         }
     }, [proceso]);
@@ -61,6 +65,23 @@ export const ProcesoForm: React.FC<ProcesoFormProps> = ({ proceso, onClose, onSa
                                 value={formData.descripcion}
                                 onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
                                 placeholder="Describe brevemente el proceso..."
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Título de la Landing (Opcional)</label>
+                            <input
+                                type="text"
+                                value={formData.tituloLanding}
+                                onChange={(e) => setFormData({ ...formData, tituloLanding: e.target.value })}
+                                placeholder="Ej: Autorización de Protección de Datos (LOPDP)"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Encabezado de la Landing (Opcional)</label>
+                            <textarea
+                                value={formData.encabezadoLanding}
+                                onChange={(e) => setFormData({ ...formData, encabezadoLanding: e.target.value })}
+                                placeholder="Mensaje para el cliente debajo del título..."
                             />
                         </div>
                     </div>

@@ -22,7 +22,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6290b71ccbfb4c671efd54bcc07ea8ea0266efdb3567487f5660cfec765d91f1.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f0b6c3f8422153c1961f9bab555c7e1c4338c944578287139026636213415522.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -1467,6 +1467,118 @@
             "data": "amplifyDataPlantillaNestedStackPlantillaNestedStackResourceE6CAC22A"
           }
         ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/HasEnvironmentParameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HasEnvironmentParameter"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/SendEmailLambdaDataSource": [
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SendEmailLambdaDataSource"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/SendEmailLambdaDataSource/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SendEmailLambdaDataSourceServiceRoleDF20B539"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/SendEmailLambdaDataSource/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SendEmailLambdaDataSourceServiceRoleDefaultPolicy2A5E4A55"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/SendEmailLambdaDataSource/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SendEmailLambdaDataSource"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "SendEmailLambdaDataSource"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/InvokeSendEmailLambdaDataSource/InvokeSendEmailLambdaDataSource.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InvokeSendEmailLambdaDataSourceInvokeSendEmailLambdaDataSourceAppSyncFunction877B3942"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "InvokeSendEmailLambdaDataSource"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/mutationSendEmailResolver": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationsendEmailResolver"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "Mutation.sendEmail"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/MutationSendEmailAuthFN/MutationSendEmailAuthFN.AppSyncFunction": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MutationSendEmailAuthFNMutationSendEmailAuthFNAppSyncFunctionFF561952"
+          },
+          {
+            "type": "graphqltransformer:resourceName",
+            "data": "MutationSendEmailAuthFN"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/reference-to-amplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPI1D76820DApiId"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/reference-to-amplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputs.amplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthauthenticatedUserRole8A0AE7A0Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthauthenticatedUserRole8A0AE7A0Ref"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/reference-to-amplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputs.amplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthunauthenticatedUserRoleF0616E89Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthunauthenticatedUserRoleF0616E89Ref"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/reference-to-amplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputs.amplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthIdentityPool947B00B6Ref": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014beauthNestedStackauthNestedStackResourceAF06983FOutputsamplifyamplifyrefactorpincayksandbox95b3e014beauthamplifyAuthIdentityPool947B00B6Ref"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack/reference-to-amplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "referencetoamplifyamplifyrefactorpincayksandbox95b3e014bedataamplifyDataGraphQLAPINONEDSEF126654Name"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/FunctionDirectiveStack.NestedStack/FunctionDirectiveStack.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyDataFunctionDirectiveStackNestedStackFunctionDirectiveStackNestedStackResource1246A302"
+          }
+        ],
         "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/data/amplifyData/ConnectionStack/Procesoplantillasauth0Function/Procesoplantillasauth0Function.AppSyncFunction": [
           {
             "type": "aws:cdk:logicalId",
@@ -1873,6 +1985,54 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "awsAppsyncAdditionalAuthenticationTypes"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function/send-email-lambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "sendemaillambdaServiceRoleD5732C68"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function/send-email-lambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "sendemaillambdaServiceRoleDefaultPolicy62AA04A1"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function/send-email-lambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "sendemaillambda0F1C0CA1"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function/amplifyamplifyrefactorpincayksandbox95b3e014befunctionsendemaillambdaBDFA4AFCRef": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "amplifyamplifyrefactorpincayksandbox95b3e014befunctionsendemaillambdaBDFA4AFCRef"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/function.NestedStack/function.NestedStackResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "function1351588B"
+          }
+        ],
+        "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/definedFunctions": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "definedFunctions"
           }
         ],
         "/amplify-amplifyrefactor-pincayk-sandbox-95b3e014be/CDKMetadata/Default": [
