@@ -152,7 +152,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         <div className="landing-container">
             <header className="landing-header">
                 <ShieldCheck size={32} className="brand-icon" />
-                <h1>{replacePlaceholders(procesoConfig?.tituloLanding, transaction) || 'Autorización de Protección de Datos (LOPDP)'}</h1>
+                <h1>{replacePlaceholders(procesoConfig?.tituloLanding, transaction) || 'Proceso de prueba'}</h1>
             </header>
 
             <main className="landing-content animate-fadeIn">
