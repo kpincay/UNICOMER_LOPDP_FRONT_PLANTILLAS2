@@ -64,11 +64,28 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             // 1. Create transaction in external backend
             const result = await lopdService.createTransaction(transactionData);
 
-            // Assuming result contains the transaction ID as shown in the example
-            // e.g. https://master.d373a3mueuc4js.amplifyapp.com?id=UUID
-            // We use current origin for the landing page
-            const transactionId = result.id || result.data?.id; // Adjust based on actual API response
-            const landingUrl = `${window.location.origin}?id=${transactionId}`;
+            // Extract the backend result properly since it might be stringified in the body
+            let parsedResult = result;
+            if (result.body && typeof result.body === 'string') {
+                try {
+                    const parsedBody = JSON.parse(result.body);
+                    // Extract data array if present, otherwise use parsed body
+                    parsedResult = (parsedBody.data && Array.isArray(parsedBody.data)) ? parsedBody.data[0] : (parsedBody.data || parsedBody);
+                } catch (e) {
+                    console.warn('Failed to parse response body string', e);
+                }
+            } else if (result.data) {
+                parsedResult = Array.isArray(result.data) ? result.data[0] : result.data;
+            }
+
+            // Get URL returned by backend (checking common properties)
+            const backendUrl = parsedResult.url || parsedResult.link || parsedResult.Url || parsedResult.URL || parsedResult.url_transaccion;
+            const transactionId = parsedResult.id || result.id; 
+            
+            const landingUrl = backendUrl || `${window.location.origin}?id=${transactionId}`;
+
+            // Redirect automatically in a new tab to the returned link
+            window.open(landingUrl, '_blank');
 
             // 2. Logic to send email (Real integration via SES)
             const emailBody = `
