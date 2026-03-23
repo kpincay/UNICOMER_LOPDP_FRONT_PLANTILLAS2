@@ -14,7 +14,7 @@ const schema = a.schema({
       plantillas: a.hasMany('Plantilla', 'procesoId'),
     })
     .authorization((allow) => [
-      allow.owner(),
+      allow.authenticated(),
       allow.publicApiKey().to(['read'])
     ]),
 
@@ -31,7 +31,7 @@ const schema = a.schema({
       proceso: a.belongsTo('Proceso', 'procesoId'),
     })
     .authorization((allow) => [
-      allow.owner(),
+      allow.authenticated(),
       allow.publicApiKey().to(['read'])
     ]),
 
