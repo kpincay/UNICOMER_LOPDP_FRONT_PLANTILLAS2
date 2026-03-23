@@ -86,10 +86,10 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         if (!text) return text;
         let replaced = text;
         if (transData) {
-            if (transData.nombres) replaced = replaced.replace(/\[\s*[Nn]ombre\s*\]/g, transData.nombres);
-            if (transData.cedula || transData.documento) replaced = replaced.replace(/\[\s*((Número)|(Numero)|(Cedula)|(Cédula)|(numero)|(cedula))\s*\]/gi, transData.cedula || transData.documento);
-            if (transData.correo) replaced = replaced.replace(/\[\s*[Cc]orreo\s*\]/gi, transData.correo);
-            if (transData.telefono) replaced = replaced.replace(/\[\s*[Tt]el[ée]fono\s*\]/gi, transData.telefono);
+            if (transData.nombres) replaced = replaced.replace(/\[\s*nombres?\s*\]/gi, transData.nombres);
+            if (transData.cedula || transData.documento) replaced = replaced.replace(/\[\s*(n[uú]mero|c[eé]dula|identificaci[oó]n|id)\s*\]/gi, transData.cedula || transData.documento);
+            if (transData.correo) replaced = replaced.replace(/\[\s*(correo|email|correo\s*electr[oó]nico)\s*\]/gi, transData.correo);
+            if (transData.telefono) replaced = replaced.replace(/\[\s*(tel[eé]fono|celular)\s*\]/gi, transData.telefono);
         }
         return replaced;
     };
