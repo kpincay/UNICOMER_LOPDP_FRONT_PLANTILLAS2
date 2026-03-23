@@ -28,8 +28,8 @@ export const Dashboard: React.FC = () => {
         setLoading(true);
         try {
             const [plantillaRes, procesoRes] = await Promise.all([
-                client.models.Plantilla.list({ authMode: 'userPool' }),
-                client.models.Proceso.list({ authMode: 'userPool' })
+                client.models.Plantilla.list({ authMode: 'apiKey' }),
+                client.models.Proceso.list({ authMode: 'apiKey' })
             ]);
             setPlantillas(plantillaRes.data);
             setProcesos(procesoRes.data);
@@ -45,9 +45,9 @@ export const Dashboard: React.FC = () => {
                 await client.models.Plantilla.update({
                     id: selectedPlantilla.id,
                     ...data
-                }, { authMode: 'userPool' });
+                }, { authMode: 'apiKey' });
             } else {
-                await client.models.Plantilla.create(data, { authMode: 'userPool' });
+                await client.models.Plantilla.create(data, { authMode: 'apiKey' });
             }
             setIsFormOpen(false);
             setSelectedPlantilla(null);
@@ -64,9 +64,9 @@ export const Dashboard: React.FC = () => {
                 await client.models.Proceso.update({
                     id: selectedProceso.id,
                     ...data
-                }, { authMode: 'userPool' });
+                }, { authMode: 'apiKey' });
             } else {
-                await client.models.Proceso.create(data, { authMode: 'userPool' });
+                await client.models.Proceso.create(data, { authMode: 'apiKey' });
             }
             setIsProcesoFormOpen(false);
             setSelectedProceso(null);
@@ -80,7 +80,7 @@ export const Dashboard: React.FC = () => {
     async function handleDeletePlantilla(id: string) {
         if (!confirm('¿Estás seguro de eliminar esta plantilla?')) return;
         try {
-            await client.models.Plantilla.delete({ id }, { authMode: 'userPool' });
+            await client.models.Plantilla.delete({ id }, { authMode: 'apiKey' });
             fetchData();
         } catch (error) {
             console.error('Error deleting plantilla:', error);
@@ -90,7 +90,7 @@ export const Dashboard: React.FC = () => {
     async function handleDeleteProceso(id: string) {
         if (!confirm('¿Estás seguro de eliminar este proceso? También se desasociarán las plantillas.')) return;
         try {
-            await client.models.Proceso.delete({ id }, { authMode: 'userPool' });
+            await client.models.Proceso.delete({ id }, { authMode: 'apiKey' });
             fetchData();
         } catch (error) {
             console.error('Error deleting proceso:', error);

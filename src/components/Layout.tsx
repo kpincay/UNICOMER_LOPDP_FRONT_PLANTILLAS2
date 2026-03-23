@@ -1,5 +1,6 @@
 import React from 'react';
 import { LogOut } from 'lucide-react';
+import UnicomerLogo from '../assets/unicomer.png';
 import { Dashboard } from './Dashboard';
 
 interface LayoutProps {
@@ -15,12 +16,9 @@ export const Layout: React.FC<LayoutProps> = ({ user, signOut }) => {
                 {/* Header */}
                 <header className="dashboard-header">
                     <div className="header-left">
-                        <div className="brand-mini">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                            </svg>
-                            <span>Plantillas</span>
+                        <div className="brand-mini" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <img src={UnicomerLogo} alt="Unicomer" style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
+                            <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Plantillas</span>
                         </div>
                     </div>
                     <div className="header-right">

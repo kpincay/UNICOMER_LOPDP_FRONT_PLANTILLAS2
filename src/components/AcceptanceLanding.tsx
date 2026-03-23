@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, AlertCircle, FileText, Send, ShieldCheck } from 'lucide-react';
+import UnicomerLogo from '../assets/unicomer.png';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
 import { lopdService } from '../services/lopdService';
@@ -151,7 +152,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     return (
         <div className="landing-container">
             <header className="landing-header">
-                <ShieldCheck size={32} className="brand-icon" />
+                <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain', marginBottom: '10px' }} />
                 <h1>{replacePlaceholders(procesoConfig?.tituloLanding, transaction) || 'Proceso de prueba'}</h1>
             </header>
 
