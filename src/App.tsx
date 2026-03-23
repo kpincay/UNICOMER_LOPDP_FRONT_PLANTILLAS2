@@ -19,7 +19,7 @@ const components = {
     return (
       <View textAlign="center" padding={tokens.space.xl}>
         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-          <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '60px', width: 'auto', objectFit: 'contain' }} />
+          <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '100px', width: 'auto', objectFit: 'contain', transform: 'scale(1.3)' }} />
         </div>
         <Heading level={3} className="login-branding" style={{ marginTop: '1rem' }}>
           Plantillas
