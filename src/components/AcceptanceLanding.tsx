@@ -153,7 +153,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         <div className="landing-container">
             <header className="landing-header">
                 <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', marginBottom: '1rem', transform: 'scale(1.2)', transformOrigin: 'left center' }} />
-                <h1>{replacePlaceholders(procesoConfig?.tituloLanding, transaction) || 'Proceso de prueba'}</h1>
+                <h1>{replacePlaceholders(procesoConfig?.tituloLanding, transaction) || procesoConfig?.nombre || 'Solicitud de Aceptación'}</h1>
             </header>
 
             <main className="landing-content animate-fadeIn">
