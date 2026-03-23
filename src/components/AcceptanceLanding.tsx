@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, AlertCircle, FileText, Send, ShieldCheck } from 'lucide-react';
+import { CheckCircle, AlertCircle, FileText, Send } from 'lucide-react';
 import UnicomerLogo from '../assets/unicomer.png';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
