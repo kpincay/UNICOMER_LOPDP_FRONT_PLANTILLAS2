@@ -43,6 +43,9 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             return;
         }
 
+        // Abrimos la pestaña ANTES de cualquier llamada asíncrona para evitar el bloqueador de pop-ups del navegador.
+        const newTab = window.open('about:blank', '_blank');
+
         setLoading(true);
         try {
             // Get public IP (simplified for demo, in production we might use a service)
@@ -84,8 +87,10 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             
             const landingUrl = backendUrl || `${window.location.origin}?id=${transactionId}`;
 
-            // Redirect automatically in a new tab to the returned link
-            window.open(landingUrl, '_blank');
+            // Redirect automatically in the pre-opened tab to the returned link
+            if (newTab) {
+                newTab.location.href = landingUrl;
+            }
 
             // 2. Logic to send email (Real integration via SES)
             const emailBody = `
@@ -120,6 +125,9 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         } catch (error) {
             console.error('Error initiating transaction:', error);
             alert('Error al iniciar la transacción');
+            if (newTab) {
+                newTab.close();
+            }
         } finally {
             setLoading(false);
         }
