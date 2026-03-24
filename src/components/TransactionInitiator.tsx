@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, User, IdCard, Mail, Phone, Hash, CheckCircle, Copy } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
@@ -22,6 +22,12 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         telefono: '',
         procesoId: '',
     });
+
+    useEffect(() => {
+        if (procesos && procesos.length > 0 && !formData.procesoId) {
+            setFormData(prev => ({ ...prev, procesoId: procesos[0].id }));
+        }
+    }, [procesos]);
 
     const validateEmail = (email: string) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -233,7 +239,6 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                             value={formData.procesoId}
                             onChange={(e) => setFormData({ ...formData, procesoId: e.target.value })}
                         >
-                            <option value="">-- Selecciona un Proceso --</option>
                             {procesos.map(p => (
                                 <option key={p.id} value={p.id}>{p.nombre}</option>
                             ))}
