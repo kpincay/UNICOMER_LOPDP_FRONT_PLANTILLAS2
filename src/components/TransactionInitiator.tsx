@@ -225,7 +225,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     </div>
 
                     <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                        <label><Hash size={14} /> Proceso a Seguir</label>
+                        <label hidden><Hash size={14} /> Proceso a Seguir</label>
                         <select
                             hidden
                             required
