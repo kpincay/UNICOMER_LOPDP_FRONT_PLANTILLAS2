@@ -49,9 +49,6 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             return;
         }
 
-        // Abrimos la pestaña ANTES de cualquier llamada asíncrona para evitar el bloqueador de pop-ups del navegador.
-        const newTab = window.open('about:blank', '_blank');
-
         setLoading(true);
         try {
             // Get public IP (simplified for demo, in production we might use a service)
@@ -89,14 +86,12 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
 
             // Get URL returned by backend (checking common properties)
             const backendUrl = parsedResult.url || parsedResult.link || parsedResult.Url || parsedResult.URL || parsedResult.url_transaccion;
-            const transactionId = parsedResult.id || result.id; 
-            
+            const transactionId = parsedResult.id || result.id;
+
             const landingUrl = backendUrl || `${window.location.origin}?id=${transactionId}`;
 
-            // Redirect automatically in the pre-opened tab to the returned link
-            if (newTab) {
-                newTab.location.href = landingUrl;
-            }
+            // Redirigir automáticamente en la PESTAÑA ACTUAL al enlace devuelto
+            window.location.href = landingUrl;
 
             // 2. Logic to send email (Real integration via SES)
             const emailBody = `
@@ -131,9 +126,6 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         } catch (error) {
             console.error('Error initiating transaction:', error);
             alert('Error al iniciar la transacción');
-            if (newTab) {
-                newTab.close();
-            }
         } finally {
             setLoading(false);
         }
@@ -235,6 +227,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     <div className="form-group" style={{ gridColumn: 'span 2' }}>
                         <label><Hash size={14} /> Proceso a Seguir</label>
                         <select
+                            hidden
                             required
                             value={formData.procesoId}
                             onChange={(e) => setFormData({ ...formData, procesoId: e.target.value })}
