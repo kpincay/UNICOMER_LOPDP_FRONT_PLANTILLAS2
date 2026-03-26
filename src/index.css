@@ -344,6 +344,7 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
 .form-row + .form-group,
 .form-group + .form-row,
 .form-row + .form-row { margin-top: var(--space-md); }
+.form-grid .form-group { margin-top: 0 !important; }
 
 /* Checkbox */
 .checkbox-row { align-items: center; gap: var(--space-xl); padding-top: var(--space-sm); }
