@@ -183,7 +183,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                                 {p.url && <a href={p.url} target="_blank" rel="noreferrer">Ver documento completo</a>}
                             </div>
                             <div className="plantilla-footer">
-                                <label className="checkbox-container">
+                                <label className="checkbox-label">
                                     <input
                                         type="checkbox"
                                         checked={checkedItems[p.id] || false}
