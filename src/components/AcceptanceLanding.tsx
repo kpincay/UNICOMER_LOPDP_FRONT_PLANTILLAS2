@@ -88,7 +88,13 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         if (!text) return text;
         let replaced = text;
         if (transData) {
+            const fullName = [transData.nombres, transData.apellidoPaterno, transData.apellidoMaterno].filter(Boolean).join(' ');
+            
             if (transData.nombres) replaced = replaced.replace(/\[\s*nombres?\s*\]/gi, transData.nombres);
+            if (transData.apellidoPaterno) replaced = replaced.replace(/\[\s*apellidoPaterno\s*\]/gi, transData.apellidoPaterno);
+            if (transData.apellidoMaterno) replaced = replaced.replace(/\[\s*apellidoMaterno\s*\]/gi, transData.apellidoMaterno);
+            replaced = replaced.replace(/\[\s*nombre[s]?\s*completo[s]?\s*\]/gi, fullName);
+
             if (transData.cedula || transData.documento) replaced = replaced.replace(/\[\s*(n[uú]mero|c[eé]dula|identificaci[oó]n|id)\s*\]/gi, transData.cedula || transData.documento);
             if (transData.correo) replaced = replaced.replace(/\[\s*(correo|email|correo\s*electr[oó]nico)\s*\]/gi, transData.correo);
             if (transData.telefono) replaced = replaced.replace(/\[\s*(tel[eé]fono|celular)\s*\]/gi, transData.telefono);
@@ -111,6 +117,8 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
             // 1. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
             await lopdService.updateTransaction(transactionId, {
                 nombres: transaction?.nombres || '',
+                apellidoPaterno: transaction?.apellidoPaterno || '',
+                apellidoMaterno: transaction?.apellidoMaterno || '',
                 correo: transaction?.correo || '',
                 estado: 'aprobado',
                 fechaAceptacion: new Date().toISOString(),
@@ -141,7 +149,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 <div className="glass-card acceptance-done animate-scaleUp">
                     <CheckCircle size={64} className="text-success" />
                     <h2>¡Proceso Completado!</h2>
-                    <p>Muchas gracias, <strong>{transaction?.nombres}</strong>.</p>
+                    <p>Muchas gracias, <strong>{transaction?.nombres} {transaction?.apellidoPaterno}</strong>.</p>
                     <p>Tus aceptaciones de privacidad han sido registradas correctamente conforme a la LOPDP.</p>
                     <button className="btn btn-primary mt-20" onClick={() => window.close()}>
                         Cerrar Ventana
@@ -166,7 +174,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                         </p>
                     ) : (
                         <>
-                            <h3>Hola, {transaction?.nombres}</h3>
+                            <h3>Hola, {transaction?.nombres} {transaction?.apellidoPaterno}</h3>
                             <p>Para continuar con tu solicitud, por favor revisa y acepta los siguientes términos y condiciones de protección de datos.</p>
                         </>
                     )}

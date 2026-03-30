@@ -9,6 +9,8 @@ export interface TransactionData {
     cedula: string;
     ip: string;
     nombres: string;
+    apellidoPaterno: string;
+    apellidoMaterno: string;
     correo: string;
     telefono: string;
     channel: string;

@@ -18,10 +18,15 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
     const [formData, setFormData] = useState({
         cedula: '',
         nombres: '',
+        apellidoPaterno: '',
+        apellidoMaterno: '',
         correo: '',
         telefono: '',
         procesoId: '',
     });
+
+    const [emailSuggestions, setEmailSuggestions] = useState<string[]>([]);
+    const domains = ['gmail.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'yahoo.com'];
 
     useEffect(() => {
         if (procesos && procesos.length > 0 && !formData.procesoId) {
@@ -29,54 +34,104 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         }
     }, [procesos]);
 
+    const validateCedula = (cedula: string) => {
+        if (!/^\d{10}$/.test(cedula)) return false;
+        const digits = cedula.split('').map(Number);
+        const province = parseInt(cedula.substring(0, 2), 10);
+        if (province < 1 || (province > 24 && province !== 30)) return false;
+        const thirdDigit = digits[2];
+        if (thirdDigit >= 6) return false;
+
+        const coeficients = [2, 1, 2, 1, 2, 1, 2, 1, 2];
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+            let val = digits[i] * coeficients[i];
+            if (val > 9) val -= 9;
+            sum += val;
+        }
+        const lastDigit = sum % 10 === 0 ? 0 : 10 - (sum % 10);
+        return lastDigit === digits[9];
+    };
+
     const validateEmail = (email: string) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     };
 
-    const isEmailValid = validateEmail(formData.correo);
+    const validatePhone = (phone: string) => {
+        return /^\d{10}$/.test(phone);
+    };
+
+    const isCedulaValid = !formData.cedula || validateCedula(formData.cedula);
+    const isEmailValid = !formData.correo || validateEmail(formData.correo);
+    const isPhoneValid = !formData.telefono || validatePhone(formData.telefono);
+    const isFormComplete = formData.cedula && formData.nombres && formData.apellidoPaterno && 
+                          formData.apellidoMaterno && formData.correo && formData.telefono &&
+                          validateCedula(formData.cedula) && validateEmail(formData.correo) && 
+                          validatePhone(formData.telefono);
+
+    const handleEmailChange = (value: string) => {
+        setFormData({ ...formData, correo: value });
+        if (value.includes('@')) {
+            const [username, domainPart] = value.split('@');
+            if (domainPart !== undefined) {
+                const filtered = domains
+                    .filter(d => d.startsWith(domainPart) && d !== domainPart)
+                    .map(d => `${username}@${d}`);
+                setEmailSuggestions(filtered);
+            }
+        } else {
+            setEmailSuggestions([]);
+        }
+    };
+
+    const selectEmailSuggestion = (suggestion: string) => {
+        setFormData({ ...formData, correo: suggestion });
+        setEmailSuggestions([]);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!isEmailValid) {
-            alert('Por favor ingresa un correo electrónico válido');
+        if (!validateCedula(formData.cedula)) {
+            alert('Cédula inválida');
             return;
         }
 
-        if (!formData.procesoId) {
-            alert('Por favor selecciona un proceso');
+        if (!validateEmail(formData.correo)) {
+            alert('Correo electrónico inválido');
+            return;
+        }
+
+        if (!validatePhone(formData.telefono)) {
+            alert('El celular debe tener 10 dígitos');
             return;
         }
 
         setLoading(true);
         try {
-            // Get public IP (simplified for demo, in production we might use a service)
             const ipResponse = await fetch('https://api.ipify.org?format=json').catch(() => ({ json: () => ({ ip: '127.0.0.1' }) }));
             const { ip } = await (ipResponse as any).json();
 
-            // Prepare transaction data
             const transactionData = {
                 cedula: formData.cedula,
-                ip: ip, // Use captured IP
+                ip: ip,
                 nombres: formData.nombres,
+                apellidoPaterno: formData.apellidoPaterno,
+                apellidoMaterno: formData.apellidoMaterno,
                 correo: formData.correo,
                 telefono: formData.telefono,
                 channel: 'web',
-                storeId: 'MAIN_STORE', // Default or from context if available
+                storeId: 'MAIN_STORE',
                 proceso: [formData.procesoId]
             };
-            debugger;
 
-            // 1. Create transaction in external backend
             const result = await lopdService.createTransaction(transactionData);
 
-            // Extract the backend result properly since it might be stringified in the body
             let parsedResult = result;
             if (result.body && typeof result.body === 'string') {
                 try {
                     const parsedBody = JSON.parse(result.body);
-                    // Extract data array if present, otherwise use parsed body
                     parsedResult = (parsedBody.data && Array.isArray(parsedBody.data)) ? parsedBody.data[0] : (parsedBody.data || parsedBody);
                 } catch (e) {
                     console.warn('Failed to parse response body string', e);
@@ -85,20 +140,16 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                 parsedResult = Array.isArray(result.data) ? result.data[0] : result.data;
             }
 
-            // Get URL returned by backend (checking common properties)
             const backendUrl = parsedResult.url || parsedResult.link || parsedResult.Url || parsedResult.URL || parsedResult.url_transaccion;
             const transactionId = parsedResult.id || result.id;
-
             const landingUrl = backendUrl || `${window.location.origin}?id=${transactionId}`;
 
-            // Redirigir automáticamente en la PESTAÑA ACTUAL al enlace devuelto
             window.location.href = landingUrl;
 
-            // 2. Logic to send email (Real integration via SES)
             const emailBody = `
                 <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
                     <h2 style="color: #2563eb;">Autorización de Protección de Datos (LOPDP)</h2>
-                    <p>Hola <strong>${formData.nombres}</strong>,</p>
+                    <p>Hola <strong>${formData.nombres} ${formData.apellidoPaterno}</strong>,</p>
                     <p>Para continuar con tu solicitud en UNICOMER, por favor revisa y acepta los términos de protección de datos en el siguiente enlace:</p>
                     <div style="margin: 30px 0; text-align: center;">
                         <a href="${landingUrl}" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Revisar y Aceptar Documentos</a>
@@ -116,10 +167,8 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     subject: 'Autorización LOPDP - UNICOMER',
                     body: emailBody
                 });
-                console.log(`Correo enviado exitosamente a ${formData.correo}`);
             } catch (emailError) {
                 console.error('Error al enviar correo via SES:', emailError);
-                // No lanzamos error aquí para permitir mostrar la URL en pantalla como respaldo
             }
 
             setGeneratedUrl(landingUrl);
@@ -175,54 +224,122 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         <div className="glass-card animate-scaleUp" style={{ padding: 'var(--space-xl)' }}>
             <form onSubmit={handleSubmit}>
                 <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
-                    <div className="form-group">
-                        <label><IdCard size={14} /> Cédula de identidad:</label>
+                    <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                        <label><IdCard size={14} /> Cédula de identidad</label>
                         <input
                             type="text"
                             required
+                            maxLength={10}
                             value={formData.cedula}
-                            onChange={(e) => setFormData({ ...formData, cedula: e.target.value })}
+                            onChange={(e) => setFormData({ ...formData, cedula: e.target.value.replace(/\D/g, '') })}
                             placeholder="Ej: 0987654321"
+                            className={!isCedulaValid ? 'input-error' : ''}
                         />
+                        {!isCedulaValid && (
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-danger)', marginTop: '4px' }}>
+                                Cédula ecuatoriana inválida
+                            </span>
+                        )}
                     </div>
 
-                    <div className="form-group">
-                        <label><User size={14} /> Nombre y apellido:</label>
+                    <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                        <label><User size={14} /> Nombres</label>
                         <input
                             type="text"
                             required
                             value={formData.nombres}
                             onChange={(e) => setFormData({ ...formData, nombres: e.target.value })}
-                            placeholder="Ej: Juan Pérez"
+                            placeholder="Ej: Juan Antonio"
                         />
                     </div>
 
                     <div className="form-group">
-                        <label><Mail size={14} /> Correo:</label>
+                        <label><User size={14} /> Apellido Paterno</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.apellidoPaterno}
+                            onChange={(e) => setFormData({ ...formData, apellidoPaterno: e.target.value })}
+                            placeholder="Ej: Pérez"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label><User size={14} /> Apellido Materno</label>
+                        <input
+                            type="text"
+                            required
+                            value={formData.apellidoMaterno}
+                            onChange={(e) => setFormData({ ...formData, apellidoMaterno: e.target.value })}
+                            placeholder="Ej: García"
+                        />
+                    </div>
+
+                    <div className="form-group" style={{ position: 'relative' }}>
+                        <label><Mail size={14} /> Correo electrónico</label>
                         <input
                             type="email"
                             required
                             value={formData.correo}
-                            onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
+                            onChange={(e) => handleEmailChange(e.target.value)}
                             placeholder="ejemplo@correo.com"
-                            className={formData.correo && !isEmailValid ? 'input-error' : ''}
+                            className={!isEmailValid ? 'input-error' : ''}
+                            autoComplete="off"
                         />
-                        {formData.correo && !isEmailValid && (
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-danger)', marginTop: '4px', display: 'block' }}>
+                        {!isEmailValid && (
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-danger)', marginTop: '4px' }}>
                                 Formato de correo inválido
                             </span>
+                        )}
+                        {emailSuggestions.length > 0 && (
+                            <div style={{
+                                position: 'absolute',
+                                top: '100%',
+                                left: 0,
+                                right: 0,
+                                background: 'var(--bg-secondary)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: 'var(--radius-sm)',
+                                boxShadow: 'var(--shadow-md)',
+                                zIndex: 10,
+                                marginTop: '4px'
+                            }}>
+                                {emailSuggestions.map((s, i) => (
+                                    <div 
+                                        key={i} 
+                                        onClick={() => selectEmailSuggestion(s)}
+                                        style={{
+                                            padding: '8px 12px',
+                                            cursor: 'pointer',
+                                            fontSize: '0.85rem',
+                                            borderBottom: i === emailSuggestions.length - 1 ? 'none' : '1px solid var(--border-color)'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-tertiary)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                    >
+                                        {s}
+                                    </div>
+                                ))}
+                            </div>
                         )}
                     </div>
 
                     <div className="form-group">
-                        <label><Phone size={14} /> Número de celular:</label>
+                        <label><Phone size={14} /> Número de celular</label>
                         <input
                             type="tel"
                             required
+                            maxLength={10}
                             value={formData.telefono}
-                            onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
+                            onChange={(e) => setFormData({ ...formData, telefono: e.target.value.replace(/\D/g, '') })}
                             placeholder="Ej: 0998877665"
+                            className={!isPhoneValid ? 'input-error' : ''}
                         />
+                        {!isPhoneValid && (
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-danger)', marginTop: '4px' }}>
+                                Debe tener 10 dígitos
+                            </span>
+                        )}
                     </div>
 
                     <div className="form-group" style={{ gridColumn: 'span 2' }}>
@@ -244,7 +361,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     <button type="button" className="btn btn-ghost" onClick={onClose} disabled={loading}>
                         Cancelar
                     </button>
-                    <button type="submit" className="btn btn-primary" disabled={loading || !isEmailValid}>
+                    <button type="submit" className="btn btn-primary" disabled={loading || !isFormComplete}>
                         {loading ? (
                             <>
                                 <div className="spinner spinner-xs"></div>
@@ -262,3 +379,4 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         </div>
     );
 };
+
