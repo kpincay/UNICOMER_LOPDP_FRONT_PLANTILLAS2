@@ -17,7 +17,7 @@ export const Layout: React.FC<LayoutProps> = ({ user, signOut }) => {
                 <header className="dashboard-header">
                     <div className="header-left">
                         <div className="brand-mini" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <img src={UnicomerLogo} alt="Unicomer" style={{ height: '60px', width: 'auto', objectFit: 'contain', transform: 'scale(1.2)' }} />
+                            <img src={UnicomerLogo} alt="Unicomer" style={{ height: '150px', width: 'auto', objectFit: 'contain', transform: 'scale(1.2)' }} />
                             <span style={{ fontSize: '1.4rem', fontWeight: 'bold' }}>Plantillas</span>
                         </div>
                     </div>

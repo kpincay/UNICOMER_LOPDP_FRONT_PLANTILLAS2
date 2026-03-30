@@ -175,7 +175,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             <form onSubmit={handleSubmit}>
                 <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
                     <div className="form-group">
-                        <label><IdCard size={14} /> Cédula / ID</label>
+                        <label><IdCard size={14} /> Cédula de identidad:</label>
                         <input
                             type="text"
                             required
@@ -186,7 +186,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     </div>
 
                     <div className="form-group">
-                        <label><User size={14} /> Nombres Completos</label>
+                        <label><User size={14} /> Nombre y apellido:</label>
                         <input
                             type="text"
                             required
@@ -197,7 +197,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     </div>
 
                     <div className="form-group">
-                        <label><Mail size={14} /> Correo Electrónico</label>
+                        <label><Mail size={14} /> Correo:</label>
                         <input
                             type="email"
                             required
@@ -214,7 +214,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     </div>
 
                     <div className="form-group">
-                        <label><Phone size={14} /> Teléfono</label>
+                        <label><Phone size={14} /> Número de celular:</label>
                         <input
                             type="tel"
                             required

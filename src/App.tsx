@@ -19,7 +19,7 @@ const components = {
     return (
       <View textAlign="center" padding={tokens.space.xl}>
         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-          <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '100px', width: 'auto', objectFit: 'contain', transform: 'scale(1.3)' }} />
+          <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '200px', width: 'auto', objectFit: 'contain', transform: 'scale(1.3)' }} />
         </div>
         <Heading level={3} className="login-branding" style={{ marginTop: '1rem' }}>
           Plantillas
@@ -96,8 +96,8 @@ const TransactionInitiatorPage = () => {
         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
           <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '60px', width: 'auto', objectFit: 'contain' }} />
         </div>
-        <h1>Generar Solicitud LOPDP</h1>
-        <p>Registro de nueva transacción de aceptación de datos</p>
+        <h1>Generar Solicitud</h1>
+        <p>¡Hola! Para continuar con tu solicitud, por favor completa tus datos:</p>
       </div>
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
         <TransactionInitiator
