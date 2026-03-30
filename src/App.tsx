@@ -94,7 +94,7 @@ const TransactionInitiatorPage = () => {
     <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', padding: 'var(--space-2xl) var(--space-lg)' }}>
       <div className="landing-header">
         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-          <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '60px', width: 'auto', objectFit: 'contain' }} />
+          <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '150px', width: 'auto', objectFit: 'contain' }} />
         </div>
         <h1>Generar Solicitud</h1>
         <p>¡Hola! Para continuar con tu solicitud, por favor completa tus datos:</p>

@@ -66,6 +66,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                 storeId: 'MAIN_STORE', // Default or from context if available
                 proceso: [formData.procesoId]
             };
+            debugger;
 
             // 1. Create transaction in external backend
             const result = await lopdService.createTransaction(transactionData);
