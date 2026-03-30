@@ -27,7 +27,9 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 if (response.body && typeof response.body === 'string') {
                     try {
                         const parsedBody = JSON.parse(response.body);
-                        transData = (parsedBody.data && parsedBody.data.length > 0) ? parsedBody.data[0] : parsedBody;
+                        const dataList = parsedBody.data || [];
+                        // Find the specific record in the list by ID (Temporary fix for backend inconsistency)
+                        transData = dataList.find((item: any) => item.id === transactionId) || (dataList.length > 0 ? dataList[0] : parsedBody);
                     } catch (e) {
                         console.warn('Failed to parse response body string, using raw response', e);
                     }
