@@ -137,6 +137,38 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 aceptaciones: checkedItems
             });
 
+            // 2. Send confirmation email
+            if (transaction?.correo) {
+                const acceptedTemplatesList = plantillas
+                    .filter(p => !p.requiereAceptacion || checkedItems[p.id])
+                    .map(p => `<li><strong>${p.nombre}</strong></li>`)
+                    .join('');
+
+                const emailBody = `
+                    <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+                        <h2 style="color: #2563eb;">Confirmación de Aceptación</h2>
+                        <p>Hola <strong>${transaction?.nombres} ${transaction?.apellidoPaterno}</strong>,</p>
+                        <p>Te confirmamos que el <strong>${new Date().toLocaleString('es-EC')}</strong> has aceptado exitosamente los términos del proceso de <strong>${procesoConfig?.nombre || 'Protección de Datos'}</strong>.</p>
+                        <p>Las cláusulas aceptadas son las siguientes:</p>
+                        <ul>
+                            ${acceptedTemplatesList}
+                        </ul>
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+                        <p style="font-size: 0.75rem; color: #999;">Este es un mensaje automático, por favor no responda directamente.</p>
+                    </div>
+                `;
+
+                try {
+                    await (client.mutations as any).sendEmail({
+                        to: transaction.correo,
+                        subject: 'Confirmación de Aceptación LOPDP - UNICOMER',
+                        body: emailBody
+                    });
+                } catch (emailError) {
+                    console.error('Error al enviar el correo de confirmación:', emailError);
+                }
+            }
+
             setCompleted(true);
         } catch (error) {
             console.error('Error submitting acceptance:', error);
