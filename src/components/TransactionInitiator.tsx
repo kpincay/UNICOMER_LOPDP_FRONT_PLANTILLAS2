@@ -59,7 +59,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
     };
 
     const validatePhone = (phone: string) => {
-        return /^\d{10}$/.test(phone);
+        return /^0\d{9}$/.test(phone);
     };
 
     const isCedulaValid = !formData.cedula || validateCedula(formData.cedula);
@@ -337,7 +337,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                         />
                         {!isPhoneValid && (
                             <span style={{ fontSize: '0.75rem', color: 'var(--text-danger)', marginTop: '4px' }}>
-                                Debe tener 10 dígitos
+                                Debe iniciar con 0 y tener 10 dígitos
                             </span>
                         )}
                     </div>
