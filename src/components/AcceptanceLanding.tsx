@@ -22,16 +22,28 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 // 1. Get transaction from external backend
                 let response = await lopdService.getTransactionById(transactionId);
 
-                // Handle inconsistent API: if response has a stringified body, unwrap it
+                // Handle inconsistent API: stringified body vs direct object, array vs object
                 let transData = response;
+                
                 if (response.body && typeof response.body === 'string') {
                     try {
                         const parsedBody = JSON.parse(response.body);
-                        const dataList = parsedBody.data || [];
-                        // Find the specific record in the list by ID (Temporary fix for backend inconsistency)
-                        transData = dataList.find((item: any) => item.id === transactionId) || (dataList.length > 0 ? dataList[0] : parsedBody);
+                        const rData = parsedBody.data;
+                        if (Array.isArray(rData)) {
+                            transData = rData.find((item: any) => item.id === transactionId) || (rData.length > 0 ? rData[0] : parsedBody);
+                        } else if (rData && typeof rData === 'object') {
+                            transData = rData;
+                        } else {
+                            transData = parsedBody;
+                        }
                     } catch (e) {
                         console.warn('Failed to parse response body string, using raw response', e);
+                    }
+                } else if (response.data) {
+                    if (Array.isArray(response.data)) {
+                        transData = response.data.find((item: any) => item.id === transactionId) || (response.data.length > 0 ? response.data[0] : response);
+                    } else if (typeof response.data === 'object') {
+                        transData = response.data;
                     }
                 }
 
@@ -89,7 +101,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         let replaced = text;
         if (transData) {
             const fullName = [transData.nombres, transData.apellidoPaterno, transData.apellidoMaterno].filter(Boolean).join(' ');
-            
+
             if (transData.nombres) replaced = replaced.replace(/\[\s*nombres?\s*\]/gi, transData.nombres);
             if (transData.apellidoPaterno) replaced = replaced.replace(/\[\s*apellidoPaterno\s*\]/gi, transData.apellidoPaterno);
             if (transData.apellidoMaterno) replaced = replaced.replace(/\[\s*apellidoMaterno\s*\]/gi, transData.apellidoMaterno);
@@ -175,7 +187,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     ) : (
                         <>
                             <h3>Hola, {transaction?.nombres} {transaction?.apellidoPaterno}</h3>
-                            <p>Para continuar con tu solicitud, por favor revisa y acepta los siguientes términos y condiciones de protección de datos.</p>
+                            <p>Antes de empezar, ten en cuenta que necesitamos tu consentimiento para el tratamiento de tus datos personales, en la política de privacidad.</p>
                         </>
                     )}
                 </div>
