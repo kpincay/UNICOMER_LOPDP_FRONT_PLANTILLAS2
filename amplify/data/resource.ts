@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { sendEmail as sendEmailFunction } from '../functions/send-email/resource';
 
 /*
  * Define your data model
@@ -41,7 +42,7 @@ const schema = a.schema({
       body: a.string().required(),
     })
     .returns(a.json())
-    .handler(a.handler.function('send-email'))
+    .handler(a.handler.function(sendEmailFunction))
     .authorization((allow) => [allow.publicApiKey()]),
 });
 
