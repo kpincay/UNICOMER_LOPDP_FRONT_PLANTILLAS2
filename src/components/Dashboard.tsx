@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Eye, Layers } from 'lucide-react';
+import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Eye, Layers, ClipboardList } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
 import { PlantillaForm } from './PlantillaForm';
 import { ProcesoForm } from './ProcesoForm';
+import { ReporteTransacciones } from './ReporteTransacciones';
 
 const client = generateClient<Schema>();
 
@@ -11,7 +12,7 @@ export const Dashboard: React.FC = () => {
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [procesos, setProcesos] = useState<Schema['Proceso']['type'][]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'plantillas' | 'procesos'>('plantillas');
+    const [activeTab, setActiveTab] = useState<'plantillas' | 'procesos' | 'reportes'>('plantillas');
     const [searchTerm, setSearchTerm] = useState('');
 
     // Modal states
@@ -116,11 +117,15 @@ export const Dashboard: React.FC = () => {
         <>
             <div className="content-header">
                 <div>
-                    <h2>{activeTab === 'plantillas' ? 'Gestión de Plantillas' : 'Gestión de Procesos'}</h2>
+                    <h2>
+                        {activeTab === 'plantillas' && 'Gestión de Plantillas'}
+                        {activeTab === 'procesos' && 'Gestión de Procesos'}
+                        {activeTab === 'reportes' && 'Reporte de Transacciones'}
+                    </h2>
                     <p className="content-subtitle">
-                        {activeTab === 'plantillas'
-                            ? 'Administra las plantillas de documentos del sistema'
-                            : 'Agrupa y organiza tus plantillas mediante procesos de negocio'}
+                        {activeTab === 'plantillas' && 'Administra las plantillas de documentos del sistema'}
+                        {activeTab === 'procesos' && 'Agrupa y organiza tus plantillas mediante procesos de negocio'}
+                        {activeTab === 'reportes' && 'Seguimiento de documentos aceptados y firmados por clientes'}
                     </p>
                 </div>
                 <div className="header-actions" style={{ display: 'flex', gap: '10px' }}>
@@ -137,12 +142,19 @@ export const Dashboard: React.FC = () => {
                         >
                             <Layers size={16} /> Procesos
                         </button>
+                        <button
+                            className={`btn btn-sm ${activeTab === 'reportes' ? 'btn-primary' : 'btn-ghost'}`}
+                            onClick={() => setActiveTab('reportes')}
+                        >
+                            <ClipboardList size={16} /> Reportes
+                        </button>
                     </div>
-                    {activeTab === 'plantillas' ? (
+                    {activeTab === 'plantillas' && (
                         <button className="btn btn-primary" onClick={() => { setSelectedPlantilla(null); setIsFormOpen(true); }}>
                             <Plus size={20} /> Nueva Plantilla
                         </button>
-                    ) : (
+                    )}
+                    {activeTab === 'procesos' && (
                         <button className="btn btn-primary" onClick={() => { setSelectedProceso(null); setIsProcesoFormOpen(true); }}>
                             <Plus size={20} /> Nuevo Proceso
                         </button>
@@ -197,7 +209,9 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 <div className="table-wrapper">
-                    {loading ? (
+                    {activeTab === 'reportes' ? (
+                        <ReporteTransacciones />
+                    ) : loading ? (
                         <div className="table-loading">
                             <div className="spinner spinner-sm"></div>
                             <span>Cargando datos...</span>

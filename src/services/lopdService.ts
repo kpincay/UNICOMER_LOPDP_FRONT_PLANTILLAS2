@@ -77,5 +77,25 @@ export const lopdService = {
         }
 
         return await response.json();
+    },
+
+    /**
+     * Gets all historical transactions
+     */
+    async getHistoricalTransactions() {
+        const response = await fetch(`${LOPD_BASE_URL}/rest/faceid/lopd/get`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': API_KEY
+            },
+            body: JSON.stringify({})
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching historical transactions: ${response.statusText}`);
+        }
+
+        return await response.json();
     }
 };
