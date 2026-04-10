@@ -29,8 +29,10 @@ export const ReporteTransacciones: React.FC = () => {
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
-    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         fetchData();
@@ -39,14 +41,12 @@ export const ReporteTransacciones: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            // Fetch everything we need for unification
             const [trxRes, procesoRes, plantillaRes] = await Promise.all([
                 lopdService.getHistoricalTransactions(),
                 client.models.Proceso.list({ authMode: 'apiKey' }),
                 client.models.Plantilla.list({ authMode: 'apiKey' })
             ]);
 
-            // Backend returns { statusCode: 200, body: "{\"message\":..., \"data\": [...] }" }
             let trxData: Transaction[] = [];
             if (trxRes.body && typeof trxRes.body === 'string') {
                 try {
@@ -71,7 +71,6 @@ export const ReporteTransacciones: React.FC = () => {
 
     const formatDate = (timestamp: number) => {
         if (!timestamp) return 'N/A';
-        // Check if timestamp is in seconds (10 digits) or milliseconds (13 digits)
         const ts = timestamp.toString().length === 10 ? timestamp * 1000 : timestamp;
         return new Intl.DateTimeFormat('es-EC', {
             dateStyle: 'medium',
@@ -86,12 +85,6 @@ export const ReporteTransacciones: React.FC = () => {
         return proceso ? proceso.nombre : 'Proceso Desconocido';
     };
 
-    const getPlantillasForTrx = (trx: Transaction) => {
-        if (!trx.process || trx.process.length === 0) return [];
-        const procesoId = trx.process[0];
-        return plantillas.filter(p => p.procesoId === procesoId);
-    };
-
     const filteredTransactions = transactions.filter(t => 
         t.nombres?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.cedula?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,9 +92,21 @@ export const ReporteTransacciones: React.FC = () => {
         getProcesoName(t.process).toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleViewDetail = (trx: Transaction) => {
-        setSelectedTransaction(trx);
-        setIsDetailModalOpen(true);
+    // Pagination logic
+    const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+    const paginatedTransactions = filteredTransactions.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handleSearchChange = (value: string) => {
+        setSearchTerm(value);
+        setCurrentPage(1); // Reset to first page on search
+    };
+
+    const handleOpenDetail = (transactionId: string) => {
+        const url = `${window.location.origin}?id=${transactionId}`;
+        window.open(url, '_blank');
     };
 
     return (
@@ -112,9 +117,9 @@ export const ReporteTransacciones: React.FC = () => {
                         <Search size={16} />
                         <input
                             type="text"
-                            placeholder="Buscar por nombre, cédula, correo o proceso..."
+                            placeholder="Buscar por nombre, cédula o correo..."
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onChange={(e) => handleSearchChange(e.target.value)}
                         />
                     </div>
                     <button className="btn btn-ghost" onClick={fetchData} title="Refrescar datos">
@@ -128,140 +133,92 @@ export const ReporteTransacciones: React.FC = () => {
                             <div className="spinner spinner-sm"></div>
                             <span>Cargando transacciones...</span>
                         </div>
-                    ) : filteredTransactions.length === 0 ? (
+                    ) : paginatedTransactions.length === 0 ? (
                         <div className="empty-state">
                             <FileText size={56} />
                             <p>No se encontraron transacciones</p>
                         </div>
                     ) : (
-                        <table id="reporte-table">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Cédula</th>
-                                    <th>Nombres</th>
-                                    <th>Correo</th>
-                                    <th>Proceso</th>
-                                    <th>Estado</th>
-                                    <th>IP</th>
-                                    <th className="th-actions">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredTransactions.map((t) => (
-                                    <tr key={t.id}>
-                                        <td style={{ fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
-                                            {formatDate(t.createdAt || t.timestamp)}
-                                        </td>
-                                        <td>{t.cedula}</td>
-                                        <td style={{ fontWeight: 500 }}>{t.nombres}</td>
-                                        <td style={{ fontSize: '0.85rem' }}>{t.correo}</td>
-                                        <td>
-                                            <span className="badge badge-info" style={{ background: 'rgba(59,130,246,0.1)', color: 'var(--primary-color)' }}>
-                                                {getProcesoName(t.process)}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span className={`badge ${t.estado === 'aprobado' ? 'badge-yes' : 'badge-no'}`} style={{ 
-                                                background: t.estado === 'aprobado' ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
-                                                color: t.estado === 'aprobado' ? '#10b981' : '#f59e0b'
-                                            }}>
-                                                {t.estado === 'aprobado' ? 'Aprobado' : 'Pendiente'}
-                                            </span>
-                                        </td>
-                                        <td style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--text-muted)' }}>
-                                            {t.ip}
-                                        </td>
-                                        <td className="actions-cell">
-                                            <button 
-                                                className="btn btn-ghost btn-icon-view" 
-                                                title="Ver Plantillas"
-                                                onClick={() => handleViewDetail(t)}
-                                            >
-                                                <Eye size={18} />
-                                            </button>
-                                        </td>
+                        <>
+                            <table id="reporte-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Cédula</th>
+                                        <th>Nombres</th>
+                                        <th>Correo</th>
+                                        <th>Estado</th>
+                                        <th>IP</th>
+                                        <th className="th-actions">Acciones</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {paginatedTransactions.map((t) => (
+                                        <tr key={t.id}>
+                                            <td style={{ fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
+                                                {formatDate(t.createdAt || t.timestamp)}
+                                            </td>
+                                            <td>{t.cedula}</td>
+                                            <td style={{ fontWeight: 500 }}>{t.nombres}</td>
+                                            <td style={{ fontSize: '0.85rem' }}>{t.correo}</td>
+                                            <td>
+                                                <span className={`badge ${t.estado === 'aprobado' ? 'badge-yes' : 'badge-no'}`} style={{ 
+                                                    background: t.estado === 'aprobado' ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)',
+                                                    color: t.estado === 'aprobado' ? '#10b981' : '#f59e0b'
+                                                }}>
+                                                    {t.estado === 'aprobado' ? 'Aprobado' : 'Pendiente'}
+                                                </span>
+                                            </td>
+                                            <td style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--text-muted)' }}>
+                                                {t.ip}
+                                            </td>
+                                            <td className="actions-cell">
+                                                <button 
+                                                    className="btn btn-ghost btn-icon-view" 
+                                                    title="Ver Landing de Aceptación"
+                                                    onClick={() => handleOpenDetail(t.id)}
+                                                >
+                                                    <Eye size={18} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+
+                            {/* Pagination Controls */}
+                            {totalPages > 1 && (
+                                <div className="pagination" style={{ 
+                                    display: 'flex', 
+                                    justifyContent: 'center', 
+                                    alignItems: 'center', 
+                                    gap: '15px', 
+                                    padding: 'var(--space-md)',
+                                    borderTop: '1px solid var(--border-color)'
+                                }}>
+                                    <button 
+                                        className="btn btn-sm btn-ghost" 
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(prev => prev - 1)}
+                                    >
+                                        Anterior
+                                    </button>
+                                    <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                                        Página <strong>{currentPage}</strong> de {totalPages}
+                                    </span>
+                                    <button 
+                                        className="btn btn-sm btn-ghost" 
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage(prev => prev + 1)}
+                                    >
+                                        Siguiente
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
-
-            {/* Modal de Detalle de Plantillas */}
-            {isDetailModalOpen && selectedTransaction && (
-                <div className="modal-overlay" onClick={() => setIsDetailModalOpen(false)}>
-                    <div className="modal-content glass-card animate-scaleUp" onClick={e => e.stopPropagation()} style={{ maxWidth: '700px' }}>
-                        <div className="modal-header">
-                            <div>
-                                <h3>Detalle de Transacción</h3>
-                                <p className="text-muted" style={{ fontSize: '0.85rem' }}>ID: {selectedTransaction.id}</p>
-                            </div>
-                            <button className="btn-close" onClick={() => setIsDetailModalOpen(false)}>
-                                <X size={20} />
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="info-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)', marginBottom: 'var(--space-xl)' }}>
-                                <div className="info-item">
-                                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Cliente</label>
-                                    <strong>{selectedTransaction.nombres}</strong>
-                                </div>
-                                <div className="info-item">
-                                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Proceso</label>
-                                    <strong>{getProcesoName(selectedTransaction.process)}</strong>
-                                </div>
-                                <div className="info-item">
-                                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Fecha de Inicio</label>
-                                    <span>{formatDate(selectedTransaction.createdAt)}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Estado Final</label>
-                                    <span className={`badge ${selectedTransaction.estado === 'aprobado' ? 'badge-yes' : 'badge-no'}`}>
-                                        {selectedTransaction.estado.toUpperCase()}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <h4 style={{ marginBottom: 'var(--space-md)', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
-                                <FileText size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-                                Plantillas Asociadas
-                            </h4>
-
-                            <div className="plantillas-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                {getPlantillasForTrx(selectedTransaction).length === 0 ? (
-                                    <p className="text-muted">No hay plantillas registradas para este proceso.</p>
-                                ) : (
-                                    getPlantillasForTrx(selectedTransaction).map(p => (
-                                        <div key={p.id} className="plantilla-item-detail glass-card" style={{ padding: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <div>
-                                                <div style={{ fontWeight: 600 }}>{p.nombre}</div>
-                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cód: {p.codigo} | Ver: {p.version}</div>
-                                            </div>
-                                            <div style={{ display: 'flex', gap: '8px' }}>
-                                                {p.requiereAceptacion && (
-                                                    <span className="badge badge-info" style={{ fontSize: '0.7rem' }}>REQ. FIRMA</span>
-                                                )}
-                                                {selectedTransaction.estado === 'aprobado' ? (
-                                                    <CheckCircle size={18} className="text-success" />
-                                                ) : (
-                                                    <Clock size={18} className="text-warning" />
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        </div>
-                        <div className="modal-footer" style={{ marginTop: 'var(--space-xl)', display: 'flex', justifyContent: 'flex-end' }}>
-                            <button className="btn btn-primary" onClick={() => setIsDetailModalOpen(false)}>
-                                Cerrar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
