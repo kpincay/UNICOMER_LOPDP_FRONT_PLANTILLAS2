@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, RefreshCw, Eye, FileText, X, CheckCircle, Clock } from 'lucide-react';
+import { Search, RefreshCw, Eye, FileText } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
 import type { Schema } from '../../amplify/data/resource';
@@ -26,7 +26,6 @@ interface Transaction {
 export const ReporteTransacciones: React.FC = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [procesos, setProcesos] = useState<Schema['Proceso']['type'][]>([]);
-    const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     
@@ -41,10 +40,9 @@ export const ReporteTransacciones: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [trxRes, procesoRes, plantillaRes] = await Promise.all([
+            const [trxRes, procesoRes] = await Promise.all([
                 lopdService.getHistoricalTransactions(),
-                client.models.Proceso.list({ authMode: 'apiKey' }),
-                client.models.Plantilla.list({ authMode: 'apiKey' })
+                client.models.Proceso.list({ authMode: 'apiKey' })
             ]);
 
             let trxData: Transaction[] = [];
@@ -61,7 +59,6 @@ export const ReporteTransacciones: React.FC = () => {
 
             setTransactions(trxData);
             setProcesos(procesoRes.data);
-            setPlantillas(plantillaRes.data);
         } catch (error) {
             console.error('Error fetching report data:', error);
         } finally {
