@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Eye, Layers, ClipboardList, QrCode, Download, Maximize2, X } from 'lucide-react';
+import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Eye, Layers, ClipboardList, QrCode, Download, Maximize2, X, Copy, Link } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
@@ -113,6 +113,11 @@ export const Dashboard: React.FC = () => {
             downloadLink.click();
             document.body.removeChild(downloadLink);
         }
+    };
+
+    const copyURL = (url: string) => {
+        navigator.clipboard.writeText(url);
+        alert('URL copiada al portapapeles');
     };
 
     const filteredPlantillas = plantillas.filter((p: Schema['Plantilla']['type']) =>
@@ -403,9 +408,40 @@ export const Dashboard: React.FC = () => {
                                     includeMargin={true}
                                 />
                             </div>
-                            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '24px' }}>
+                            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '16px' }}>
                                 Escanea este código para acceder directamente al flujo de plantillas para este proceso.
                             </p>
+
+                            <div style={{ 
+                                width: '100%', 
+                                background: 'var(--bg-tertiary)', 
+                                padding: '12px', 
+                                borderRadius: 'var(--radius-md)', 
+                                marginBottom: '24px',
+                                border: '1px solid var(--border-color)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px'
+                            }}>
+                                <Link size={16} style={{ flexShrink: 0, color: 'var(--text-muted)' }} />
+                                <code style={{ 
+                                    flex: 1, 
+                                    fontSize: '0.75rem', 
+                                    color: 'var(--text-secondary)',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap'
+                                }}>
+                                    {`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${selectedQRProceso.id}`}
+                                </code>
+                                <button 
+                                    className="btn btn-ghost btn-xs"
+                                    onClick={() => copyURL(`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${selectedQRProceso.id}`)}
+                                    title="Copiar URL"
+                                >
+                                    <Copy size={16} />
+                                </button>
+                            </div>
                             <button 
                                 className="btn btn-primary btn-block" 
                                 onClick={() => downloadQR(selectedQRProceso.id, selectedQRProceso.nombre)}
