@@ -8,11 +8,12 @@ const client = generateClient<Schema>();
 
 interface TransactionInitiatorProps {
     procesos: Schema['Proceso']['type'][];
+    initialProcesoId?: string;
     onClose: () => void;
     onSuccess: (url: string) => void;
 }
 
-export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ procesos, onClose, onSuccess }) => {
+export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ procesos, initialProcesoId, onClose, onSuccess }) => {
     const [loading, setLoading] = useState(false);
     const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
     const [formData, setFormData] = useState({
@@ -30,9 +31,12 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
 
     useEffect(() => {
         if (procesos && procesos.length > 0 && !formData.procesoId) {
-            setFormData(prev => ({ ...prev, procesoId: procesos[0].id }));
+            const defaultProceso = initialProcesoId && procesos.some(p => p.id === initialProcesoId)
+                ? initialProcesoId
+                : procesos[0].id;
+            setFormData(prev => ({ ...prev, procesoId: defaultProceso }));
         }
-    }, [procesos]);
+    }, [procesos, initialProcesoId]);
 
     const validateCedula = (cedula: string) => {
         if (!/^\d{10}$/.test(cedula)) return false;

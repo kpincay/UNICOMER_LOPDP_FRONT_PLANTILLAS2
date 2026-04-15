@@ -32,15 +32,20 @@ const components = {
 
 export default function App() {
   const [transactionId, setTransactionId] = React.useState<string | null>(null);
+  const [selectedProcesoId, setSelectedProcesoId] = React.useState<string | null>(null);
   const [isCreationRoute, setIsCreationRoute] = React.useState(false);
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
+    const idProceso = params.get('idProceso');
     const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash for comparison
 
     if (id) {
       setTransactionId(id);
+    } else if (idProceso) {
+      setSelectedProcesoId(idProceso);
+      setIsCreationRoute(true);
     } else if (path === '/creacionProceso') {
       setIsCreationRoute(true);
     }
@@ -53,7 +58,7 @@ export default function App() {
 
   // 2. PUBLIC ROUTE: Process Creation (Initiator)
   if (isCreationRoute) {
-    return <TransactionInitiatorPage />;
+    return <TransactionInitiatorPage initialProcesoId={selectedProcesoId} />;
   }
 
   // 3. PRIVATE ROUTE: Admin Dashboard (Authentication Required)
@@ -69,7 +74,7 @@ export default function App() {
 /**
  * Wrapper for the public Transaction Initiator page
  */
-const TransactionInitiatorPage = () => {
+const TransactionInitiatorPage = ({ initialProcesoId }: { initialProcesoId?: string | null }) => {
   const [procesos, setProcesos] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
   const client = React.useMemo(() => generateClient<Schema>(), []);
@@ -102,6 +107,7 @@ const TransactionInitiatorPage = () => {
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
         <TransactionInitiator
           procesos={procesos}
+          initialProcesoId={initialProcesoId || undefined}
           onClose={() => window.location.href = '/'}
           onSuccess={(url) => {
             // For public page, we show a result view instead of just an alert
