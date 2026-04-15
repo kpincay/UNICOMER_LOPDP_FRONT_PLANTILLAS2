@@ -157,7 +157,18 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
 .btn-ghost:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
 
 .btn-sm { font-size: 0.82rem; padding: 8px 16px; }
+.btn-xs { font-size: 0.75rem; padding: 4px 8px; }
 .btn-block { width: 100%; }
+
+.qr-thumbnail {
+    transition: transform var(--transition-fast);
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+}
+.qr-thumbnail:hover {
+    transform: scale(1.1);
+    border-color: var(--accent);
+}
 .btn-close { padding: 6px; }
 
 /* Btn loader */

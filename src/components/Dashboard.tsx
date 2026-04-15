@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Eye, Layers, ClipboardList } from 'lucide-react';
+import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Eye, Layers, ClipboardList, QrCode, Download, Maximize2, X } from 'lucide-react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
 import { PlantillaForm } from './PlantillaForm';
@@ -20,6 +21,7 @@ export const Dashboard: React.FC = () => {
     const [isProcesoFormOpen, setIsProcesoFormOpen] = useState(false);
     const [selectedPlantilla, setSelectedPlantilla] = useState<Schema['Plantilla']['type'] | null>(null);
     const [selectedProceso, setSelectedProceso] = useState<Schema['Proceso']['type'] | null>(null);
+    const [selectedQRProceso, setSelectedQRProceso] = useState<Schema['Proceso']['type'] | null>(null);
 
     useEffect(() => {
         fetchData();
@@ -97,6 +99,21 @@ export const Dashboard: React.FC = () => {
             console.error('Error deleting proceso:', error);
         }
     }
+
+    const downloadQR = (id: string, name: string) => {
+        const canvas = document.getElementById(`qr-gen-${id}`) as HTMLCanvasElement;
+        if (canvas) {
+            const pngUrl = canvas
+                .toDataURL("image/png")
+                .replace("image/png", "image/octet-stream");
+            const downloadLink = document.createElement("a");
+            downloadLink.href = pngUrl;
+            downloadLink.download = `QR_${name.replace(/\s+/g, '_')}.png`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    };
 
     const filteredPlantillas = plantillas.filter((p: Schema['Plantilla']['type']) =>
         p.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -287,6 +304,7 @@ export const Dashboard: React.FC = () => {
                                         <th>Nombre del Proceso</th>
                                         <th>Descripción</th>
                                         <th>Plantillas Asociadas</th>
+                                        <th>Código QR</th>
                                         <th className="th-actions">Acciones</th>
                                     </tr>
                                 </thead>
@@ -301,6 +319,25 @@ export const Dashboard: React.FC = () => {
                                                     <span className="badge badge-info">
                                                         {count} {count === 1 ? 'Plantilla' : 'Plantillas'}
                                                     </span>
+                                                </td>
+                                                <td>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <div className="qr-thumbnail" style={{ background: '#fff', padding: '4px', borderRadius: '4px', display: 'flex' }}>
+                                                            <QRCodeCanvas 
+                                                                value={`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${pr.id}`}
+                                                                size={32}
+                                                                level={"H"}
+                                                            />
+                                                        </div>
+                                                        <button 
+                                                            className="btn btn-ghost btn-xs" 
+                                                            style={{ padding: '4px' }}
+                                                            onClick={() => setSelectedQRProceso(pr)}
+                                                            title="Expandir QR"
+                                                        >
+                                                            <Maximize2 size={14} />
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td className="actions-cell">
                                                     <button className="btn btn-ghost btn-icon-edit" onClick={() => { setSelectedProceso(pr); setIsProcesoFormOpen(true); }} title="Editar"><Edit size={16} /></button>
@@ -331,6 +368,53 @@ export const Dashboard: React.FC = () => {
                     onClose={() => setIsProcesoFormOpen(false)}
                     onSave={handleSaveProceso}
                 />
+            )}
+
+            {selectedQRProceso && (
+                <div className="modal-overlay" onClick={() => setSelectedQRProceso(null)}>
+                    <div className="modal modal-sm" onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
+                        <div className="modal-header">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <div className="brand-icon" style={{ width: '32px', height: '32px', marginBottom: 0 }}>
+                                    <QrCode size={18} />
+                                </div>
+                                <div>
+                                    <h3 style={{ margin: 0 }}>Código QR de Acceso</h3>
+                                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>{selectedQRProceso.nombre}</p>
+                                </div>
+                            </div>
+                            <button className="btn btn-ghost btn-close" onClick={() => setSelectedQRProceso(null)}>
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '32px' }}>
+                            <div style={{ 
+                                background: '#fff', 
+                                padding: '16px', 
+                                borderRadius: '16px', 
+                                boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+                                marginBottom: '24px'
+                            }}>
+                                <QRCodeCanvas 
+                                    id={`qr-gen-${selectedQRProceso.id}`}
+                                    value={`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${selectedQRProceso.id}`}
+                                    size={200}
+                                    level={"H"}
+                                    includeMargin={true}
+                                />
+                            </div>
+                            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '24px' }}>
+                                Escanea este código para acceder directamente al flujo de plantillas para este proceso.
+                            </p>
+                            <button 
+                                className="btn btn-primary btn-block" 
+                                onClick={() => downloadQR(selectedQRProceso.id, selectedQRProceso.nombre)}
+                            >
+                                <Download size={18} /> Descargar QR (PNG)
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </>
     );
