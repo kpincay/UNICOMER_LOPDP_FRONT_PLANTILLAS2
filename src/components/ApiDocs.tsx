@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, ChevronDown, ChevronRight, Book, Database, Mail, Shield, ExternalLink } from 'lucide-react';
+import { Copy, ChevronDown, ChevronRight, Book, Database, Mail, Shield, ExternalLink, Play, Download, Check, Loader } from 'lucide-react';
 import outputs from '../../amplify_outputs.json';
 
 const APPSYNC_URL = (outputs as any).data?.url || '';
@@ -7,16 +7,117 @@ const API_KEY = (outputs as any).data?.api_key || '';
 const LOPD_BASE_URL = 'https://0sikyas0mf.execute-api.us-east-1.amazonaws.com/v1';
 const LOPD_API_KEY = '6FWGvXEkV38x9nuqGDayV6bfxZBe7Zvc997JO5hn';
 
-interface EndpointProps {
+/* ════════════════════════════════════════════
+   Endpoint definitions
+   ════════════════════════════════════════════ */
+interface EndpointDef {
+  id: string;
   method: string;
   label: string;
   description: string;
-  request: string;
-  response: string;
-  headers?: Record<string, string>;
   color: string;
+  type: 'graphql' | 'rest';
+  url: string;
+  defaultBody: string;
+  headers: Record<string, string>;
 }
 
+const gqlHeaders = { 'Content-Type': 'application/json', 'x-api-key': API_KEY };
+const lopdHeaders = { 'Content-Type': 'application/json', 'x-api-key': LOPD_API_KEY };
+
+const ENDPOINTS: { section: string; icon: string; color: string; subtitle: string; items: EndpointDef[] }[] = [
+  {
+    section: 'Proceso', icon: 'database', color: '#6366f1', subtitle: 'CRUD — GraphQL (AppSync)',
+    items: [
+      { id: 'listProcesos', method: 'QUERY', label: 'listProcesos', description: 'Listar todos los procesos', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query ListProcesos {\n  listProcesos {\n    items {\n      id\n      nombre\n      descripcion\n      tituloLanding\n      encabezadoLanding\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2) },
+      { id: 'getProceso', method: 'QUERY', label: 'getProceso', description: 'Obtener proceso por ID', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query GetProceso($id: ID!) {\n  getProceso(id: $id) {\n    id\n    nombre\n    descripcion\n    tituloLanding\n    encabezadoLanding\n    createdAt\n    updatedAt\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2) },
+      { id: 'createProceso', method: 'MUTATION', label: 'createProceso', description: 'Crear nuevo proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation CreateProceso($input: CreateProcesoInput!) {\n  createProceso(input: $input) {\n    id\n    nombre\n    descripcion\n  }\n}`, variables: { input: { nombre: "Proceso Nuevo", descripcion: "Descripción", tituloLanding: "Título", encabezadoLanding: "Encabezado" } } }, null, 2) },
+      { id: 'updateProceso', method: 'MUTATION', label: 'updateProceso', description: 'Actualizar proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation UpdateProceso($input: UpdateProcesoInput!) {\n  updateProceso(input: $input) {\n    id\n    nombre\n    descripcion\n  }\n}`, variables: { input: { id: "<ID_AQUI>", nombre: "Nombre Actualizado" } } }, null, 2) },
+      { id: 'deleteProceso', method: 'MUTATION', label: 'deleteProceso', description: 'Eliminar proceso', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation DeleteProceso($input: DeleteProcesoInput!) {\n  deleteProceso(input: $input) {\n    id\n  }\n}`, variables: { input: { id: "<ID_AQUI>" } } }, null, 2) },
+    ]
+  },
+  {
+    section: 'Plantilla', icon: 'file', color: '#3b82f6', subtitle: 'CRUD — GraphQL (AppSync)',
+    items: [
+      { id: 'listPlantillas', method: 'QUERY', label: 'listPlantillas', description: 'Listar todas las plantillas', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query ListPlantillas {\n  listPlantillas {\n    items {\n      id\n      nombre\n      codigo\n      version\n      url\n      contenido\n      requiereAceptacion\n      solicitarAceptacion\n      procesoId\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2) },
+      { id: 'createPlantilla', method: 'MUTATION', label: 'createPlantilla', description: 'Crear nueva plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation CreatePlantilla($input: CreatePlantillaInput!) {\n  createPlantilla(input: $input) {\n    id\n    nombre\n    codigo\n    version\n  }\n}`, variables: { input: { nombre: "Nueva Plantilla", codigo: "NP-001", version: "1.0", contenido: "<p>Contenido HTML</p>", requiereAceptacion: true, solicitarAceptacion: false, procesoId: "<PROCESO_ID>" } } }, null, 2) },
+      { id: 'updatePlantilla', method: 'MUTATION', label: 'updatePlantilla', description: 'Actualizar plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation UpdatePlantilla($input: UpdatePlantillaInput!) {\n  updatePlantilla(input: $input) {\n    id\n    nombre\n    codigo\n  }\n}`, variables: { input: { id: "<ID_AQUI>", nombre: "Nombre Actualizado", version: "2.0" } } }, null, 2) },
+      { id: 'deletePlantilla', method: 'MUTATION', label: 'deletePlantilla', description: 'Eliminar plantilla', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation DeletePlantilla($input: DeletePlantillaInput!) {\n  deletePlantilla(input: $input) {\n    id\n  }\n}`, variables: { input: { id: "<ID_AQUI>" } } }, null, 2) },
+    ]
+  },
+  {
+    section: 'sendEmail', icon: 'mail', color: '#10b981', subtitle: 'Mutación — GraphQL + Lambda',
+    items: [
+      { id: 'sendEmail', method: 'MUTATION', label: 'sendEmail', description: 'Enviar correo vía SES', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation SendEmail($to: String!, $subject: String!, $body: String!) {\n  sendEmail(to: $to, subject: $subject, body: $body)\n}`, variables: { to: "cliente@example.com", subject: "Documentos pendientes", body: "<h1>Hola</h1><p>Tienes documentos por firmar.</p>" } }, null, 2) },
+    ]
+  },
+  {
+    section: 'LOPD Transacciones', icon: 'external', color: '#ec4899', subtitle: 'API REST externa',
+    items: [
+      { id: 'lopdCreate', method: 'POST', label: '/rest/faceid/lopd/create', description: 'Crear transacción LOPD', color: '#3b82f6', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/create`, headers: lopdHeaders,
+        defaultBody: JSON.stringify({ cedula: "0912345678", ip: "192.168.1.1", nombres: "Juan", apellidoPaterno: "Pérez", apellidoMaterno: "López", correo: "juan@example.com", telefono: "0991234567", channel: "WEB", storeId: "STORE-001", proceso: ["proceso-id-1"] }, null, 2) },
+      { id: 'lopdGet', method: 'POST', label: '/rest/faceid/lopd/get', description: 'Obtener transacciones', color: '#10b981', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/get`, headers: lopdHeaders,
+        defaultBody: JSON.stringify({}, null, 2) },
+      { id: 'lopdUpdate', method: 'POST', label: '/rest/faceid/lopd/update?id=<ID>', description: 'Actualizar transacción', color: '#f59e0b', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/update?id=<ID_AQUI>`, headers: lopdHeaders,
+        defaultBody: JSON.stringify({ estado: "procesado" }, null, 2) },
+    ]
+  }
+];
+
+/* ════════════════════════════════════════════
+   Postman Collection Generator
+   ════════════════════════════════════════════ */
+function generatePostmanCollection() {
+  const items = ENDPOINTS.flatMap(section =>
+    section.items.map(ep => ({
+      name: `${ep.method} ${ep.label}`,
+      request: {
+        method: 'POST',
+        header: Object.entries(ep.headers).map(([key, value]) => ({ key, value, type: 'text' })),
+        body: { mode: 'raw', raw: ep.defaultBody, options: { raw: { language: 'json' } } },
+        url: { raw: ep.url, protocol: 'https', host: [ep.url.replace('https://', '').split('/')[0]], path: ep.url.replace('https://', '').split('/').slice(1) }
+      }
+    }))
+  );
+
+  const collection = {
+    info: { name: 'Plantillas API', description: 'Colección auto-generada — GraphQL (AppSync) + LOPD REST', schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json' },
+    item: ENDPOINTS.map(section => ({
+      name: section.section,
+      item: section.items.map(ep => ({
+        name: `${ep.method} ${ep.label}`,
+        request: {
+          method: 'POST',
+          header: Object.entries(ep.headers).map(([key, value]) => ({ key, value, type: 'text' as const })),
+          body: { mode: 'raw' as const, raw: ep.defaultBody, options: { raw: { language: 'json' } } },
+          url: { raw: ep.url }
+        }
+      }))
+    }))
+  };
+
+  const blob = new Blob([JSON.stringify(collection, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Plantillas_API.postman_collection.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ════════════════════════════════════════════
+   Sub-components
+   ════════════════════════════════════════════ */
 const MethodBadge: React.FC<{ method: string; color: string }> = ({ method, color }) => (
   <span style={{
     background: color, color: '#fff', fontWeight: 700, fontSize: '0.7rem',
@@ -25,82 +126,140 @@ const MethodBadge: React.FC<{ method: string; color: string }> = ({ method, colo
   }}>{method}</span>
 );
 
-const CodeBlock: React.FC<{ code: string; lang?: string }> = ({ code, lang }) => {
-  const [copied, setCopied] = useState(false);
-  const handleCopy = () => { navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 1500); };
-  return (
-    <div style={{ position: 'relative', borderRadius: 'var(--radius-sm)', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
-      {lang && <div style={{ background: 'rgba(0,0,0,0.06)', padding: '4px 12px', fontSize: '0.7rem', color: 'var(--text-muted)', fontFamily: 'monospace', borderBottom: '1px solid var(--border-color)' }}>{lang}</div>}
-      <pre style={{ background: '#1e293b', color: '#e2e8f0', padding: '16px', margin: 0, fontSize: '0.78rem', lineHeight: 1.6, overflowX: 'auto', fontFamily: "'Fira Code', 'Consolas', monospace" }}>{code}</pre>
-      <button onClick={handleCopy} style={{
-        position: 'absolute', top: lang ? 32 : 8, right: 8, background: 'rgba(255,255,255,0.1)',
-        border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer', color: '#94a3b8', fontSize: '0.7rem',
-        display: 'flex', alignItems: 'center', gap: 4
-      }}>
-        <Copy size={12} /> {copied ? '¡Copiado!' : 'Copiar'}
-      </button>
-    </div>
-  );
-};
-
-const EndpointCard: React.FC<EndpointProps> = ({ method, label, description, request, response, headers, color }) => {
+const EndpointCard: React.FC<{ ep: EndpointDef }> = ({ ep }) => {
   const [open, setOpen] = useState(false);
+  const [body, setBody] = useState(ep.defaultBody);
+  const [urlOverride, setUrlOverride] = useState(ep.url);
+  const [response, setResponse] = useState<string | null>(null);
+  const [status, setStatus] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [elapsed, setElapsed] = useState<number | null>(null);
+
+  const execute = async () => {
+    setLoading(true); setResponse(null); setStatus(null); setElapsed(null);
+    const t0 = performance.now();
+    try {
+      const res = await fetch(urlOverride, { method: 'POST', headers: ep.headers, body });
+      const elapsed = Math.round(performance.now() - t0);
+      setElapsed(elapsed);
+      setStatus(res.status);
+      const text = await res.text();
+      try { setResponse(JSON.stringify(JSON.parse(text), null, 2)); }
+      catch { setResponse(text); }
+    } catch (err: any) {
+      setElapsed(Math.round(performance.now() - t0));
+      setStatus(0);
+      setResponse(`Error: ${err.message}`);
+    }
+    setLoading(false);
+  };
+
+  const copyResponse = () => {
+    if (response) { navigator.clipboard.writeText(response); setCopied(true); setTimeout(() => setCopied(false), 1500); }
+  };
+
   return (
-    <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', borderLeft: `4px solid ${color}`, transition: 'box-shadow 0.2s', marginBottom: 12 }}>
+    <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', borderLeft: `4px solid ${ep.color}`, marginBottom: 12, transition: 'box-shadow 0.2s' }}>
+      {/* Header row */}
       <div onClick={() => setOpen(!open)} style={{
         display: 'flex', alignItems: 'center', gap: 12, padding: '14px 18px', cursor: 'pointer',
-        background: open ? 'rgba(99,102,241,0.03)' : 'var(--bg-secondary)',
-        transition: 'background 0.15s'
+        background: open ? 'rgba(99,102,241,0.03)' : 'var(--bg-secondary)', transition: 'background 0.15s'
       }}>
         {open ? <ChevronDown size={16} color="var(--text-muted)" /> : <ChevronRight size={16} color="var(--text-muted)" />}
-        <MethodBadge method={method} color={color} />
-        <span style={{ fontWeight: 600, fontSize: '0.92rem', color: 'var(--text-primary)' }}>{label}</span>
-        <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginLeft: 'auto' }}>{description}</span>
+        <MethodBadge method={ep.method} color={ep.color} />
+        <span style={{ fontWeight: 600, fontSize: '0.92rem', color: 'var(--text-primary)', fontFamily: 'monospace' }}>{ep.label}</span>
+        <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginLeft: 'auto' }}>{ep.description}</span>
       </div>
+
+      {/* Expanded panel */}
       {open && (
-        <div style={{ padding: '18px', background: 'var(--bg-tertiary)', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {headers && (
-            <div>
-              <h4 style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 8, letterSpacing: '0.05em' }}>Headers</h4>
-              <CodeBlock code={Object.entries(headers).map(([k, v]) => `${k}: ${v}`).join('\n')} lang="headers" />
+        <div style={{ padding: '18px', background: 'var(--bg-tertiary)', borderTop: '1px solid var(--border-color)' }}>
+          {/* URL */}
+          <label style={labelStyle}>URL</label>
+          <input value={urlOverride} onChange={e => setUrlOverride(e.target.value)}
+            style={{ ...inputStyle, fontFamily: 'monospace', fontSize: '0.8rem', marginBottom: 14 }} />
+
+          {/* Request body */}
+          <label style={labelStyle}>Request Body</label>
+          <textarea value={body} onChange={e => setBody(e.target.value)} rows={12}
+            style={{ ...inputStyle, fontFamily: "'Fira Code','Consolas',monospace", fontSize: '0.78rem', lineHeight: 1.6, resize: 'vertical', minHeight: 120 }} />
+
+          {/* Execute button */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 14 }}>
+            <button onClick={execute} disabled={loading} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8, padding: '10px 22px',
+              background: loading ? '#64748b' : 'linear-gradient(135deg, var(--accent), #8b5cf6)',
+              color: '#fff', border: 'none', borderRadius: 'var(--radius-sm)', cursor: loading ? 'wait' : 'pointer',
+              fontWeight: 600, fontSize: '0.88rem', transition: 'all 0.2s'
+            }}>
+              {loading ? <Loader size={16} className="spin" /> : <Play size={16} />}
+              {loading ? 'Ejecutando...' : 'Ejecutar'}
+            </button>
+            <button onClick={() => { setBody(ep.defaultBody); setUrlOverride(ep.url); }} style={{
+              padding: '10px 16px', background: 'transparent', border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-sm)', cursor: 'pointer', fontSize: '0.82rem', color: 'var(--text-muted)'
+            }}>Reset</button>
+          </div>
+
+          {/* Response */}
+          {response !== null && (
+            <div style={{ marginTop: 18 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <label style={{ ...labelStyle, margin: 0 }}>Response</label>
+                  <span style={{
+                    fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px', borderRadius: '4px',
+                    background: status && status >= 200 && status < 300 ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)',
+                    color: status && status >= 200 && status < 300 ? '#10b981' : '#ef4444'
+                  }}>
+                    {status === 0 ? 'ERROR' : `${status}`}
+                  </span>
+                  {elapsed !== null && (
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{elapsed}ms</span>
+                  )}
+                </div>
+                <button onClick={copyResponse} style={{
+                  display: 'flex', alignItems: 'center', gap: 4, background: 'none', border: 'none',
+                  cursor: 'pointer', fontSize: '0.75rem', color: 'var(--text-muted)'
+                }}>
+                  {copied ? <Check size={12} /> : <Copy size={12} />} {copied ? 'Copiado' : 'Copiar'}
+                </button>
+              </div>
+              <pre style={{
+                background: '#1e293b', color: '#e2e8f0', padding: 16, borderRadius: 'var(--radius-sm)',
+                fontSize: '0.78rem', lineHeight: 1.6, overflowX: 'auto', maxHeight: 400, margin: 0,
+                fontFamily: "'Fira Code','Consolas',monospace", whiteSpace: 'pre-wrap', wordBreak: 'break-word'
+              }}>{response}</pre>
             </div>
           )}
-          <div>
-            <h4 style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 8, letterSpacing: '0.05em' }}>Request</h4>
-            <CodeBlock code={request} lang="graphql" />
-          </div>
-          <div>
-            <h4 style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 8, letterSpacing: '0.05em' }}>Response</h4>
-            <CodeBlock code={response} lang="json" />
-          </div>
         </div>
       )}
     </div>
   );
 };
 
-const SectionTitle: React.FC<{ icon: React.ReactNode; title: string; subtitle: string; color: string }> = ({ icon, title, subtitle, color }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20, marginTop: 32 }}>
-    <div style={{ width: 42, height: 42, borderRadius: 'var(--radius-md)', background: `${color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {icon}
-    </div>
-    <div>
-      <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0 }}>{title}</h3>
-      <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: 0 }}>{subtitle}</p>
-    </div>
-  </div>
-);
-
-const gqlHeaders: Record<string, string> = {
-  'Content-Type': 'application/json',
-  'x-api-key': API_KEY,
+const labelStyle: React.CSSProperties = {
+  fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em',
+  color: 'var(--text-muted)', marginBottom: 6, display: 'block'
 };
 
-const lopdHeaders: Record<string, string> = {
-  'Content-Type': 'application/json',
-  'x-api-key': LOPD_API_KEY,
+const inputStyle: React.CSSProperties = {
+  width: '100%', padding: '10px 14px', background: 'var(--bg-secondary)',
+  border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)',
+  color: 'var(--text-primary)', outline: 'none'
 };
 
+const SectionIcon: React.FC<{ type: string; color: string }> = ({ type, color }) => {
+  const props = { size: 20, color };
+  if (type === 'mail') return <Mail {...props} />;
+  if (type === 'external') return <ExternalLink {...props} />;
+  return <Database {...props} />;
+};
+
+/* ════════════════════════════════════════════
+   Main component
+   ════════════════════════════════════════════ */
 export const ApiDocs: React.FC = () => {
   return (
     <div style={{ maxWidth: 960, margin: '0 auto', padding: 'var(--space-xl)' }}>
@@ -111,9 +270,20 @@ export const ApiDocs: React.FC = () => {
           <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.04em' }}>API DOCUMENTATION</span>
         </div>
         <h1 style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8 }}>Plantillas API v1</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: 600, margin: '0 auto' }}>
-          Documentación de los recursos disponibles vía GraphQL (AppSync) y REST (LOPD).
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: 600, margin: '0 auto 24px' }}>
+          Documentación interactiva — Ejecuta peticiones en vivo o exporta la colección para Postman.
         </p>
+        <button onClick={generatePostmanCollection} style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px',
+          background: '#FF6C37', color: '#fff', border: 'none', borderRadius: 'var(--radius-sm)',
+          cursor: 'pointer', fontWeight: 600, fontSize: '0.88rem', transition: 'transform 0.2s, box-shadow 0.2s',
+          boxShadow: '0 4px 15px rgba(255,108,55,0.3)'
+        }}
+          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
+          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
+        >
+          <Download size={18} /> Exportar Colección Postman
+        </button>
       </div>
 
       {/* Connection Info */}
@@ -123,154 +293,43 @@ export const ApiDocs: React.FC = () => {
         </h4>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>GraphQL Endpoint</span>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--accent)', wordBreak: 'break-all', marginTop: 4 }}>{APPSYNC_URL}</div>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>GraphQL Endpoint</span>
+            <div style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--accent)', wordBreak: 'break-all', marginTop: 4 }}>{APPSYNC_URL}</div>
           </div>
           <div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>API Key (AppSync)</span>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: 4 }}>{API_KEY}</div>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>API Key (AppSync)</span>
+            <div style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: 4 }}>{API_KEY}</div>
           </div>
           <div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>LOPD REST Endpoint</span>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--accent)', wordBreak: 'break-all', marginTop: 4 }}>{LOPD_BASE_URL}</div>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>LOPD REST Endpoint</span>
+            <div style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--accent)', wordBreak: 'break-all', marginTop: 4 }}>{LOPD_BASE_URL}</div>
           </div>
           <div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>API Key (LOPD)</span>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: 4 }}>{LOPD_API_KEY}</div>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>API Key (LOPD)</span>
+            <div style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: 4 }}>{LOPD_API_KEY}</div>
           </div>
         </div>
       </div>
 
-      {/* ═══ PROCESO ═══ */}
-      <SectionTitle icon={<Database size={20} color="#6366f1" />} title="Proceso" subtitle="CRUD para procesos de negocio — GraphQL (AppSync)" color="#6366f1" />
-
-      <EndpointCard method="QUERY" label="listProcesos" description="Listar todos los procesos" color="#10b981"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "query ListProcesos { listProcesos { items { id nombre descripcion tituloLanding encabezadoLanding createdAt updatedAt } } }"\n}`}
-        response={`{\n  "data": {\n    "listProcesos": {\n      "items": [\n        {\n          "id": "abc-123",\n          "nombre": "Proceso de Crédito",\n          "descripcion": "Flujo para aprobación de crédito",\n          "tituloLanding": "Bienvenido",\n          "encabezadoLanding": "Complete sus datos",\n          "createdAt": "2025-01-15T10:00:00Z",\n          "updatedAt": "2025-01-15T10:00:00Z"\n        }\n      ]\n    }\n  }\n}`}
-      />
-
-      <EndpointCard method="QUERY" label="getProceso" description="Obtener un proceso por ID" color="#10b981"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "query GetProceso($id: ID!) { getProceso(id: $id) { id nombre descripcion tituloLanding encabezadoLanding createdAt updatedAt } }",\n  "variables": { "id": "abc-123" }\n}`}
-        response={`{\n  "data": {\n    "getProceso": {\n      "id": "abc-123",\n      "nombre": "Proceso de Crédito",\n      "descripcion": "Flujo para aprobación",\n      "tituloLanding": "Bienvenido",\n      "encabezadoLanding": "Complete sus datos",\n      "createdAt": "2025-01-15T10:00:00Z",\n      "updatedAt": "2025-01-15T10:00:00Z"\n    }\n  }\n}`}
-      />
-
-      <EndpointCard method="MUTATION" label="createProceso" description="Crear un nuevo proceso" color="#f59e0b"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "mutation CreateProceso($input: CreateProcesoInput!) { createProceso(input: $input) { id nombre descripcion } }",\n  "variables": {\n    "input": {\n      "nombre": "Proceso Nuevo",\n      "descripcion": "Descripción del proceso",\n      "tituloLanding": "Título",\n      "encabezadoLanding": "Encabezado"\n    }\n  }\n}`}
-        response={`{\n  "data": {\n    "createProceso": {\n      "id": "new-id-456",\n      "nombre": "Proceso Nuevo",\n      "descripcion": "Descripción del proceso"\n    }\n  }\n}`}
-      />
-
-      <EndpointCard method="MUTATION" label="updateProceso" description="Actualizar un proceso existente" color="#f59e0b"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "mutation UpdateProceso($input: UpdateProcesoInput!) { updateProceso(input: $input) { id nombre descripcion } }",\n  "variables": {\n    "input": {\n      "id": "abc-123",\n      "nombre": "Nombre Actualizado"\n    }\n  }\n}`}
-        response={`{\n  "data": {\n    "updateProceso": {\n      "id": "abc-123",\n      "nombre": "Nombre Actualizado",\n      "descripcion": "Descripción original"\n    }\n  }\n}`}
-      />
-
-      <EndpointCard method="MUTATION" label="deleteProceso" description="Eliminar un proceso por ID" color="#ef4444"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "mutation DeleteProceso($input: DeleteProcesoInput!) { deleteProceso(input: $input) { id } }",\n  "variables": { "input": { "id": "abc-123" } }\n}`}
-        response={`{\n  "data": {\n    "deleteProceso": {\n      "id": "abc-123"\n    }\n  }\n}`}
-      />
-
-      {/* ═══ PLANTILLA ═══ */}
-      <SectionTitle icon={<Database size={20} color="#3b82f6" />} title="Plantilla" subtitle="CRUD para plantillas de documentos — GraphQL (AppSync)" color="#3b82f6" />
-
-      <EndpointCard method="QUERY" label="listPlantillas" description="Listar todas las plantillas" color="#10b981"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "query ListPlantillas { listPlantillas { items { id nombre codigo version url contenido requiereAceptacion solicitarAceptacion procesoId createdAt updatedAt } } }"\n}`}
-        response={`{\n  "data": {\n    "listPlantillas": {\n      "items": [\n        {\n          "id": "plt-001",\n          "nombre": "Consentimiento Informado",\n          "codigo": "CI-001",\n          "version": "1.0",\n          "url": "https://...",\n          "contenido": "<p>Texto del documento...</p>",\n          "requiereAceptacion": true,\n          "solicitarAceptacion": true,\n          "procesoId": "abc-123",\n          "createdAt": "2025-01-15T10:00:00Z",\n          "updatedAt": "2025-01-15T10:00:00Z"\n        }\n      ]\n    }\n  }\n}`}
-      />
-
-      <EndpointCard method="MUTATION" label="createPlantilla" description="Crear una nueva plantilla" color="#f59e0b"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "mutation CreatePlantilla($input: CreatePlantillaInput!) { createPlantilla(input: $input) { id nombre codigo version } }",\n  "variables": {\n    "input": {\n      "nombre": "Nueva Plantilla",\n      "codigo": "NP-001",\n      "version": "1.0",\n      "contenido": "<p>Contenido HTML</p>",\n      "requiereAceptacion": true,\n      "solicitarAceptacion": false,\n      "procesoId": "abc-123"\n    }\n  }\n}`}
-        response={`{\n  "data": {\n    "createPlantilla": {\n      "id": "new-plt-789",\n      "nombre": "Nueva Plantilla",\n      "codigo": "NP-001",\n      "version": "1.0"\n    }\n  }\n}`}
-      />
-
-      <EndpointCard method="MUTATION" label="updatePlantilla" description="Actualizar plantilla existente" color="#f59e0b"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "mutation UpdatePlantilla($input: UpdatePlantillaInput!) { updatePlantilla(input: $input) { id nombre codigo } }",\n  "variables": {\n    "input": {\n      "id": "plt-001",\n      "nombre": "Nombre Actualizado",\n      "version": "2.0"\n    }\n  }\n}`}
-        response={`{\n  "data": {\n    "updatePlantilla": {\n      "id": "plt-001",\n      "nombre": "Nombre Actualizado",\n      "codigo": "CI-001"\n    }\n  }\n}`}
-      />
-
-      <EndpointCard method="MUTATION" label="deletePlantilla" description="Eliminar una plantilla" color="#ef4444"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "mutation DeletePlantilla($input: DeletePlantillaInput!) { deletePlantilla(input: $input) { id } }",\n  "variables": { "input": { "id": "plt-001" } }\n}`}
-        response={`{\n  "data": {\n    "deletePlantilla": {\n      "id": "plt-001"\n    }\n  }\n}`}
-      />
-
-      {/* ═══ SEND EMAIL ═══ */}
-      <SectionTitle icon={<Mail size={20} color="#10b981" />} title="sendEmail" subtitle="Mutación para envío de correos — GraphQL (AppSync + Lambda)" color="#10b981" />
-
-      <EndpointCard method="MUTATION" label="sendEmail" description="Enviar correo electrónico vía SES" color="#f59e0b"
-        headers={gqlHeaders}
-        request={`POST ${APPSYNC_URL}\n\n{\n  "query": "mutation SendEmail($to: String!, $subject: String!, $body: String!) { sendEmail(to: $to, subject: $subject, body: $body) }",\n  "variables": {\n    "to": "cliente@example.com",\n    "subject": "Documentos pendientes",\n    "body": "<h1>Hola</h1><p>Tienes documentos por firmar.</p>"\n  }\n}`}
-        response={`{\n  "data": {\n    "sendEmail": "{\\"statusCode\\":200,\\"message\\":\\"Email sent successfully\\"}"\n  }\n}`}
-      />
-
-      {/* ═══ LOPD REST ═══ */}
-      <SectionTitle icon={<ExternalLink size={20} color="#ec4899" />} title="LOPD Transacciones" subtitle="API REST externa para gestión de transacciones LOPD" color="#ec4899" />
-
-      <EndpointCard method="POST" label="/rest/faceid/lopd/create" description="Crear transacción LOPD" color="#3b82f6"
-        headers={lopdHeaders}
-        request={`POST ${LOPD_BASE_URL}/rest/faceid/lopd/create\n\n{\n  "cedula": "0912345678",\n  "ip": "192.168.1.1",\n  "nombres": "Juan",\n  "apellidoPaterno": "Pérez",\n  "apellidoMaterno": "López",\n  "correo": "juan@example.com",\n  "telefono": "0991234567",\n  "channel": "WEB",\n  "storeId": "STORE-001",\n  "proceso": ["proceso-id-1"]\n}`}
-        response={`{\n  "statusCode": 200,\n  "body": {\n    "id": "txn-uuid-001",\n    "estado": "pendiente",\n    "url": "https://master.d373a3mueuc4js.amplifyapp.com/?id=txn-uuid-001"\n  }\n}`}
-      />
-
-      <EndpointCard method="POST" label="/rest/faceid/lopd/get" description="Obtener transacciones (todas o por ID)" color="#10b981"
-        headers={lopdHeaders}
-        request={`POST ${LOPD_BASE_URL}/rest/faceid/lopd/get?id=txn-uuid-001\n\n{}`}
-        response={`{\n  "statusCode": 200,\n  "body": {\n    "id": "txn-uuid-001",\n    "cedula": "0912345678",\n    "nombres": "Juan",\n    "estado": "procesado",\n    "createdAt": "2025-01-15T10:00:00Z"\n  }\n}`}
-      />
-
-      <EndpointCard method="POST" label="/rest/faceid/lopd/update" description="Actualizar estado de transacción" color="#f59e0b"
-        headers={lopdHeaders}
-        request={`POST ${LOPD_BASE_URL}/rest/faceid/lopd/update?id=txn-uuid-001\n\n{\n  "estado": "procesado"\n}`}
-        response={`{\n  "statusCode": 200,\n  "body": {\n    "id": "txn-uuid-001",\n    "estado": "procesado",\n    "updatedAt": "2025-01-15T12:00:00Z"\n  }\n}`}
-      />
-
-      {/* Schema reference */}
-      <div style={{ marginTop: 48, marginBottom: 32 }}>
-        <SectionTitle icon={<Database size={20} color="#6366f1" />} title="Esquemas de Datos" subtitle="Definición de los modelos utilizados en la API" color="#6366f1" />
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div className="glass-card" style={{ padding: 20 }}>
-            <h4 style={{ fontSize: '0.95rem', marginBottom: 12, color: 'var(--text-primary)' }}>Proceso</h4>
-            <CodeBlock lang="typescript" code={`{
-  id: ID!           // Auto-generado
-  nombre: String!   // Nombre del proceso
-  descripcion: String
-  tituloLanding: String
-  encabezadoLanding: String
-  plantillas: [Plantilla] // Relación 1:N
-  createdAt: AWSDateTime  // Auto
-  updatedAt: AWSDateTime  // Auto
-}`} />
+      {/* Endpoint sections */}
+      {ENDPOINTS.map(section => (
+        <div key={section.section}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20, marginTop: 36 }}>
+            <div style={{ width: 42, height: 42, borderRadius: 'var(--radius-md)', background: `${section.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <SectionIcon type={section.icon} color={section.color} />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0 }}>{section.section}</h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: 0 }}>{section.subtitle}</p>
+            </div>
           </div>
-          <div className="glass-card" style={{ padding: 20 }}>
-            <h4 style={{ fontSize: '0.95rem', marginBottom: 12, color: 'var(--text-primary)' }}>Plantilla</h4>
-            <CodeBlock lang="typescript" code={`{
-  id: ID!            // Auto-generado
-  nombre: String!    // Nombre de la plantilla
-  codigo: String!    // Código único
-  version: String
-  url: String
-  contenido: String  // HTML del documento
-  requiereAceptacion: Boolean
-  solicitarAceptacion: Boolean
-  procesoId: ID      // FK a Proceso
-  proceso: Proceso   // Relación N:1
-  createdAt: AWSDateTime  // Auto
-  updatedAt: AWSDateTime  // Auto
-}`} />
-          </div>
+          {section.items.map(ep => <EndpointCard key={ep.id} ep={ep} />)}
         </div>
-      </div>
+      ))}
 
       {/* Footer */}
-      <div style={{ textAlign: 'center', padding: '32px 0', borderTop: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-        Plantillas API Documentation — Generado automáticamente desde el esquema Amplify Gen 2
+      <div style={{ textAlign: 'center', padding: '32px 0', borderTop: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.82rem', marginTop: 40 }}>
+        Plantillas API Documentation — Generado desde el esquema Amplify Gen 2
       </div>
     </div>
   );
