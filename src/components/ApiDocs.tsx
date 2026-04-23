@@ -29,47 +29,73 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
   {
     section: 'Proceso', icon: 'database', color: '#6366f1', subtitle: 'CRUD — GraphQL (AppSync)',
     items: [
-      { id: 'listProcesos', method: 'QUERY', label: 'listProcesos', description: 'Listar todos los procesos', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query ListProcesos {\n  listProcesos {\n    items {\n      id\n      nombre\n      descripcion\n      tituloLanding\n      encabezadoLanding\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2) },
-      { id: 'getProceso', method: 'QUERY', label: 'getProceso', description: 'Obtener proceso por ID', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query GetProceso($id: ID!) {\n  getProceso(id: $id) {\n    id\n    nombre\n    descripcion\n    tituloLanding\n    encabezadoLanding\n    createdAt\n    updatedAt\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2) },
-      { id: 'createProceso', method: 'MUTATION', label: 'createProceso', description: 'Crear nuevo proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation CreateProceso($input: CreateProcesoInput!) {\n  createProceso(input: $input) {\n    id\n    nombre\n    descripcion\n  }\n}`, variables: { input: { nombre: "Proceso Nuevo", descripcion: "Descripción", tituloLanding: "Título", encabezadoLanding: "Encabezado" } } }, null, 2) },
-      { id: 'updateProceso', method: 'MUTATION', label: 'updateProceso', description: 'Actualizar proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation UpdateProceso($input: UpdateProcesoInput!) {\n  updateProceso(input: $input) {\n    id\n    nombre\n    descripcion\n  }\n}`, variables: { input: { id: "<ID_AQUI>", nombre: "Nombre Actualizado" } } }, null, 2) },
-      { id: 'deleteProceso', method: 'MUTATION', label: 'deleteProceso', description: 'Eliminar proceso', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation DeleteProceso($input: DeleteProcesoInput!) {\n  deleteProceso(input: $input) {\n    id\n  }\n}`, variables: { input: { id: "<ID_AQUI>" } } }, null, 2) },
+      {
+        id: 'listProcesos', method: 'QUERY', label: 'listProcesos', description: 'Listar todos los procesos', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query ListProcesos {\n  listProcesos {\n    items {\n      id\n      nombre\n      descripcion\n      tituloLanding\n      encabezadoLanding\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2)
+      },
+      {
+        id: 'getProceso', method: 'QUERY', label: 'getProceso', description: 'Obtener proceso por ID', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query GetProceso($id: ID!) {\n  getProceso(id: $id) {\n    id\n    nombre\n    descripcion\n    tituloLanding\n    encabezadoLanding\n    createdAt\n    updatedAt\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
+      },
+      {
+        id: 'createProceso', method: 'MUTATION', label: 'createProceso', description: 'Crear nuevo proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation CreateProceso($input: CreateProcesoInput!) {\n  createProceso(input: $input) {\n    id\n    nombre\n    descripcion\n  }\n}`, variables: { input: { nombre: "Proceso Nuevo", descripcion: "Descripción", tituloLanding: "Título", encabezadoLanding: "Encabezado" } } }, null, 2)
+      },
+      {
+        id: 'updateProceso', method: 'MUTATION', label: 'updateProceso', description: 'Actualizar proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation UpdateProceso($input: UpdateProcesoInput!) {\n  updateProceso(input: $input) {\n    id\n    nombre\n    descripcion\n  }\n}`, variables: { input: { id: "<ID_AQUI>", nombre: "Nombre Actualizado" } } }, null, 2)
+      },
+      {
+        id: 'deleteProceso', method: 'MUTATION', label: 'deleteProceso', description: 'Eliminar proceso', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation DeleteProceso($input: DeleteProcesoInput!) {\n  deleteProceso(input: $input) {\n    id\n  }\n}`, variables: { input: { id: "<ID_AQUI>" } } }, null, 2)
+      },
     ]
   },
   {
     section: 'Plantilla', icon: 'file', color: '#3b82f6', subtitle: 'CRUD — GraphQL (AppSync)',
     items: [
-      { id: 'listPlantillas', method: 'QUERY', label: 'listPlantillas', description: 'Listar todas las plantillas', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query ListPlantillas {\n  listPlantillas {\n    items {\n      id\n      nombre\n      codigo\n      version\n      url\n      contenido\n      requiereAceptacion\n      solicitarAceptacion\n      procesoId\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2) },
-      { id: 'createPlantilla', method: 'MUTATION', label: 'createPlantilla', description: 'Crear nueva plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation CreatePlantilla($input: CreatePlantillaInput!) {\n  createPlantilla(input: $input) {\n    id\n    nombre\n    codigo\n    version\n  }\n}`, variables: { input: { nombre: "Nueva Plantilla", codigo: "NP-001", version: "1.0", contenido: "<p>Contenido HTML</p>", requiereAceptacion: true, solicitarAceptacion: false, procesoId: "<PROCESO_ID>" } } }, null, 2) },
-      { id: 'updatePlantilla', method: 'MUTATION', label: 'updatePlantilla', description: 'Actualizar plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation UpdatePlantilla($input: UpdatePlantillaInput!) {\n  updatePlantilla(input: $input) {\n    id\n    nombre\n    codigo\n  }\n}`, variables: { input: { id: "<ID_AQUI>", nombre: "Nombre Actualizado", version: "2.0" } } }, null, 2) },
-      { id: 'deletePlantilla', method: 'MUTATION', label: 'deletePlantilla', description: 'Eliminar plantilla', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation DeletePlantilla($input: DeletePlantillaInput!) {\n  deletePlantilla(input: $input) {\n    id\n  }\n}`, variables: { input: { id: "<ID_AQUI>" } } }, null, 2) },
+      {
+        id: 'listPlantillas', method: 'QUERY', label: 'listPlantillas', description: 'Listar todas las plantillas', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query ListPlantillas {\n  listPlantillas {\n    items {\n      id\n      nombre\n      codigo\n      version\n      url\n      contenido\n      requiereAceptacion\n      solicitarAceptacion\n      procesoId\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2)
+      },
+      {
+        id: 'createPlantilla', method: 'MUTATION', label: 'createPlantilla', description: 'Crear nueva plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation CreatePlantilla($input: CreatePlantillaInput!) {\n  createPlantilla(input: $input) {\n    id\n    nombre\n    codigo\n    version\n  }\n}`, variables: { input: { nombre: "Nueva Plantilla", codigo: "NP-001", version: "1.0", contenido: "<p>Contenido HTML</p>", requiereAceptacion: true, solicitarAceptacion: false, procesoId: "<PROCESO_ID>" } } }, null, 2)
+      },
+      {
+        id: 'updatePlantilla', method: 'MUTATION', label: 'updatePlantilla', description: 'Actualizar plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation UpdatePlantilla($input: UpdatePlantillaInput!) {\n  updatePlantilla(input: $input) {\n    id\n    nombre\n    codigo\n  }\n}`, variables: { input: { id: "<ID_AQUI>", nombre: "Nombre Actualizado", version: "2.0" } } }, null, 2)
+      },
+      {
+        id: 'deletePlantilla', method: 'MUTATION', label: 'deletePlantilla', description: 'Eliminar plantilla', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation DeletePlantilla($input: DeletePlantillaInput!) {\n  deletePlantilla(input: $input) {\n    id\n  }\n}`, variables: { input: { id: "<ID_AQUI>" } } }, null, 2)
+      },
     ]
   },
   {
     section: 'sendEmail', icon: 'mail', color: '#10b981', subtitle: 'Mutación — GraphQL + Lambda',
     items: [
-      { id: 'sendEmail', method: 'MUTATION', label: 'sendEmail', description: 'Enviar correo vía SES', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation SendEmail($to: String!, $subject: String!, $body: String!) {\n  sendEmail(to: $to, subject: $subject, body: $body)\n}`, variables: { to: "cliente@example.com", subject: "Documentos pendientes", body: "<h1>Hola</h1><p>Tienes documentos por firmar.</p>" } }, null, 2) },
+      {
+        id: 'sendEmail', method: 'MUTATION', label: 'sendEmail', description: 'Enviar correo vía SES', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation SendEmail($to: String!, $subject: String!, $body: String!) {\n  sendEmail(to: $to, subject: $subject, body: $body)\n}`, variables: { to: "cliente@example.com", subject: "Documentos pendientes", body: "<h1>Hola</h1><p>Tienes documentos por firmar.</p>" } }, null, 2)
+      },
     ]
   },
   {
     section: 'LOPD Transacciones', icon: 'external', color: '#ec4899', subtitle: 'API REST externa',
     items: [
-      { id: 'lopdCreate', method: 'POST', label: '/rest/faceid/lopd/create', description: 'Crear transacción LOPD', color: '#3b82f6', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/create`, headers: lopdHeaders,
-        defaultBody: JSON.stringify({ cedula: "0912345678", ip: "192.168.1.1", nombres: "Juan", apellidoPaterno: "Pérez", apellidoMaterno: "López", correo: "juan@example.com", telefono: "0991234567", channel: "WEB", storeId: "STORE-001", proceso: ["proceso-id-1"] }, null, 2) },
-      { id: 'lopdGet', method: 'POST', label: '/rest/faceid/lopd/get', description: 'Obtener transacciones', color: '#10b981', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/get`, headers: lopdHeaders,
-        defaultBody: JSON.stringify({}, null, 2) },
-      { id: 'lopdUpdate', method: 'POST', label: '/rest/faceid/lopd/update?id=<ID>', description: 'Actualizar transacción', color: '#f59e0b', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/update?id=<ID_AQUI>`, headers: lopdHeaders,
-        defaultBody: JSON.stringify({ estado: "procesado" }, null, 2) },
+      {
+        id: 'lopdCreate', method: 'POST', label: '/rest/faceid/lopd/create', description: 'Crear transacción LOPD', color: '#3b82f6', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/create`, headers: lopdHeaders,
+        defaultBody: JSON.stringify({ cedula: "0912345678", ip: "192.168.1.1", nombres: "Juan", apellidoPaterno: "Pérez", apellidoMaterno: "López", correo: "juan@example.com", telefono: "0991234567", channel: "WEB", storeId: "STORE-001", proceso: ["proceso-id-1"] }, null, 2)
+      },
+      {
+        id: 'lopdGet', method: 'POST', label: '/rest/faceid/lopd/get', description: 'Obtener transacciones', color: '#10b981', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/get`, headers: lopdHeaders,
+        defaultBody: JSON.stringify({}, null, 2)
+      },
+      {
+        id: 'lopdUpdate', method: 'POST', label: '/rest/faceid/lopd/update?id=<ID>', description: 'Actualizar transacción', color: '#f59e0b', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/update?id=<ID_AQUI>`, headers: lopdHeaders,
+        defaultBody: JSON.stringify({ estado: "procesado" }, null, 2)
+      },
     ]
   }
 ];
@@ -78,17 +104,17 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
    Postman Collection Generator
    ════════════════════════════════════════════ */
 function generatePostmanCollection() {
-  const items = ENDPOINTS.flatMap(section =>
-    section.items.map(ep => ({
-      name: `${ep.method} ${ep.label}`,
-      request: {
-        method: 'POST',
-        header: Object.entries(ep.headers).map(([key, value]) => ({ key, value, type: 'text' })),
-        body: { mode: 'raw', raw: ep.defaultBody, options: { raw: { language: 'json' } } },
-        url: { raw: ep.url, protocol: 'https', host: [ep.url.replace('https://', '').split('/')[0]], path: ep.url.replace('https://', '').split('/').slice(1) }
-      }
-    }))
-  );
+  // const items = ENDPOINTS.flatMap(section =>
+  //   section.items.map(ep => ({
+  //     name: `${ep.method} ${ep.label}`,
+  //     request: {
+  //       method: 'POST',
+  //       header: Object.entries(ep.headers).map(([key, value]) => ({ key, value, type: 'text' })),
+  //       body: { mode: 'raw', raw: ep.defaultBody, options: { raw: { language: 'json' } } },
+  //       url: { raw: ep.url, protocol: 'https', host: [ep.url.replace('https://', '').split('/')[0]], path: ep.url.replace('https://', '').split('/').slice(1) }
+  //     }
+  //   }))
+  // );
 
   const collection = {
     info: { name: 'Plantillas API', description: 'Colección auto-generada — GraphQL (AppSync) + LOPD REST', schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json' },
