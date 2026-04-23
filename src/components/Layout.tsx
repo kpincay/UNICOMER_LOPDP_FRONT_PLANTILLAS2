@@ -1,14 +1,16 @@
 import React from 'react';
-import { LogOut } from 'lucide-react';
+import { LogOut, Book } from 'lucide-react';
 import UnicomerLogo from '../assets/unicomer.png';
 import { Dashboard } from './Dashboard';
+import { ApiDocs } from './ApiDocs';
 
 interface LayoutProps {
     user?: any;
     signOut?: () => void;
+    activeView?: string;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ user, signOut }) => {
+export const Layout: React.FC<LayoutProps> = ({ user, signOut, activeView }) => {
     return (
         <div className="view">
             {/* ══════════════════════ DASHBOARD VIEW ══════════════════════ */}
@@ -22,6 +24,24 @@ export const Layout: React.FC<LayoutProps> = ({ user, signOut }) => {
                         </div>
                     </div>
                     <div className="header-right">
+                        <a
+                            href="/api-docs"
+                            style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                                padding: '8px 14px', borderRadius: 'var(--radius-sm)',
+                                fontSize: '0.85rem', fontWeight: 500,
+                                color: activeView === 'api-docs' ? '#fff' : 'var(--text-secondary)',
+                                background: activeView === 'api-docs' ? 'linear-gradient(135deg, var(--accent), #8b5cf6)' : 'transparent',
+                                textDecoration: 'none', transition: 'all 0.2s'
+                            }}
+                        >
+                            <Book size={16} /> API Docs
+                        </a>
+                        {activeView === 'api-docs' && (
+                            <a href="/" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none', padding: '8px 14px' }}>
+                                ← Dashboard
+                            </a>
+                        )}
                         <div className="user-info">
                             <span className="user-avatar" id="user-avatar">
                                 {user?.signInDetails?.loginId?.charAt(0).toUpperCase() || 'U'}
@@ -38,9 +58,10 @@ export const Layout: React.FC<LayoutProps> = ({ user, signOut }) => {
 
                 {/* Main Content */}
                 <main className="dashboard-main">
-                    <Dashboard />
+                    {activeView === 'api-docs' ? <ApiDocs /> : <Dashboard />}
                 </main>
             </section>
         </div>
     );
 };
+

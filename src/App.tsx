@@ -8,6 +8,7 @@ import { Layout } from './components/Layout';
 import './index.css';
 import { AcceptanceLanding } from './components/AcceptanceLanding';
 import { TransactionInitiator } from './components/TransactionInitiator';
+import { ApiDocs } from './components/ApiDocs';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../amplify/data/resource';
 
@@ -34,6 +35,7 @@ export default function App() {
   const [transactionId, setTransactionId] = React.useState<string | null>(null);
   const [selectedProcesoId, setSelectedProcesoId] = React.useState<string | null>(null);
   const [isCreationRoute, setIsCreationRoute] = React.useState(false);
+  const [isApiDocsRoute, setIsApiDocsRoute] = React.useState(false);
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -48,6 +50,8 @@ export default function App() {
       setIsCreationRoute(true);
     } else if (path === '/creacionProceso') {
       setIsCreationRoute(true);
+    } else if (path === '/api-docs') {
+      setIsApiDocsRoute(true);
     }
   }, []);
 
@@ -61,7 +65,18 @@ export default function App() {
     return <TransactionInitiatorPage initialProcesoId={selectedProcesoId} />;
   }
 
-  // 3. PRIVATE ROUTE: Admin Dashboard (Authentication Required)
+  // 3. PRIVATE ROUTE: API Documentation (Authentication Required)
+  if (isApiDocsRoute) {
+    return (
+      <Authenticator components={components}>
+        {({ signOut, user }) => (
+          <Layout user={user} signOut={signOut} activeView="api-docs" />
+        )}
+      </Authenticator>
+    );
+  }
+
+  // 4. PRIVATE ROUTE: Admin Dashboard (Authentication Required)
   return (
     <Authenticator components={components}>
       {({ signOut, user }) => (
