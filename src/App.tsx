@@ -8,7 +8,7 @@ import { Layout } from './components/Layout';
 import './index.css';
 import { AcceptanceLanding } from './components/AcceptanceLanding';
 import { TransactionInitiator } from './components/TransactionInitiator';
-import { ApiDocs } from './components/ApiDocs';
+// import { ApiDocs } from './components/ApiDocs';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../amplify/data/resource';
 
