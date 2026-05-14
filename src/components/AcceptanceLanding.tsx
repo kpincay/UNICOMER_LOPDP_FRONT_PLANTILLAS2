@@ -55,9 +55,26 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 // or just fetch all templates of the process if the backend provides the procesoId.
                 const { data: allPlantillas } = await client.models.Plantilla.list();
 
-                // Extract processId (Checking 'process' array as seen in successful GET response)
-                const processId = (transData.process && transData.process.length > 0) ? transData.process[0] :
-                    ((transData.proceso && transData.proceso.length > 0) ? transData.proceso[0] : transData.procesoId);
+                // Extract processId (Checking 'process' array, 'proceso' array/string, or 'procesoId')
+                let processId = null;
+                
+                if (Array.isArray(transData.process) && transData.process.length > 0) {
+                    processId = transData.process[0];
+                } else if (typeof transData.process === 'string' && transData.process.length > 1) {
+                    processId = transData.process;
+                }
+                
+                if (!processId) {
+                    if (Array.isArray(transData.proceso) && transData.proceso.length > 0) {
+                        processId = transData.proceso[0];
+                    } else if (typeof transData.proceso === 'string' && transData.proceso.length > 1) {
+                        processId = transData.proceso;
+                    }
+                }
+
+                if (!processId) {
+                    processId = transData.procesoId;
+                }
 
                 if (processId) {
                     try {
@@ -69,20 +86,26 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     }
                 }
 
-                if (transData.plantillas && transData.plantillas.length > 0) {
-                    setPlantillas(allPlantillas.filter(p => transData.plantillas.includes(p.id)));
+                // Filter templates: only show those associated with this transaction or process
+                let filteredPlantillas: Schema['Plantilla']['type'][] = [];
+                
+                if (transData.plantillas && Array.isArray(transData.plantillas) && transData.plantillas.length > 0) {
+                    filteredPlantillas = allPlantillas.filter(p => transData.plantillas.includes(p.id));
                 } else if (processId) {
-                    setPlantillas(allPlantillas.filter(p => p.procesoId === processId));
+                    filteredPlantillas = allPlantillas.filter(p => p.procesoId === processId);
                 } else {
-                    // Fallback to all for demo/safety if nothing else found
-                    setPlantillas(allPlantillas);
+                    // IMPORTANT: No longer falling back to all templates. 
+                    // This prevents privacy leaks and ensures only relevant documents are shown.
+                    console.warn('No processId or specific plantillas found for this transaction:', transactionId);
+                    filteredPlantillas = [];
                 }
 
-                // Initialize checkboxes
+                setPlantillas(filteredPlantillas);
+
+                // Initialize checkboxes correctly
                 const initialChecked: Record<string, boolean> = {};
-                setPlantillas(prev => {
-                    prev.forEach(p => initialChecked[p.id] = false);
-                    return prev;
+                filteredPlantillas.forEach(p => {
+                    initialChecked[p.id] = false;
                 });
                 setCheckedItems(initialChecked);
 
