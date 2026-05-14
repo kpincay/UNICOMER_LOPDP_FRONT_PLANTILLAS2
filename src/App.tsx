@@ -46,6 +46,7 @@ export default function App() {
     if (id) {
       setTransactionId(id);
     } else if (idProceso) {
+      sessionStorage.setItem('pending_proceso_id', idProceso);
       setSelectedProcesoId(idProceso);
       setIsCreationRoute(true);
     } else if (path === '/creacionProceso') {

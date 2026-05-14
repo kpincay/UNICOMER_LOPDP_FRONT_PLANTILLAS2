@@ -55,7 +55,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 // or just fetch all templates of the process if the backend provides the procesoId.
                 const { data: allPlantillas } = await client.models.Plantilla.list();
 
-                // Extract processId (Checking 'process' array, 'proceso' array/string, or 'procesoId')
+                // Extract processId (Checking 'process' array, 'proceso' array/string, 'procesoId', or sessionStorage)
                 let processId = null;
                 
                 if (Array.isArray(transData.process) && transData.process.length > 0) {
@@ -73,7 +73,12 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 }
 
                 if (!processId) {
-                    processId = transData.procesoId;
+                    processId = transData.procesoId || transData.id_proceso || transData.proceso_id;
+                }
+
+                // Fallback to sessionStorage (specifically for QR flow)
+                if (!processId) {
+                    processId = sessionStorage.getItem('pending_proceso_id');
                 }
 
                 if (processId) {
@@ -96,7 +101,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 } else {
                     // IMPORTANT: No longer falling back to all templates. 
                     // This prevents privacy leaks and ensures only relevant documents are shown.
-                    console.warn('No processId or specific plantillas found for this transaction:', transactionId);
+                    console.warn('No processId found for transaction:', transactionId);
                     filteredPlantillas = [];
                 }
 
@@ -193,6 +198,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
             }
 
             setCompleted(true);
+            sessionStorage.removeItem('pending_proceso_id');
         } catch (error) {
             console.error('Error submitting acceptance:', error);
             alert('Error al procesar la aceptación. Por favor intente de nuevo.');
