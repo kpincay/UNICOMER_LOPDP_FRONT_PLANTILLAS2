@@ -14,7 +14,10 @@ export const Dashboard: React.FC = () => {
     const [procesos, setProcesos] = useState<Schema['Proceso']['type'][]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'plantillas' | 'procesos' | 'reportes'>('plantillas');
-    const [searchTerm, setSearchTerm] = useState('');
+    const [plantillaSearch, setPlantillaSearch] = useState('');
+    const [plantillaProcesoFilter, setPlantillaProcesoFilter] = useState('');
+    const [plantillaAceptacionFilter, setPlantillaAceptacionFilter] = useState<'all' | 'si' | 'no'>('all');
+    const [procesoSearch, setProcesoSearch] = useState('');
 
     // Modal states
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -120,14 +123,36 @@ export const Dashboard: React.FC = () => {
         alert('URL copiada al portapapeles');
     };
 
-    const filteredPlantillas = plantillas.filter((p: Schema['Plantilla']['type']) =>
-        p.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.codigo?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredPlantillas = plantillas.filter((p: Schema['Plantilla']['type']) => {
+        const term = plantillaSearch.toLowerCase();
+        const matchText = !term ||
+            p.nombre?.toLowerCase().includes(term) ||
+            p.codigo?.toLowerCase().includes(term);
+        const matchProceso = !plantillaProcesoFilter || p.procesoId === plantillaProcesoFilter;
+        const matchAceptacion =
+            plantillaAceptacionFilter === 'all' ||
+            (plantillaAceptacionFilter === 'si' && !!p.requiereAceptacion) ||
+            (plantillaAceptacionFilter === 'no' && !p.requiereAceptacion);
+        return matchText && matchProceso && matchAceptacion;
+    });
 
-    const filteredProcesos = procesos.filter((pr: Schema['Proceso']['type']) =>
-        pr.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredProcesos = procesos.filter((pr: Schema['Proceso']['type']) => {
+        const term = procesoSearch.toLowerCase();
+        return !term ||
+            pr.nombre?.toLowerCase().includes(term) ||
+            pr.descripcion?.toLowerCase().includes(term);
+    });
+
+    const hasPlantillaFilters = !!plantillaSearch || !!plantillaProcesoFilter || plantillaAceptacionFilter !== 'all';
+    const hasProcesoFilters = !!procesoSearch;
+
+    const clearPlantillaFilters = () => {
+        setPlantillaSearch('');
+        setPlantillaProcesoFilter('');
+        setPlantillaAceptacionFilter('all');
+    };
+
+    const clearProcesoFilters = () => setProcesoSearch('');
 
     const stats = {
         total: plantillas.length,
@@ -215,20 +240,72 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <div className="table-container glass-card">
-                <div className="table-header-bar">
-                    <div className="search-box">
-                        <Search size={16} />
-                        <input
-                            type="text"
-                            placeholder="Buscar plantillas..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                {activeTab !== 'reportes' && (
+                    <div className="table-header-bar">
+                        <div className="filters-bar">
+                            {activeTab === 'plantillas' && (
+                                <>
+                                    <div className="search-box">
+                                        <Search size={16} />
+                                        <input
+                                            type="text"
+                                            placeholder="Buscar por nombre o código..."
+                                            value={plantillaSearch}
+                                            onChange={(e) => setPlantillaSearch(e.target.value)}
+                                        />
+                                    </div>
+                                    <select
+                                        className="filter-select"
+                                        value={plantillaProcesoFilter}
+                                        onChange={(e) => setPlantillaProcesoFilter(e.target.value)}
+                                        title="Filtrar por proceso"
+                                    >
+                                        <option value="">Todos los procesos</option>
+                                        {procesos.map((pr: Schema['Proceso']['type']) => (
+                                            <option key={pr.id} value={pr.id}>{pr.nombre}</option>
+                                        ))}
+                                    </select>
+                                    <select
+                                        className="filter-select"
+                                        value={plantillaAceptacionFilter}
+                                        onChange={(e) => setPlantillaAceptacionFilter(e.target.value as 'all' | 'si' | 'no')}
+                                        title="Filtrar por requiere aceptación"
+                                    >
+                                        <option value="all">Req. aceptación: Todos</option>
+                                        <option value="si">Requiere aceptación</option>
+                                        <option value="no">No requiere aceptación</option>
+                                    </select>
+                                    {hasPlantillaFilters && (
+                                        <button className="btn btn-ghost btn-sm filter-clear" onClick={clearPlantillaFilters} title="Limpiar filtros">
+                                            <X size={14} /> Limpiar
+                                        </button>
+                                    )}
+                                </>
+                            )}
+                            {activeTab === 'procesos' && (
+                                <>
+                                    <div className="search-box">
+                                        <Search size={16} />
+                                        <input
+                                            type="text"
+                                            placeholder="Buscar por nombre o descripción..."
+                                            value={procesoSearch}
+                                            onChange={(e) => setProcesoSearch(e.target.value)}
+                                        />
+                                    </div>
+                                    {hasProcesoFilters && (
+                                        <button className="btn btn-ghost btn-sm filter-clear" onClick={clearProcesoFilters} title="Limpiar filtros">
+                                            <X size={14} /> Limpiar
+                                        </button>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                        <button className="btn btn-ghost" onClick={fetchData} title="Refrescar">
+                            <RefreshCw size={20} className={loading ? 'spin' : ''} />
+                        </button>
                     </div>
-                    <button className="btn btn-ghost" onClick={fetchData} title="Refrescar">
-                        <RefreshCw size={20} className={loading ? 'spin' : ''} />
-                    </button>
-                </div>
+                )}
 
                 <div className="table-wrapper">
                     {activeTab === 'reportes' ? (

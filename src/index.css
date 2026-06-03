@@ -493,7 +493,47 @@ h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
     justify-content: space-between;
     padding: var(--space-md) var(--space-lg);
     border-bottom: 1px solid var(--border-color);
+    gap: var(--space-md);
+    flex-wrap: wrap;
 }
+
+.filters-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.filter-select {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+    height: 38px;
+}
+.filter-select:focus { border-color: var(--border-active); }
+.filter-select option { background: var(--bg-secondary); color: var(--text-primary); }
+
+.filter-clear {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 7px 10px;
+    white-space: nowrap;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+.filter-clear:hover { color: var(--danger); border-color: var(--danger); }
 
 .search-box {
     display: flex;
