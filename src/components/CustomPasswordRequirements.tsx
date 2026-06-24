@@ -52,12 +52,18 @@ function buildValidationState(password: string, username: string, email: string)
   return { isConsecutiveError, isUserDetailError, isRestrictedError };
 }
 
-// Busca el contenedor nativo de requisitos de Amplify, que es un HERMANO del .amplify-passwordfield
+// Busca el contenedor nativo de requisitos de Amplify dentro del campo o sus hermanos directos
 function findNativeRequirementsContainer(passwordFieldEl: Element): Element | null {
+  // 1. Buscar dentro del propio passwordField (ya que Amplify a menudo renderiza los requisitos como hijos del campo)
+  const innerReq = passwordFieldEl.querySelector('.amplify-field__requirements, .amplify-passwordfield__requirements, ul');
+  if (innerReq) return innerReq;
+
+  // 2. Buscar como hermanos directos
   let sibling = passwordFieldEl.nextElementSibling;
   while (sibling) {
     if (
       sibling.tagName === 'UL' ||
+      sibling.classList.contains('amplify-field__requirements') ||
       sibling.textContent?.includes('Password must have') ||
       sibling.textContent?.includes('Password must contain')
     ) {
@@ -73,10 +79,6 @@ function findNativeRequirementsContainer(passwordFieldEl: Element): Element | nu
     }
     sibling = sibling.nextElementSibling;
   }
-
-  // Buscar tambien dentro del password field por si la estructura varia entre versiones
-  const innerUl = passwordFieldEl.querySelector('ul');
-  if (innerUl) return innerUl;
 
   return null;
 }
@@ -173,7 +175,6 @@ export const CustomPasswordRequirements = ({
 
   const [localPassword, setLocalPassword] = React.useState('');
   const containerRef = React.useRef<HTMLSpanElement>(null);
-  const [hasNative, setHasNative] = React.useState(false);
 
   React.useEffect(() => {
     if (propPassword !== undefined) return;
@@ -232,10 +233,7 @@ export const CustomPasswordRequirements = ({
     if (!containerRef.current) return;
 
     const passwordField = containerRef.current.closest('.amplify-passwordfield');
-    if (!passwordField) {
-      setHasNative(false);
-      return;
-    }
+    if (!passwordField) return;
 
     if (!password) {
       // Limpiar items personalizados si no hay password
@@ -243,7 +241,6 @@ export const CustomPasswordRequirements = ({
       if (nativeContainer) {
         nativeContainer.querySelectorAll(`[${CUSTOM_MARKER}]`).forEach(el => el.remove());
       }
-      setHasNative(false);
       return;
     }
 
@@ -267,11 +264,9 @@ export const CustomPasswordRequirements = ({
         const firstChild = nativeContainer.querySelector(`:scope > :not([${CUSTOM_MARKER}])`);
         if (firstChild) {
           syncCustomItems(nativeContainer, validations);
-          setHasNative(true);
           return true;
         }
       }
-      setHasNative(false);
       return false;
     };
 
@@ -281,52 +276,47 @@ export const CustomPasswordRequirements = ({
       attempts++;
       if (tryInject() || attempts >= maxAttempts) {
         clearInterval(retryInterval);
-        if (attempts >= maxAttempts) {
-          setHasNative(false);
-        }
       }
     }, 50);
 
     return () => clearInterval(retryInterval);
   }, [password]);
 
-  const username = getUsername();
-  const email = getEmail();
-  const { isConsecutiveError, isUserDetailError, isRestrictedError } =
-    buildValidationState(password, username, email);
+  // Si el componente recibe la contrasena como prop, renderizamos las validaciones directamente en el DOM de React
+  if (propPassword !== undefined) {
+    if (!password) return null;
+    const username = getUsername();
+    const email = getEmail();
+    const { isConsecutiveError, isUserDetailError, isRestrictedError } =
+      buildValidationState(password, username, email);
 
-  const errorStyle: React.CSSProperties = {
-    color: 'var(--amplify-colors-font-error, #950404)',
-    fontSize: 'var(--amplify-font-sizes-xs, 0.85rem)',
-    marginTop: '0.25rem',
-    display: 'block',
-  };
+    const errorStyle: React.CSSProperties = {
+      color: 'var(--amplify-colors-font-error, #950404)',
+      fontSize: 'var(--amplify-font-sizes-xs, 0.85rem)',
+      marginTop: '0.25rem',
+      display: 'block',
+    };
 
-  // Mostrar el fallback en React si es un campo controlado externo o si la lista nativa no existe en el DOM
-  const showFallback = propPassword !== undefined || !hasNative;
+    return (
+      <>
+        {isConsecutiveError && (
+          <span className="amplify-text amplify-text--error" style={errorStyle}>
+            {MESSAGES.consecutive}
+          </span>
+        )}
+        {isUserDetailError && (
+          <span className="amplify-text amplify-text--error" style={errorStyle}>
+            {MESSAGES.userDetail}
+          </span>
+        )}
+        {isRestrictedError && (
+          <span className="amplify-text amplify-text--error" style={errorStyle}>
+            {MESSAGES.restricted}
+          </span>
+        )}
+      </>
+    );
+  }
 
-  return (
-    <>
-      <span ref={containerRef} style={{ display: 'none' }} />
-      {showFallback && password && (
-        <>
-          {isConsecutiveError && (
-            <span className="amplify-text amplify-text--error" style={errorStyle}>
-              {MESSAGES.consecutive}
-            </span>
-          )}
-          {isUserDetailError && (
-            <span className="amplify-text amplify-text--error" style={errorStyle}>
-              {MESSAGES.userDetail}
-            </span>
-          )}
-          {isRestrictedError && (
-            <span className="amplify-text amplify-text--error" style={errorStyle}>
-              {MESSAGES.restricted}
-            </span>
-          )}
-        </>
-      )}
-    </>
-  );
+  return <span ref={containerRef} style={{ display: 'none' }} />;
 };
