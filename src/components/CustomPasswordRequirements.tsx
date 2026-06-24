@@ -103,8 +103,8 @@ function getOrCreateRequirementsContainer(passwordFieldEl: Element): Element | n
   const newContainer = document.createElement('ul');
   newContainer.setAttribute(CUSTOM_CONTAINER_MARKER, 'true');
   newContainer.className = 'amplify-field__requirements';
-  newContainer.style.marginTop = '0.5rem';
-  newContainer.style.paddingLeft = '0';
+  newContainer.style.margin = '0.5rem 0 0 0';
+  newContainer.style.padding = '0';
   newContainer.style.listStyleType = 'none';
 
   // Insertar justo después del contenedor de entrada de la contraseña
