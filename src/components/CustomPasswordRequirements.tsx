@@ -56,18 +56,17 @@ function buildValidationState(password: string, username: string, email: string)
 
 // Busca el contenedor nativo de requisitos de Amplify dentro del campo o sus hermanos directos
 function findNativeRequirementsContainer(passwordFieldEl: Element): Element | null {
-  // Buscar dentro del propio passwordField (Amplify a menudo los renderiza como hijos)
-  const innerReq = passwordFieldEl.querySelector('.amplify-field__requirements, .amplify-passwordfield__requirements, ul');
+  // Buscar dentro del propio passwordField, omitiendo nuestro contenedor personalizado
+  const selector = `.amplify-field__requirements:not([${CUSTOM_CONTAINER_MARKER}]), .amplify-passwordfield__requirements:not([${CUSTOM_CONTAINER_MARKER}]), ul:not([${CUSTOM_CONTAINER_MARKER}])`;
+  const innerReq = passwordFieldEl.querySelector(selector);
   if (innerReq) return innerReq;
 
   // Buscar en los elementos hermanos siguientes
   let sibling = passwordFieldEl.nextElementSibling;
   while (sibling) {
     if (
-      sibling.tagName === 'UL' ||
-      sibling.classList.contains('amplify-field__requirements') ||
-      sibling.textContent?.includes('Password must have') ||
-      sibling.textContent?.includes('Password must contain')
+      (sibling.tagName === 'UL' || sibling.classList.contains('amplify-field__requirements')) &&
+      !sibling.hasAttribute(CUSTOM_CONTAINER_MARKER)
     ) {
       return sibling;
     }
@@ -398,6 +397,13 @@ export const CustomPasswordRequirements = ({
 
       const container = getOrCreateRequirementsContainer(passwordField);
       if (container) {
+        // Si el contenedor resuelto es el nativo, nos aseguramos de destruir el personalizado previo para evitar duplicados
+        if (!container.hasAttribute(CUSTOM_CONTAINER_MARKER)) {
+          const customContainer = passwordField.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
+          if (customContainer) {
+            customContainer.remove();
+          }
+        }
         syncCustomItems(container, validations);
         return true;
       }
