@@ -9,6 +9,7 @@ interface CustomPasswordRequirementsProps {
 }
 
 const CUSTOM_MARKER = 'data-custom-requirement';
+const CUSTOM_CONTAINER_MARKER = 'data-custom-requirements-container';
 
 const MESSAGES = {
   consecutive: 'Password cannot contain consecutive number sequences (e.g., 123 or 321)',
@@ -16,6 +17,7 @@ const MESSAGES = {
   restricted: 'Password contains a restricted term not permitted by corporate policies',
 };
 
+// Determina el estado de las validaciones personalizadas basadas en el password e informacion del usuario
 function buildValidationState(password: string, username: string, email: string) {
   const lowerPassword = password.toLowerCase();
 
@@ -54,11 +56,11 @@ function buildValidationState(password: string, username: string, email: string)
 
 // Busca el contenedor nativo de requisitos de Amplify dentro del campo o sus hermanos directos
 function findNativeRequirementsContainer(passwordFieldEl: Element): Element | null {
-  // 1. Buscar dentro del propio passwordField (ya que Amplify a menudo renderiza los requisitos como hijos del campo)
+  // Buscar dentro del propio passwordField (Amplify a menudo los renderiza como hijos)
   const innerReq = passwordFieldEl.querySelector('.amplify-field__requirements, .amplify-passwordfield__requirements, ul');
   if (innerReq) return innerReq;
 
-  // 2. Buscar como hermanos directos
+  // Buscar en los elementos hermanos siguientes
   let sibling = passwordFieldEl.nextElementSibling;
   while (sibling) {
     if (
@@ -83,44 +85,105 @@ function findNativeRequirementsContainer(passwordFieldEl: Element): Element | nu
   return null;
 }
 
+// Obtiene el contenedor de requisitos nativo o crea uno personalizado si no existe
+function getOrCreateRequirementsContainer(passwordFieldEl: Element): Element | null {
+  const nativeContainer = findNativeRequirementsContainer(passwordFieldEl);
+  if (nativeContainer) {
+    return nativeContainer;
+  }
+
+  const customContainer = passwordFieldEl.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
+  if (customContainer) {
+    return customContainer;
+  }
+
+  // Crear contenedor dinámico con las clases de estilo nativas de Amplify
+  const newContainer = document.createElement('ul');
+  newContainer.setAttribute(CUSTOM_CONTAINER_MARKER, 'true');
+  newContainer.className = 'amplify-field__requirements';
+  newContainer.style.marginTop = '0.5rem';
+  newContainer.style.paddingLeft = '0';
+  newContainer.style.listStyleType = 'none';
+
+  // Insertar justo después del contenedor de entrada de la contraseña
+  const inputEl = passwordFieldEl.querySelector('input[name="password"]');
+  const inputContainer = inputEl ? (inputEl.closest('.amplify-input') || inputEl.parentElement) : null;
+  const targetParent = inputContainer || passwordFieldEl;
+
+  if (targetParent && targetParent.nextSibling) {
+    passwordFieldEl.insertBefore(newContainer, targetParent.nextSibling);
+  } else {
+    passwordFieldEl.appendChild(newContainer);
+  }
+
+  return newContainer;
+}
+
+// Crea un elemento de requisito con estilos consistentes, clonando el de referencia o usando defaults
 function createRequirementItem(
   message: string,
-  referenceItem: Element,
+  referenceItem: Element | null,
 ): HTMLElement {
-  const tagName = referenceItem.tagName.toLowerCase();
+  const tagName = referenceItem ? referenceItem.tagName.toLowerCase() : 'li';
   const item = document.createElement(tagName);
   item.setAttribute(CUSTOM_MARKER, 'true');
   item.setAttribute('data-custom-msg', message);
-  item.className = referenceItem.className;
 
-  // Copiar todos los atributos de estilo computados relevantes del item de referencia
-  const refStyle = window.getComputedStyle(referenceItem);
-  item.style.display = refStyle.display;
-  item.style.alignItems = refStyle.alignItems;
-  item.style.gap = refStyle.gap;
-  item.style.flexDirection = refStyle.flexDirection;
+  if (referenceItem) {
+    item.className = referenceItem.className;
 
-  // Clonar el icono SVG si existe
-  const svg = referenceItem.querySelector('svg');
-  if (svg) {
-    const clonedSvg = svg.cloneNode(true) as SVGElement;
-    clonedSvg.style.color = 'var(--amplify-colors-font-error, #950404)';
-    item.appendChild(clonedSvg);
+    // Copiar estilos computados para integracion visual limpia
+    const refStyle = window.getComputedStyle(referenceItem);
+    item.style.display = refStyle.display;
+    item.style.alignItems = refStyle.alignItems;
+    item.style.gap = refStyle.gap;
+    item.style.flexDirection = refStyle.flexDirection;
+
+    // Clonar icono SVG
+    const svg = referenceItem.querySelector('svg');
+    if (svg) {
+      const clonedSvg = svg.cloneNode(true) as SVGElement;
+      clonedSvg.style.color = 'var(--amplify-colors-font-error, #950404)';
+      item.appendChild(clonedSvg);
+    }
+
+    const refTextEl = referenceItem.querySelector('span, p');
+    const textEl = document.createElement(refTextEl ? refTextEl.tagName.toLowerCase() : 'span');
+    if (refTextEl) {
+      textEl.className = refTextEl.className;
+    }
+    textEl.textContent = message;
+    textEl.style.color = 'var(--amplify-colors-font-error, #950404)';
+    item.appendChild(textEl);
+  } else {
+    // Estilos por defecto adaptados de los estilos nativos de Amplify para advertencias
+    item.className = 'amplify-text amplify-text--error';
+    item.style.display = 'flex';
+    item.style.alignItems = 'center';
+    item.style.gap = '0.5rem';
+    item.style.marginTop = '0.25rem';
+    item.style.color = 'var(--amplify-colors-font-error, #950404)';
+    item.style.fontSize = 'var(--amplify-font-sizes-xs, 0.85rem)';
+
+    // Icono SVG de alerta de error
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 16 16');
+    svg.setAttribute('width', '16');
+    svg.setAttribute('height', '16');
+    svg.setAttribute('fill', 'currentColor');
+    svg.style.color = 'var(--amplify-colors-font-error, #950404)';
+    svg.innerHTML = '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>';
+    item.appendChild(svg);
+
+    const textEl = document.createElement('span');
+    textEl.textContent = message;
+    item.appendChild(textEl);
   }
-
-  // Crear el span/p de texto clonando estilos del elemento de referencia
-  const refTextEl = referenceItem.querySelector('span, p');
-  const textEl = document.createElement(refTextEl ? refTextEl.tagName.toLowerCase() : 'span');
-  if (refTextEl) {
-    textEl.className = refTextEl.className;
-  }
-  textEl.textContent = message;
-  textEl.style.color = 'var(--amplify-colors-font-error, #950404)';
-  item.appendChild(textEl);
 
   return item;
 }
 
+// Sincroniza la lista de requisitos personalizados en el contenedor
 function syncCustomItems(
   container: Element,
   validations: { message: string; isError: boolean }[],
@@ -132,8 +195,6 @@ function syncCustomItems(
   });
 
   const referenceItem = container.querySelector(`:scope > :not([${CUSTOM_MARKER}])`);
-  if (!referenceItem) return;
-
   const activeMessages = new Set<string>();
 
   for (const { message, isError } of validations) {
@@ -170,7 +231,7 @@ export const CustomPasswordRequirements = ({
     const context = useAuthenticator((c) => [(c as any).formData]) as any;
     formData = context.formData || {};
   } catch (e) {
-    // Fuera del contexto Authenticator
+    // Fuera del contexto del autenticador
   }
 
   const [localPassword, setLocalPassword] = React.useState('');
@@ -226,23 +287,13 @@ export const CustomPasswordRequirements = ({
     return formData.email || '';
   };
 
-  // Efecto principal: busca el contenedor nativo como HERMANO del password field e inyecta
+  // Efecto principal para inyeccion de requisitos y limpieza
   React.useEffect(() => {
-    // Evitar el proceso de inyeccion si es un control controlado externo (como en el cambio de contrasena expirada)
     if (propPassword !== undefined) return;
     if (!containerRef.current) return;
 
     const passwordField = containerRef.current.closest('.amplify-passwordfield');
     if (!passwordField) return;
-
-    if (!password) {
-      // Limpiar items personalizados si no hay password
-      const nativeContainer = findNativeRequirementsContainer(passwordField);
-      if (nativeContainer) {
-        nativeContainer.querySelectorAll(`[${CUSTOM_MARKER}]`).forEach(el => el.remove());
-      }
-      return;
-    }
 
     const username = getUsername();
     const email = getEmail();
@@ -255,17 +306,42 @@ export const CustomPasswordRequirements = ({
       { message: MESSAGES.restricted, isError: isRestrictedError },
     ];
 
+    const hasActiveErrors = validations.some(v => v.isError);
+
+    if (!password) {
+      // Limpiar contenedores y elementos personalizados si no hay texto ingresado
+      const customContainer = passwordField.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
+      if (customContainer) {
+        customContainer.remove();
+      }
+      const nativeContainer = findNativeRequirementsContainer(passwordField);
+      if (nativeContainer) {
+        nativeContainer.querySelectorAll(`[${CUSTOM_MARKER}]`).forEach(el => el.remove());
+      }
+      return;
+    }
+
     let attempts = 0;
     const maxAttempts = 20;
 
     const tryInject = () => {
-      const nativeContainer = findNativeRequirementsContainer(passwordField);
-      if (nativeContainer) {
-        const firstChild = nativeContainer.querySelector(`:scope > :not([${CUSTOM_MARKER}])`);
-        if (firstChild) {
-          syncCustomItems(nativeContainer, validations);
-          return true;
+      if (!hasActiveErrors) {
+        // Remover el contenedor personalizado y borrar elementos inyectados si ya no hay errores
+        const customContainer = passwordField.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
+        if (customContainer) {
+          customContainer.remove();
         }
+        const nativeContainer = findNativeRequirementsContainer(passwordField);
+        if (nativeContainer) {
+          nativeContainer.querySelectorAll(`[${CUSTOM_MARKER}]`).forEach(el => el.remove());
+        }
+        return true;
+      }
+
+      const container = getOrCreateRequirementsContainer(passwordField);
+      if (container) {
+        syncCustomItems(container, validations);
+        return true;
       }
       return false;
     };
