@@ -47,9 +47,32 @@ export const PasswordExpirationGuard = ({ user, signOut, children }: PasswordExp
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
   const [successMsg, setSuccessMsg] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
+  const [userAttributes, setUserAttributes] = React.useState<{ givenName?: string; familyName?: string }>({});
 
   const checkedRef = React.useRef(false);
   const justUpdatedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!passwordExpired) return;
+
+    let cancelled = false;
+    async function loadAttributes() {
+      try {
+        const attributes = await fetchUserAttributes();
+        if (cancelled) return;
+        setUserAttributes({
+          givenName: attributes.given_name || '',
+          familyName: attributes.family_name || '',
+        });
+      } catch (err) {
+        console.warn('Error fetching user attributes for password validation:', err);
+      }
+    }
+    loadAttributes();
+    return () => {
+      cancelled = true;
+    };
+  }, [passwordExpired]);
 
   React.useEffect(() => {
     if (checkedRef.current || justUpdatedRef.current) return;
@@ -114,6 +137,8 @@ export const PasswordExpirationGuard = ({ user, signOut, children }: PasswordExp
     const complexityError = validatePassword(newPassword, {
       username: username || '',
       email: user?.signInDetails?.loginId,
+      givenName: userAttributes.givenName,
+      familyName: userAttributes.familyName,
     });
 
     if (complexityError) {
@@ -252,6 +277,8 @@ export const PasswordExpirationGuard = ({ user, signOut, children }: PasswordExp
                       password={newPassword}
                       username={user?.signInDetails?.loginId || user?.username}
                       email={user?.signInDetails?.loginId}
+                      givenName={userAttributes.givenName}
+                      familyName={userAttributes.familyName}
                     />
                   }
                 />

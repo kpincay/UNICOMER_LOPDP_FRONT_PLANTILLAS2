@@ -6,7 +6,10 @@ interface CustomPasswordRequirementsProps {
   password?: string;
   username?: string;
   email?: string;
+  givenName?: string;
+  familyName?: string;
 }
+
 
 const CUSTOM_MARKER = 'data-custom-requirement';
 
@@ -190,6 +193,8 @@ export const CustomPasswordRequirements = ({
   password: propPassword,
   username: propUsername,
   email: propEmail,
+  givenName: propGivenName,
+  familyName: propFamilyName,
 }: CustomPasswordRequirementsProps) => {
   let formData: any = {};
 
@@ -318,6 +323,7 @@ export const CustomPasswordRequirements = ({
   };
 
   const getGivenName = () => {
+    if (propGivenName !== undefined) return propGivenName;
     if (formValues.givenName) return formValues.givenName;
     if (containerRef.current) {
       const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
@@ -332,6 +338,7 @@ export const CustomPasswordRequirements = ({
   };
 
   const getFamilyName = () => {
+    if (propFamilyName !== undefined) return propFamilyName;
     if (formValues.familyName) return formValues.familyName;
     if (containerRef.current) {
       const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
@@ -418,6 +425,21 @@ export const CustomPasswordRequirements = ({
   const { isConsecutiveError, isUserDetailError, isRestrictedError } =
     buildValidationState(password, username, email, givenName, familyName);
 
+  // Verificar sincronicamente si el contenedor nativo de requisitos existe en el DOM en este instante
+  let hasNativeSync = false;
+  if (containerRef.current && propPassword === undefined) {
+    const passwordField = containerRef.current.closest('.amplify-passwordfield');
+    if (passwordField) {
+      const nativeContainer = findNativeRequirementsContainer(passwordField);
+      if (nativeContainer) {
+        const firstChild = nativeContainer.querySelector(`:scope > :not([${CUSTOM_MARKER}])`);
+        if (firstChild) {
+          hasNativeSync = true;
+        }
+      }
+    }
+  }
+
   const errorStyle: React.CSSProperties = {
     color: 'var(--amplify-colors-font-error, #950404)',
     fontSize: 'var(--amplify-font-sizes-xs, 0.85rem)',
@@ -426,7 +448,7 @@ export const CustomPasswordRequirements = ({
   };
 
   // Mostrar el fallback en React si es un campo controlado externo o si la lista nativa no existe en el DOM
-  const showFallback = propPassword !== undefined || !hasNative;
+  const showFallback = propPassword !== undefined || (!hasNative && !hasNativeSync);
 
   return (
     <>
