@@ -1,6 +1,6 @@
 import React from 'react';
 import UnicomerLogo from './assets/unicomer.png';
-import { Authenticator, View, Text, Heading, useTheme } from '@aws-amplify/ui-react';
+import { Authenticator, View, Text, Heading, useTheme, useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from 'aws-amplify';
 import { signUp, confirmResetPassword, signIn, fetchUserAttributes } from 'aws-amplify/auth';
@@ -129,6 +129,26 @@ const StableLayout = React.memo(
     prev.user?.username === next.user?.username && prev.activeView === next.activeView
 );
 
+const BeforeUnloadGuard = () => {
+  const { route } = useAuthenticator((context) => [context.route]);
+
+  React.useEffect(() => {
+    if (route === 'confirmSignUp') {
+      const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      };
+      window.addEventListener('beforeunload', handleBeforeUnload);
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }
+  }, [route]);
+
+  return null;
+};
+
 export default function App() {
   const [transactionId, setTransactionId] = React.useState<string | null>(null);
   const [selectedProcesoId, setSelectedProcesoId] = React.useState<string | null>(null);
@@ -165,6 +185,7 @@ export default function App() {
   if (isApiDocsRoute) {
     return (
       <Authenticator.Provider>
+        <BeforeUnloadGuard />
         <Authenticator components={components} services={authenticatorServices} formFields={authenticatorFormFields}>
           {({ signOut, user }) => (
             <PasswordExpirationGuard user={user} signOut={signOut}>
@@ -178,6 +199,7 @@ export default function App() {
 
   return (
     <Authenticator.Provider>
+      <BeforeUnloadGuard />
       <Authenticator components={components} services={authenticatorServices} formFields={authenticatorFormFields}>
         {({ signOut, user }) => (
           <PasswordExpirationGuard user={user} signOut={signOut}>
