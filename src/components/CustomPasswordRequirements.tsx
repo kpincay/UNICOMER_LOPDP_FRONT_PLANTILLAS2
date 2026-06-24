@@ -227,6 +227,8 @@ export const CustomPasswordRequirements = ({
 
   // Efecto principal: busca el contenedor nativo como HERMANO del password field e inyecta
   React.useEffect(() => {
+    // Evitar el proceso de inyeccion si es un control controlado externo (como en el cambio de contrasena expirada)
+    if (propPassword !== undefined) return;
     if (!containerRef.current) return;
 
     const passwordField = containerRef.current.closest('.amplify-passwordfield');
@@ -286,6 +288,42 @@ export const CustomPasswordRequirements = ({
 
     return () => clearInterval(retryInterval);
   }, [password]);
+
+  // Si el componente recibe la contrasena como prop, renderizamos las validaciones directamente en el DOM de React
+  if (propPassword !== undefined) {
+    if (!password) return null;
+    const username = getUsername();
+    const email = getEmail();
+    const { isConsecutiveError, isUserDetailError, isRestrictedError } =
+      buildValidationState(password, username, email);
+
+    const errorStyle: React.CSSProperties = {
+      color: 'var(--amplify-colors-font-error, #950404)',
+      fontSize: 'var(--amplify-font-sizes-xs, 0.85rem)',
+      marginTop: '0.25rem',
+      display: 'block',
+    };
+
+    return (
+      <>
+        {isConsecutiveError && (
+          <span className="amplify-text amplify-text--error" style={errorStyle}>
+            {MESSAGES.consecutive}
+          </span>
+        )}
+        {isUserDetailError && (
+          <span className="amplify-text amplify-text--error" style={errorStyle}>
+            {MESSAGES.userDetail}
+          </span>
+        )}
+        {isRestrictedError && (
+          <span className="amplify-text amplify-text--error" style={errorStyle}>
+            {MESSAGES.restricted}
+          </span>
+        )}
+      </>
+    );
+  }
 
   return <span ref={containerRef} style={{ display: 'none' }} />;
 };
