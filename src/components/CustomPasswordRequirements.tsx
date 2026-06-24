@@ -9,7 +9,6 @@ interface CustomPasswordRequirementsProps {
 }
 
 const CUSTOM_MARKER = 'data-custom-requirement';
-const CUSTOM_CONTAINER_MARKER = 'data-custom-requirements-container';
 
 const MESSAGES = {
   consecutive: 'Password cannot contain consecutive number sequences (e.g., 123 or 321)',
@@ -56,20 +55,18 @@ function buildValidationState(password: string, username: string, email: string)
 
 // Busca el contenedor nativo de requisitos de Amplify dentro del campo o sus hermanos directos
 function findNativeRequirementsContainer(passwordFieldEl: Element): Element | null {
-  // Buscar dentro del propio passwordField, omitiendo nuestro contenedor personalizado
-  const selector = `.amplify-field__requirements:not([${CUSTOM_CONTAINER_MARKER}]), .amplify-passwordfield__requirements:not([${CUSTOM_CONTAINER_MARKER}]), ul:not([${CUSTOM_CONTAINER_MARKER}])`;
-  const innerReq = passwordFieldEl.querySelector(selector);
+  // Buscar dentro del propio passwordField (Amplify a menudo los renderiza como hijos)
+  const innerReq = passwordFieldEl.querySelector('.amplify-field__requirements, .amplify-passwordfield__requirements, ul');
   if (innerReq) return innerReq;
 
   // Buscar en los elementos hermanos siguientes
   let sibling = passwordFieldEl.nextElementSibling;
   while (sibling) {
     if (
-      !sibling.hasAttribute(CUSTOM_CONTAINER_MARKER) &&
-      (sibling.tagName === 'UL' ||
-       sibling.classList.contains('amplify-field__requirements') ||
-       sibling.textContent?.includes('Password must have') ||
-       sibling.textContent?.includes('Password must contain'))
+      sibling.tagName === 'UL' ||
+      sibling.classList.contains('amplify-field__requirements') ||
+      sibling.textContent?.includes('Password must have') ||
+      sibling.textContent?.includes('Password must contain')
     ) {
       return sibling;
     }
@@ -87,93 +84,45 @@ function findNativeRequirementsContainer(passwordFieldEl: Element): Element | nu
   return null;
 }
 
-// Obtiene el contenedor de requisitos nativo o crea uno personalizado si no existe
-function getOrCreateRequirementsContainer(passwordFieldEl: Element): Element | null {
-  const nativeContainer = findNativeRequirementsContainer(passwordFieldEl);
-  if (nativeContainer) {
-    return nativeContainer;
-  }
-
-  const customContainer = passwordFieldEl.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
-  if (customContainer) {
-    return customContainer;
-  }
-
-  // Crear contenedor dinámico con las clases de estilo nativas de Amplify
-  const newContainer = document.createElement('ul');
-  newContainer.setAttribute(CUSTOM_CONTAINER_MARKER, 'true');
-  newContainer.className = 'amplify-field__requirements';
-  newContainer.style.margin = '0.5rem 0 0 0';
-  newContainer.style.padding = '0';
-  newContainer.style.listStyleType = 'none';
-
-  // Insertar justo después del contenedor de entrada de la contraseña
-  const inputEl = passwordFieldEl.querySelector('input[name="password"]');
-  const inputContainer = inputEl ? (inputEl.closest('.amplify-input') || inputEl.parentElement) : null;
-  const targetParent = inputContainer || passwordFieldEl;
-
-  if (targetParent && targetParent.nextSibling) {
-    passwordFieldEl.insertBefore(newContainer, targetParent.nextSibling);
-  } else {
-    passwordFieldEl.appendChild(newContainer);
-  }
-
-  return newContainer;
-}
-
-// Crea un elemento de requisito con estilos consistentes, clonando el de referencia o usando defaults
+// Crea un elemento de requisito con estilos consistentes, clonando el de referencia
 function createRequirementItem(
   message: string,
-  referenceItem: Element | null,
+  referenceItem: Element,
 ): HTMLElement {
-  const tagName = referenceItem ? referenceItem.tagName.toLowerCase() : 'li';
+  const tagName = referenceItem.tagName.toLowerCase();
   const item = document.createElement(tagName);
   item.setAttribute(CUSTOM_MARKER, 'true');
   item.setAttribute('data-custom-msg', message);
+  item.className = referenceItem.className;
 
-  if (referenceItem) {
-    item.className = referenceItem.className;
+  // Copiar estilos computados para integracion visual limpia
+  const refStyle = window.getComputedStyle(referenceItem);
+  item.style.display = refStyle.display;
+  item.style.alignItems = refStyle.alignItems;
+  item.style.gap = refStyle.gap;
+  item.style.flexDirection = refStyle.flexDirection;
 
-    // Copiar estilos computados para integracion visual limpia
-    const refStyle = window.getComputedStyle(referenceItem);
-    item.style.display = refStyle.display;
-    item.style.alignItems = refStyle.alignItems;
-    item.style.gap = refStyle.gap;
-    item.style.flexDirection = refStyle.flexDirection;
-
-    // Clonar icono SVG
-    const svg = referenceItem.querySelector('svg');
-    if (svg) {
-      const clonedSvg = svg.cloneNode(true) as SVGElement;
-      clonedSvg.style.color = 'var(--amplify-colors-font-error, #950404)';
-      item.appendChild(clonedSvg);
-    }
-
-    const refTextEl = referenceItem.querySelector('span, p');
-    const textEl = document.createElement(refTextEl ? refTextEl.tagName.toLowerCase() : 'span');
-    if (refTextEl) {
-      textEl.className = refTextEl.className;
-    }
-    textEl.textContent = message;
-    textEl.style.color = 'var(--amplify-colors-font-error, #950404)';
-    item.appendChild(textEl);
-  } else {
-    // Estilos por defecto adaptados de los estilos nativos de Amplify para advertencias (sin iconos)
-    item.className = 'amplify-text amplify-text--error';
-    item.style.color = 'var(--amplify-colors-font-error, #950404)';
-    item.style.fontSize = 'var(--amplify-font-sizes-xs, 0.85rem)';
-    item.style.marginTop = '0.25rem';
-    item.style.display = 'block';
-
-    const textEl = document.createElement('span');
-    textEl.textContent = message;
-    item.appendChild(textEl);
+  // Clonar icono SVG si existe en la referencia
+  const svg = referenceItem.querySelector('svg');
+  if (svg) {
+    const clonedSvg = svg.cloneNode(true) as SVGElement;
+    clonedSvg.style.color = 'var(--amplify-colors-font-error, #950404)';
+    item.appendChild(clonedSvg);
   }
+
+  const refTextEl = referenceItem.querySelector('span, p');
+  const textEl = document.createElement(refTextEl ? refTextEl.tagName.toLowerCase() : 'span');
+  if (refTextEl) {
+    textEl.className = refTextEl.className;
+  }
+  textEl.textContent = message;
+  textEl.style.color = 'var(--amplify-colors-font-error, #950404)';
+  item.appendChild(textEl);
 
   return item;
 }
 
-// Sincroniza la lista de requisitos personalizados en el contenedor
+// Sincroniza la lista de requisitos personalizados en el contenedor nativo
 function syncCustomItems(
   container: Element,
   validations: { message: string; isError: boolean }[],
@@ -185,6 +134,8 @@ function syncCustomItems(
   });
 
   const referenceItem = container.querySelector(`:scope > :not([${CUSTOM_MARKER}])`);
+  if (!referenceItem) return;
+
   const activeMessages = new Set<string>();
 
   for (const { message, isError } of validations) {
@@ -227,6 +178,7 @@ export const CustomPasswordRequirements = ({
   const [localPassword, setLocalPassword] = React.useState('');
   const [formValues, setFormValues] = React.useState({ username: '', email: '' });
   const containerRef = React.useRef<HTMLSpanElement>(null);
+  const [hasNative, setHasNative] = React.useState(false);
 
   // Escuchar cambios en los inputs del formulario activo para actualizar en tiempo real
   React.useEffect(() => {
@@ -341,7 +293,20 @@ export const CustomPasswordRequirements = ({
     if (!containerRef.current) return;
 
     const passwordField = containerRef.current.closest('.amplify-passwordfield');
-    if (!passwordField) return;
+    if (!passwordField) {
+      setHasNative(false);
+      return;
+    }
+
+    if (!password) {
+      // Limpiar items personalizados si no hay password
+      const nativeContainer = findNativeRequirementsContainer(passwordField);
+      if (nativeContainer) {
+        nativeContainer.querySelectorAll(`[${CUSTOM_MARKER}]`).forEach(el => el.remove());
+      }
+      setHasNative(false);
+      return;
+    }
 
     const username = getUsername();
     const email = getEmail();
@@ -354,50 +319,20 @@ export const CustomPasswordRequirements = ({
       { message: MESSAGES.restricted, isError: isRestrictedError },
     ];
 
-    const hasActiveErrors = validations.some(v => v.isError);
-
-    if (!password) {
-      // Limpiar contenedores y elementos personalizados si no hay texto ingresado
-      const customContainer = passwordField.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
-      if (customContainer) {
-        customContainer.remove();
-      }
-      const nativeContainer = findNativeRequirementsContainer(passwordField);
-      if (nativeContainer) {
-        nativeContainer.querySelectorAll(`[${CUSTOM_MARKER}]`).forEach(el => el.remove());
-      }
-      return;
-    }
-
     let attempts = 0;
     const maxAttempts = 20;
 
     const tryInject = () => {
-      if (!hasActiveErrors) {
-        // Remover el contenedor personalizado y borrar elementos inyectados si ya no hay errores
-        const customContainer = passwordField.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
-        if (customContainer) {
-          customContainer.remove();
+      const nativeContainer = findNativeRequirementsContainer(passwordField);
+      if (nativeContainer) {
+        const firstChild = nativeContainer.querySelector(`:scope > :not([${CUSTOM_MARKER}])`);
+        if (firstChild) {
+          syncCustomItems(nativeContainer, validations);
+          setHasNative(true);
+          return true;
         }
-        const nativeContainer = findNativeRequirementsContainer(passwordField);
-        if (nativeContainer) {
-          nativeContainer.querySelectorAll(`[${CUSTOM_MARKER}]`).forEach(el => el.remove());
-        }
-        return true;
       }
-
-      const container = getOrCreateRequirementsContainer(passwordField);
-      if (container) {
-        // Si el contenedor resuelto es el nativo, nos aseguramos de destruir el personalizado previo para evitar duplicados
-        if (!container.hasAttribute(CUSTOM_CONTAINER_MARKER)) {
-          const customContainer = passwordField.querySelector(`ul[${CUSTOM_CONTAINER_MARKER}]`);
-          if (customContainer) {
-            customContainer.remove();
-          }
-        }
-        syncCustomItems(container, validations);
-        return true;
-      }
+      setHasNative(false);
       return false;
     };
 
@@ -407,47 +342,52 @@ export const CustomPasswordRequirements = ({
       attempts++;
       if (tryInject() || attempts >= maxAttempts) {
         clearInterval(retryInterval);
+        if (attempts >= maxAttempts) {
+          setHasNative(false);
+        }
       }
     }, 50);
 
     return () => clearInterval(retryInterval);
   }, [password, formValues]);
 
-  // Si el componente recibe la contrasena como prop, renderizamos las validaciones directamente en el DOM de React
-  if (propPassword !== undefined) {
-    if (!password) return null;
-    const username = getUsername();
-    const email = getEmail();
-    const { isConsecutiveError, isUserDetailError, isRestrictedError } =
-      buildValidationState(password, username, email);
+  const username = getUsername();
+  const email = getEmail();
+  const { isConsecutiveError, isUserDetailError, isRestrictedError } =
+    buildValidationState(password, username, email);
 
-    const errorStyle: React.CSSProperties = {
-      color: 'var(--amplify-colors-font-error, #950404)',
-      fontSize: 'var(--amplify-font-sizes-xs, 0.85rem)',
-      marginTop: '0.25rem',
-      display: 'block',
-    };
+  const errorStyle: React.CSSProperties = {
+    color: 'var(--amplify-colors-font-error, #950404)',
+    fontSize: 'var(--amplify-font-sizes-xs, 0.85rem)',
+    marginTop: '0.25rem',
+    display: 'block',
+  };
 
-    return (
-      <>
-        {isConsecutiveError && (
-          <span className="amplify-text amplify-text--error" style={errorStyle}>
-            {MESSAGES.consecutive}
-          </span>
-        )}
-        {isUserDetailError && (
-          <span className="amplify-text amplify-text--error" style={errorStyle}>
-            {MESSAGES.userDetail}
-          </span>
-        )}
-        {isRestrictedError && (
-          <span className="amplify-text amplify-text--error" style={errorStyle}>
-            {MESSAGES.restricted}
-          </span>
-        )}
-      </>
-    );
-  }
+  // Mostrar el fallback en React si es un campo controlado externo o si la lista nativa no existe en el DOM
+  const showFallback = propPassword !== undefined || !hasNative;
 
-  return <span ref={containerRef} style={{ display: 'none' }} />;
+  return (
+    <>
+      <span ref={containerRef} style={{ display: 'none' }} />
+      {showFallback && password && (
+        <div style={{ marginTop: '0.25rem' }}>
+          {isConsecutiveError && (
+            <span className="amplify-text amplify-text--error" style={errorStyle}>
+              {MESSAGES.consecutive}
+            </span>
+          )}
+          {isUserDetailError && (
+            <span className="amplify-text amplify-text--error" style={errorStyle}>
+              {MESSAGES.userDetail}
+            </span>
+          )}
+          {isRestrictedError && (
+            <span className="amplify-text amplify-text--error" style={errorStyle}>
+              {MESSAGES.restricted}
+            </span>
+          )}
+        </div>
+      )}
+    </>
+  );
 };
