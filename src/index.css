@@ -900,3 +900,19 @@ tbody td {
 
 .mt-20 { margin-top: 20px; }
 .text-success { color: var(--success); }
+
+
+.amplify-passwordfield {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.amplify-passwordfield .amplify-input-group {
+    order: 2 !important;
+}
+
+.amplify-passwordfield .amplify-field__description {
+    order: 3 !important;
+    margin-top: 0.25rem !important;
+    font-style: normal !important;
+}

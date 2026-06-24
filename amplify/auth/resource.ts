@@ -8,4 +8,11 @@ export const auth = defineAuth({
   loginWith: {
     email: true,
   },
+  userAttributes: {
+    // Atributo personalizado para almacenar la fecha de la última actualización de contraseña
+    'custom:passwordUpdatedAt': {
+      dataType: 'String',
+      mutable: true,
+    },
+  },
 });

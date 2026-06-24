@@ -3,6 +3,7 @@ import UnicomerLogo from './assets/unicomer.png';
 import { Authenticator, View, Text, Heading, useTheme } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Amplify } from 'aws-amplify';
+import { signUp, confirmResetPassword, signIn, fetchUserAttributes } from 'aws-amplify/auth';
 import outputs from '../amplify_outputs.json';
 import { Layout } from './components/Layout';
 import './index.css';
@@ -11,8 +12,97 @@ import { TransactionInitiator } from './components/TransactionInitiator';
 // import { ApiDocs } from './components/ApiDocs';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../amplify/data/resource';
+import { validatePassword } from './services/passwordValidator';
+import { PasswordExpirationGuard } from './components/PasswordExpirationGuard';
+import { CustomPasswordRequirements } from './components/CustomPasswordRequirements';
 
 Amplify.configure(outputs);
+
+const authenticatorServices = {
+  async handleSignIn(input: any) {
+    const { username, password, options } = input;
+    const result = await signIn({ username, password, options });
+    if (result.isSignedIn) {
+      try {
+        const attributes = await fetchUserAttributes();
+        const updatedAtStr = attributes['custom:passwordUpdatedAt'] || null;
+        if (updatedAtStr) {
+          localStorage.setItem(`password_updated_at_${username}`, updatedAtStr);
+        } else {
+          localStorage.setItem(`password_updated_at_${username}`, new Date().toISOString());
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+    return result;
+  },
+  async handleSignUp(input: any) {
+    const { username, password, options } = input;
+    const validationError = validatePassword(password, {
+      username,
+      email: options?.userAttributes?.email,
+      givenName: options?.userAttributes?.given_name,
+      familyName: options?.userAttributes?.family_name,
+    });
+    if (validationError) {
+      throw new Error(validationError);
+    }
+
+    localStorage.setItem(`password_updated_at_${username}`, new Date().toISOString());
+
+    const updatedOptions = {
+      ...options,
+      userAttributes: {
+        ...options?.userAttributes,
+        'custom:passwordUpdatedAt': new Date().toISOString()
+      }
+    };
+    return signUp({ username, password, options: updatedOptions });
+  },
+  async handleForgotPasswordSubmit(input: any) {
+    const { username, confirmationCode, newPassword } = input;
+
+    const lastUpdate = localStorage.getItem(`password_updated_at_${username}`);
+    if (lastUpdate) {
+      const diffMs = Math.abs(Date.now() - new Date(lastUpdate).getTime());
+      const diffHours = diffMs / (1000 * 60 * 60);
+      if (diffHours < 24) {
+        throw new Error('You cannot change it more than once a day.');
+      }
+    }
+
+    const validationError = validatePassword(newPassword, {
+      username,
+    });
+    if (validationError) {
+      throw new Error(validationError);
+    }
+
+    localStorage.setItem(`password_updated_at_${username}`, new Date().toISOString());
+
+    return confirmResetPassword({ username, confirmationCode, newPassword });
+  },
+};
+
+const authenticatorFormFields: any = {
+  signUp: {
+    password: {
+      descriptiveText: <CustomPasswordRequirements />,
+    },
+  },
+  confirmResetPassword: {
+    password: {
+      descriptiveText: <CustomPasswordRequirements />,
+    },
+  },
+  forceNewPassword: {
+    password: {
+      descriptiveText: <CustomPasswordRequirements />,
+    },
+  },
+};
+
 
 const components = {
   Header() {
@@ -31,6 +121,14 @@ const components = {
   },
 };
 
+const StableLayout = React.memo(
+  ({ user, signOut, activeView }: { user: any; signOut: any; activeView?: string }) => (
+    <Layout user={user} signOut={signOut} activeView={activeView} />
+  ),
+  (prev, next) =>
+    prev.user?.username === next.user?.username && prev.activeView === next.activeView
+);
+
 export default function App() {
   const [transactionId, setTransactionId] = React.useState<string | null>(null);
   const [selectedProcesoId, setSelectedProcesoId] = React.useState<string | null>(null);
@@ -41,7 +139,7 @@ export default function App() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const idProceso = params.get('idProceso');
-    const path = window.location.pathname.replace(/\/$/, ''); // Remove trailing slash for comparison
+    const path = window.location.pathname.replace(/\/$/, '');
 
     if (id) {
       setTransactionId(id);
@@ -56,34 +154,38 @@ export default function App() {
     }
   }, []);
 
-  // 1. PUBLIC ROUTE: Acceptance Landing (Landing by UUID)
   if (transactionId) {
     return <AcceptanceLanding transactionId={transactionId} />;
   }
 
-  // 2. PUBLIC ROUTE: Process Creation (Initiator)
   if (isCreationRoute) {
     return <TransactionInitiatorPage initialProcesoId={selectedProcesoId} />;
   }
 
-  // 3. PRIVATE ROUTE: API Documentation (Authentication Required)
   if (isApiDocsRoute) {
     return (
-      <Authenticator components={components}>
-        {({ signOut, user }) => (
-          <Layout user={user} signOut={signOut} activeView="api-docs" />
-        )}
-      </Authenticator>
+      <Authenticator.Provider>
+        <Authenticator components={components} services={authenticatorServices} formFields={authenticatorFormFields}>
+          {({ signOut, user }) => (
+            <PasswordExpirationGuard user={user} signOut={signOut}>
+              <StableLayout user={user} signOut={signOut} activeView="api-docs" />
+            </PasswordExpirationGuard>
+          )}
+        </Authenticator>
+      </Authenticator.Provider>
     );
   }
 
-  // 4. PRIVATE ROUTE: Admin Dashboard (Authentication Required)
   return (
-    <Authenticator components={components}>
-      {({ signOut, user }) => (
-        <Layout user={user} signOut={signOut} />
-      )}
-    </Authenticator>
+    <Authenticator.Provider>
+      <Authenticator components={components} services={authenticatorServices} formFields={authenticatorFormFields}>
+        {({ signOut, user }) => (
+          <PasswordExpirationGuard user={user} signOut={signOut}>
+            <StableLayout user={user} signOut={signOut} />
+          </PasswordExpirationGuard>
+        )}
+      </Authenticator>
+    </Authenticator.Provider>
   );
 }
 

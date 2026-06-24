@@ -13,3 +13,19 @@ const backend = defineBackend({
   data,
   sendEmail,
 });
+
+// Sobrescribir la política de contraseñas de Cognito para cumplir con los estándares corporativos
+backend.auth.resources.cfnResources.cfnUserPool.addPropertyOverride(
+  'Policies',
+  {
+    PasswordPolicy: {
+      MinimumLength: 12,
+      RequireLowercase: true,
+      RequireNumbers: true,
+      RequireSymbols: true,
+      RequireUppercase: true,
+      PasswordHistorySize: 3, 
+    }
+  }
+);
+
