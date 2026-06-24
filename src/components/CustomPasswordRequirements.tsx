@@ -17,7 +17,13 @@ const MESSAGES = {
 };
 
 // Determina el estado de las validaciones personalizadas basadas en el password e informacion del usuario
-function buildValidationState(password: string, username: string, email: string) {
+function buildValidationState(
+  password: string,
+  username: string,
+  email: string,
+  givenName?: string,
+  familyName?: string,
+) {
   const lowerPassword = password.toLowerCase();
 
   const isConsecutiveError = hasConsecutiveNumbers(password);
@@ -34,6 +40,13 @@ function buildValidationState(password: string, username: string, email: string)
     excludedParts.push(email.toLowerCase());
     excludedParts.push(email.split('@')[0].toLowerCase());
   }
+  if (givenName) {
+    excludedParts.push(givenName.toLowerCase());
+  }
+  if (familyName) {
+    excludedParts.push(familyName.toLowerCase());
+  }
+
   const userTerms = excludedParts.filter(t => t && t.length >= 3);
   for (const term of userTerms) {
     if (lowerPassword.includes(term)) {
@@ -59,15 +72,15 @@ function findNativeRequirementsContainer(passwordFieldEl: Element): Element | nu
   const innerReq = passwordFieldEl.querySelector('.amplify-field__requirements, .amplify-passwordfield__requirements, ul');
   if (innerReq) return innerReq;
 
-  // 2. Buscar por coincidencia de texto dentro del propio passwordField (por si son divs o spans)
-  const allElements = passwordFieldEl.querySelectorAll('*');
+  // 2. Buscar por coincidencia de texto en elementos descendientes específicos (para detectar divs/spans de requisitos)
+  const allElements = passwordFieldEl.querySelectorAll('li, span, p');
   for (const el of allElements) {
     if (
       el.textContent?.includes('Password must have') ||
       el.textContent?.includes('Password must contain')
     ) {
-      // Retornar el contenedor de bloque más cercano
-      return el.closest('ul, ol, div') || el;
+      // Retornar el contenedor de lista o bloque padre del texto
+      return el.parentElement;
     }
   }
 
@@ -188,7 +201,7 @@ export const CustomPasswordRequirements = ({
   }
 
   const [localPassword, setLocalPassword] = React.useState('');
-  const [formValues, setFormValues] = React.useState({ username: '', email: '' });
+  const [formValues, setFormValues] = React.useState({ username: '', email: '', givenName: '', familyName: '' });
   const containerRef = React.useRef<HTMLSpanElement>(null);
   const [hasNative, setHasNative] = React.useState(false);
 
@@ -205,9 +218,10 @@ export const CustomPasswordRequirements = ({
 
     const handleOtherInput = (e: Event) => {
       const input = e.target as HTMLInputElement;
+      const key = input.name === 'given_name' ? 'givenName' : (input.name === 'family_name' ? 'familyName' : input.name);
       setFormValues(prev => ({
         ...prev,
-        [input.name]: input.value
+        [key]: input.value
       }));
     };
 
@@ -224,9 +238,13 @@ export const CustomPasswordRequirements = ({
 
         const usernameInput = form.querySelector('input[name="username"]') as HTMLInputElement;
         const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+        const givenNameInput = form.querySelector('input[name="given_name"]') as HTMLInputElement;
+        const familyNameInput = form.querySelector('input[name="family_name"]') as HTMLInputElement;
         setFormValues({
           username: usernameInput ? usernameInput.value : '',
-          email: emailInput ? emailInput.value : ''
+          email: emailInput ? emailInput.value : '',
+          givenName: givenNameInput ? givenNameInput.value : '',
+          familyName: familyNameInput ? familyNameInput.value : ''
         });
 
         // Escuchar todos los inputs que no sean de password (ej. email, username, nombre, apellido)
@@ -299,6 +317,34 @@ export const CustomPasswordRequirements = ({
     return formData.email || '';
   };
 
+  const getGivenName = () => {
+    if (formValues.givenName) return formValues.givenName;
+    if (containerRef.current) {
+      const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
+      if (form) {
+        const input = form.querySelector('input[name="given_name"]') as HTMLInputElement;
+        if (input) return input.value;
+      }
+    }
+    const input = document.querySelector('input[name="given_name"]') as HTMLInputElement;
+    if (input) return input.value;
+    return '';
+  };
+
+  const getFamilyName = () => {
+    if (formValues.familyName) return formValues.familyName;
+    if (containerRef.current) {
+      const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
+      if (form) {
+        const input = form.querySelector('input[name="family_name"]') as HTMLInputElement;
+        if (input) return input.value;
+      }
+    }
+    const input = document.querySelector('input[name="family_name"]') as HTMLInputElement;
+    if (input) return input.value;
+    return '';
+  };
+
   // Efecto principal para inyeccion de requisitos y limpieza
   React.useEffect(() => {
     if (propPassword !== undefined) return;
@@ -322,8 +368,10 @@ export const CustomPasswordRequirements = ({
 
     const username = getUsername();
     const email = getEmail();
+    const givenName = getGivenName();
+    const familyName = getFamilyName();
     const { isConsecutiveError, isUserDetailError, isRestrictedError } =
-      buildValidationState(password, username, email);
+      buildValidationState(password, username, email, givenName, familyName);
 
     const validations = [
       { message: MESSAGES.consecutive, isError: isConsecutiveError },
@@ -365,8 +413,10 @@ export const CustomPasswordRequirements = ({
 
   const username = getUsername();
   const email = getEmail();
+  const givenName = getGivenName();
+  const familyName = getFamilyName();
   const { isConsecutiveError, isUserDetailError, isRestrictedError } =
-    buildValidationState(password, username, email);
+    buildValidationState(password, username, email, givenName, familyName);
 
   const errorStyle: React.CSSProperties = {
     color: 'var(--amplify-colors-font-error, #950404)',
