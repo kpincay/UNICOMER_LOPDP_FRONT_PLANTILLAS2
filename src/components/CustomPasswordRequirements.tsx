@@ -65,8 +65,11 @@ function findNativeRequirementsContainer(passwordFieldEl: Element): Element | nu
   let sibling = passwordFieldEl.nextElementSibling;
   while (sibling) {
     if (
-      (sibling.tagName === 'UL' || sibling.classList.contains('amplify-field__requirements')) &&
-      !sibling.hasAttribute(CUSTOM_CONTAINER_MARKER)
+      !sibling.hasAttribute(CUSTOM_CONTAINER_MARKER) &&
+      (sibling.tagName === 'UL' ||
+       sibling.classList.contains('amplify-field__requirements') ||
+       sibling.textContent?.includes('Password must have') ||
+       sibling.textContent?.includes('Password must contain'))
     ) {
       return sibling;
     }
@@ -155,24 +158,12 @@ function createRequirementItem(
     textEl.style.color = 'var(--amplify-colors-font-error, #950404)';
     item.appendChild(textEl);
   } else {
-    // Estilos por defecto adaptados de los estilos nativos de Amplify para advertencias
+    // Estilos por defecto adaptados de los estilos nativos de Amplify para advertencias (sin iconos)
     item.className = 'amplify-text amplify-text--error';
-    item.style.display = 'flex';
-    item.style.alignItems = 'center';
-    item.style.gap = '0.5rem';
-    item.style.marginTop = '0.25rem';
     item.style.color = 'var(--amplify-colors-font-error, #950404)';
     item.style.fontSize = 'var(--amplify-font-sizes-xs, 0.85rem)';
-
-    // Icono SVG de alerta de error
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 16 16');
-    svg.setAttribute('width', '16');
-    svg.setAttribute('height', '16');
-    svg.setAttribute('fill', 'currentColor');
-    svg.style.color = 'var(--amplify-colors-font-error, #950404)';
-    svg.innerHTML = '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>';
-    item.appendChild(svg);
+    item.style.marginTop = '0.25rem';
+    item.style.display = 'block';
 
     const textEl = document.createElement('span');
     textEl.textContent = message;
