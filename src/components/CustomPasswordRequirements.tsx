@@ -55,11 +55,23 @@ function buildValidationState(password: string, username: string, email: string)
 
 // Busca el contenedor nativo de requisitos de Amplify dentro del campo o sus hermanos directos
 function findNativeRequirementsContainer(passwordFieldEl: Element): Element | null {
-  // Buscar dentro del propio passwordField (Amplify a menudo los renderiza como hijos)
+  // 1. Buscar dentro del propio passwordField por clases estándar o tag ul
   const innerReq = passwordFieldEl.querySelector('.amplify-field__requirements, .amplify-passwordfield__requirements, ul');
   if (innerReq) return innerReq;
 
-  // Buscar en los elementos hermanos siguientes
+  // 2. Buscar por coincidencia de texto dentro del propio passwordField (por si son divs o spans)
+  const allElements = passwordFieldEl.querySelectorAll('*');
+  for (const el of allElements) {
+    if (
+      el.textContent?.includes('Password must have') ||
+      el.textContent?.includes('Password must contain')
+    ) {
+      // Retornar el contenedor de bloque más cercano
+      return el.closest('ul, ol, div') || el;
+    }
+  }
+
+  // 3. Buscar en los elementos hermanos siguientes
   let sibling = passwordFieldEl.nextElementSibling;
   while (sibling) {
     if (
