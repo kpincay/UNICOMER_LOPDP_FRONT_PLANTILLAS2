@@ -235,27 +235,59 @@ export const CustomPasswordRequirements = ({
   }
 
   const [localPassword, setLocalPassword] = React.useState('');
+  const [formValues, setFormValues] = React.useState({ username: '', email: '' });
   const containerRef = React.useRef<HTMLSpanElement>(null);
 
+  // Escuchar cambios en los inputs del formulario activo para actualizar en tiempo real
   React.useEffect(() => {
     if (propPassword !== undefined) return;
 
-    let passwordInput = document.querySelector('input[name="password"]') as HTMLInputElement;
     let intervalId: any;
+    let passwordInput: HTMLInputElement | null = null;
 
-    const handleInput = (e: Event) => {
+    const handlePasswordInput = (e: Event) => {
       setLocalPassword((e.target as HTMLInputElement).value);
     };
 
-    if (passwordInput) {
-      setLocalPassword(passwordInput.value);
-      passwordInput.addEventListener('input', handleInput);
-    } else {
+    const handleOtherInput = (e: Event) => {
+      const input = e.target as HTMLInputElement;
+      setFormValues(prev => ({
+        ...prev,
+        [input.name]: input.value
+      }));
+    };
+
+    const setupListeners = () => {
+      if (!containerRef.current) return false;
+      const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
+      if (!form) return false;
+
+      passwordInput = form.querySelector('input[name="password"]') as HTMLInputElement;
+
+      if (passwordInput) {
+        setLocalPassword(passwordInput.value);
+        passwordInput.addEventListener('input', handlePasswordInput);
+
+        const usernameInput = form.querySelector('input[name="username"]') as HTMLInputElement;
+        const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+        setFormValues({
+          username: usernameInput ? usernameInput.value : '',
+          email: emailInput ? emailInput.value : ''
+        });
+
+        // Escuchar todos los inputs que no sean de password (ej. email, username, nombre, apellido)
+        const otherInputs = form.querySelectorAll('input:not([name="password"])');
+        otherInputs.forEach(input => {
+          input.addEventListener('input', handleOtherInput);
+        });
+        return true;
+      }
+      return false;
+    };
+
+    if (!setupListeners()) {
       intervalId = setInterval(() => {
-        passwordInput = document.querySelector('input[name="password"]') as HTMLInputElement;
-        if (passwordInput) {
-          setLocalPassword(passwordInput.value);
-          passwordInput.addEventListener('input', handleInput);
+        if (setupListeners()) {
           clearInterval(intervalId);
         }
       }, 100);
@@ -263,7 +295,16 @@ export const CustomPasswordRequirements = ({
 
     return () => {
       if (passwordInput) {
-        passwordInput.removeEventListener('input', handleInput);
+        passwordInput.removeEventListener('input', handlePasswordInput);
+      }
+      if (containerRef.current) {
+        const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
+        if (form) {
+          const otherInputs = form.querySelectorAll('input:not([name="password"])');
+          otherInputs.forEach(input => {
+            input.removeEventListener('input', handleOtherInput);
+          });
+        }
       }
       if (intervalId) {
         clearInterval(intervalId);
@@ -273,8 +314,17 @@ export const CustomPasswordRequirements = ({
 
   const password = propPassword !== undefined ? propPassword : localPassword;
 
+  // Busca los valores del nombre de usuario y correo dentro del formulario actual para evitar colisiones
   const getUsername = () => {
     if (propUsername !== undefined) return propUsername;
+    if (formValues.username) return formValues.username;
+    if (containerRef.current) {
+      const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
+      if (form) {
+        const input = form.querySelector('input[name="username"]') as HTMLInputElement;
+        if (input) return input.value;
+      }
+    }
     const input = document.querySelector('input[name="username"]') as HTMLInputElement;
     if (input) return input.value;
     return formData.username || '';
@@ -282,6 +332,14 @@ export const CustomPasswordRequirements = ({
 
   const getEmail = () => {
     if (propEmail !== undefined) return propEmail;
+    if (formValues.email) return formValues.email;
+    if (containerRef.current) {
+      const form = containerRef.current.closest('form, .amplify-authenticator, .amplify-tabs__panel');
+      if (form) {
+        const input = form.querySelector('input[name="email"]') as HTMLInputElement;
+        if (input) return input.value;
+      }
+    }
     const input = document.querySelector('input[name="email"]') as HTMLInputElement;
     if (input) return input.value;
     return formData.email || '';
@@ -356,7 +414,7 @@ export const CustomPasswordRequirements = ({
     }, 50);
 
     return () => clearInterval(retryInterval);
-  }, [password]);
+  }, [password, formValues]);
 
   // Si el componente recibe la contrasena como prop, renderizamos las validaciones directamente en el DOM de React
   if (propPassword !== undefined) {
