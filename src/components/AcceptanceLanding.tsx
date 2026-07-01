@@ -242,10 +242,12 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
             </header>
 
             <main className="landing-content animate-fadeIn">
-                <div className="customer-info glass-card">
-                    <h3>Hola, {transaction?.nombres} {transaction?.apellidoPaterno}</h3>
-                    <p>Antes de empezar, ten en cuenta que necesitamos tu consentimiento para el tratamiento de tus datos personales, en la política de privacidad.</p>
-                </div>
+                {!(procesoConfig?.tituloLanding?.toLowerCase().includes('buro') || procesoConfig?.tituloLanding?.toLowerCase().includes('buró') || procesoConfig?.nombre?.toLowerCase().includes('buro') || procesoConfig?.nombre?.toLowerCase().includes('buró')) && (
+                    <div className="customer-info glass-card">
+                        <h3>Hola, {transaction?.nombres} {transaction?.apellidoPaterno}</h3>
+                        <p>Antes de empezar, ten en cuenta que necesitamos tu consentimiento para el tratamiento de tus datos personales, en la política de privacidad.</p>
+                    </div>
+                )}
 
                 <div className="plantillas-list">
                     {plantillas.map(p => (
