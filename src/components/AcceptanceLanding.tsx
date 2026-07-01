@@ -24,7 +24,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
                 // Handle inconsistent API: stringified body vs direct object, array vs object
                 let transData = response;
-                
+
                 if (response.body && typeof response.body === 'string') {
                     try {
                         const parsedBody = JSON.parse(response.body);
@@ -57,13 +57,13 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
                 // Extract processId (Checking 'process' array, 'proceso' array/string, 'procesoId', or sessionStorage)
                 let processId = null;
-                
+
                 if (Array.isArray(transData.process) && transData.process.length > 0) {
                     processId = transData.process[0];
                 } else if (typeof transData.process === 'string' && transData.process.length > 1) {
                     processId = transData.process;
                 }
-                
+
                 if (!processId) {
                     if (Array.isArray(transData.proceso) && transData.proceso.length > 0) {
                         processId = transData.proceso[0];
@@ -93,7 +93,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
                 // Filter templates: only show those associated with this transaction or process
                 let filteredPlantillas: Schema['Plantilla']['type'][] = [];
-                
+
                 if (transData.plantillas && Array.isArray(transData.plantillas) && transData.plantillas.length > 0) {
                     filteredPlantillas = allPlantillas.filter(p => transData.plantillas.includes(p.id));
                 } else if (processId) {
@@ -241,16 +241,8 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
             <main className="landing-content animate-fadeIn">
                 <div className="customer-info glass-card">
-                    {procesoConfig?.encabezadoLanding ? (
-                        <p style={{ whiteSpace: 'pre-wrap', margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-                            {replacePlaceholders(procesoConfig.encabezadoLanding, transaction)}
-                        </p>
-                    ) : (
-                        <>
-                            <h3>Hola, {transaction?.nombres} {transaction?.apellidoPaterno}</h3>
-                            <p>Antes de empezar, ten en cuenta que necesitamos tu consentimiento para el tratamiento de tus datos personales, en la política de privacidad.</p>
-                        </>
-                    )}
+                    <h3>Hola, {transaction?.nombres} {transaction?.apellidoPaterno}</h3>
+                    <p>Antes de empezar, ten en cuenta que necesitamos tu consentimiento para el tratamiento de tus datos personales, en la política de privacidad.</p>
                 </div>
 
                 <div className="plantillas-list">

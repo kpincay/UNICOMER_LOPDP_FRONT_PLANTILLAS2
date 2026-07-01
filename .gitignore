@@ -25,3 +25,6 @@ dist-ssr
 /.amplify/artifacts
 /.amplify/artifacts
 /.amplify
+
+# Agent files
+AGENTS.md
