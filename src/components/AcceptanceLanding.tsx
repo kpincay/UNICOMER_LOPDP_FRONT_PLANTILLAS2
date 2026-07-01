@@ -169,27 +169,29 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
             if (transaction?.correo) {
                 const acceptedTemplatesList = plantillas
                     .filter(p => !p.requiereAceptacion || checkedItems[p.id])
-                    .map(p => `<li><strong>${p.nombre}</strong></li>`)
+                    .map(p => `<li>${p.nombre}</li>`)
                     .join('');
+
+                const cleanName = (val: any) => val && val !== 'undefined' ? val : '';
+                const apellidos = cleanName(transaction?.apellidos) || [cleanName(transaction?.apellidoPaterno), cleanName(transaction?.apellidoMaterno)].filter(Boolean).join(' ');
+                const fullName = [cleanName(transaction?.nombres), apellidos].filter(Boolean).join(' ');
 
                 const emailBody = `
                     <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-                        <h2 style="color: #2563eb;">Confirmación de Aceptación</h2>
-                        <p>Hola <strong>${transaction?.nombres} ${transaction?.apellidoPaterno}</strong>,</p>
-                        <p>Te confirmamos que el <strong>${new Date().toLocaleString('es-EC')}</strong> has aceptado exitosamente los términos del proceso de <strong>${procesoConfig?.nombre || 'Protección de Datos'}</strong>.</p>
-                        <p>Las cláusulas aceptadas son las siguientes:</p>
+                        <p>Estimado/a <strong>${fullName}</strong>,</p>
+                        <p>Por medio del presente, le informamos que el <strong>${new Date().toLocaleString('es-EC')}</strong> hemos registrado correctamente su aceptación del consentimiento para el tratamiento de sus datos personales, conforme a la normativa vigente en materia de protección de datos personales.</p>
+                        <p>Las cláusulas aceptadas con las siguientes:</p>
                         <ul>
                             ${acceptedTemplatesList}
                         </ul>
-                        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
-                        <p style="font-size: 0.75rem; color: #999;">Este es un mensaje automático, por favor no responda directamente.</p>
+                        <p style="font-size: 0.9rem;">El tratamiento se realiza bajo los principios de legalidad, finalidad, proporcionalidad y seguridad. Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com">dpo_ec@unicomer.com</a></p>
                     </div>
                 `;
 
                 try {
                     await (client.mutations as any).sendEmail({
                         to: transaction.correo,
-                        subject: 'Confirmación de Aceptación LOPDP - UNICOMER',
+                        subject: 'Confirmación de consentimiento para el tratamiento de datos personales - UNICOMER',
                         body: emailBody
                     });
                 } catch (emailError) {
