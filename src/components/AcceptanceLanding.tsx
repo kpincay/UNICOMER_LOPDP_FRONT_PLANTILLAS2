@@ -177,9 +177,9 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 const fullName = [cleanName(transaction?.nombres), apellidos].filter(Boolean).join(' ');
 
                 const emailBody = `
-                    <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #d6eff1; border-radius: 8px; overflow: hidden;">
-                        <div style="text-align: center;">
-                            <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_2.jpg?v=2" alt="Unicomer" width="100%" style="display: block; height: auto;" />
+                    <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #1554a1; border-radius: 8px; overflow: hidden;">
+                        <div style="text-align: center; background-color: #1554a1; padding: 20px 0;">
+                            <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_2.jpg?v=3" alt="Unicomer" width="200" style="display: inline-block; height: auto;" />
                         </div>
                         <div style="padding: 20px;">
                             <p>Estimado/a <strong>${fullName}</strong>,</p>
@@ -188,7 +188,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                             <ul>
                                 ${acceptedTemplatesList}
                             </ul>
-                            <p style="font-size: 0.9rem;">El tratamiento se realiza bajo los principios de legalidad, finalidad, proporcionalidad y seguridad. Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #002855; font-weight: bold;">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #002855; font-weight: bold;">dpo_ec@unicomer.com</a></p>
+                            <p style="font-size: 0.9rem;">El tratamiento se realiza bajo los principios de legalidad, finalidad, proporcionalidad y seguridad. Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #1554a1; font-weight: bold;">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #1554a1; font-weight: bold;">dpo_ec@unicomer.com</a></p>
                         </div>
                     </div>
                 `;

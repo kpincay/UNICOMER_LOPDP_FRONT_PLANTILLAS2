@@ -151,9 +151,9 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             window.location.href = landingUrl;
 
             const emailBody = `
-                <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #d6eff1; border-radius: 8px; overflow: hidden;">
-                    <div style="text-align: center;">
-                        <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_2.jpg?v=2" alt="Unicomer" width="100%" style="display: block; height: auto;" />
+                <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #1554a1; border-radius: 8px; overflow: hidden;">
+                    <div style="text-align: center; background-color: #1554a1; padding: 20px 0;">
+                        <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_2.jpg?v=3" alt="Unicomer" width="200" style="display: inline-block; height: auto;" />
                     </div>
                     <div style="padding: 20px;">
                         <p>Estimado/a Cliente <strong>${formData.nombres} ${formData.apellidoPaterno}</strong>,</p>
@@ -161,15 +161,15 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                         <p>En cumplimiento de la normativa vigente sobre protección de datos personales, le solicitamos de manera amable su consentimiento para el tratamiento de sus datos personales.</p>
                         <p>Para otorgar su consentimiento, le pedimos por favor acceder al siguiente enlace o escanear el código QR:</p>
                         <div style="margin: 30px 0; text-align: center;">
-                            <a href="${landingUrl}" style="background-color: #d6eff1; color: #002855; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Enlace al formulario de consentimiento</a>
+                            <a href="${landingUrl}" style="background-color: #1554a1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Enlace al formulario de consentimiento</a>
                         </div>
                     <p>Si el botón no funciona, puedes copiar y pegar este enlace en tu navegador:</p>
                     <p style="word-break: break-all;"><a href="${landingUrl}">${landingUrl}</a></p>
-                    <div style="margin: 30px 0; text-align: center;">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(landingUrl)}" alt="Código QR al formulario de consentimiento" />
-                    </div>
-                    <hr style="border: 0; border-top: 2px solid #d6eff1; margin: 20px 0;" />
-                    <p style="font-size: 0.9rem;">Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #002855; font-weight: bold;">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #002855; font-weight: bold;">dpo_ec@unicomer.com</a></p>
+                        <div style="margin: 30px 0; text-align: center;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(landingUrl)}" alt="Código QR al formulario de consentimiento" />
+                        </div>
+                        <hr style="border: 0; border-top: 2px solid #1554a1; margin: 20px 0;" />
+                        <p style="font-size: 0.9rem;">Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #1554a1; font-weight: bold;">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #1554a1; font-weight: bold;">dpo_ec@unicomer.com</a></p>
                     <p style="font-size: 0.9rem;">El otorgamiento del consentimiento es voluntario y podrá revocarlo en cualquier momento, conforme a la ley aplicable.</p>
                 </div>
             `;
