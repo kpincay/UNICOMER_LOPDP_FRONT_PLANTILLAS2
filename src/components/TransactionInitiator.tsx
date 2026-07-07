@@ -153,7 +153,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             const emailBody = `
                 <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #d6eff1; border-radius: 8px; overflow: hidden;">
                     <div style="text-align: center; background-color: #002855; padding: 20px 0;">
-                        <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_blanco.jpg" alt="Unicomer" style="max-height: 80px;" />
+                        <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_blanco.jpg?v=2" alt="Unicomer" height="80" style="display: inline-block;" />
                     </div>
                     <div style="padding: 20px;">
                         <p>Estimado/a Cliente <strong>${formData.nombres} ${formData.apellidoPaterno}</strong>,</p>
