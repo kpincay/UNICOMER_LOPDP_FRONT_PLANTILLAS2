@@ -4,6 +4,7 @@ import UnicomerLogo from '../assets/unicomer.png';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
 import { lopdService } from '../services/lopdService';
+import { logoUnicomerBlancoBase64 } from '../assets/logoBlancoBase64';
 
 const client = generateClient<Schema>();
 
@@ -177,14 +178,19 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 const fullName = [cleanName(transaction?.nombres), apellidos].filter(Boolean).join(' ');
 
                 const emailBody = `
-                    <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-                        <p>Estimado/a <strong>${fullName}</strong>,</p>
-                        <p>Por medio del presente, le informamos que el <strong>${new Date().toLocaleString('es-EC')}</strong> hemos registrado correctamente su aceptación del consentimiento para el tratamiento de sus datos personales, conforme a la normativa vigente en materia de protección de datos personales.</p>
-                        <p>Las cláusulas aceptadas con las siguientes:</p>
-                        <ul>
-                            ${acceptedTemplatesList}
-                        </ul>
-                        <p style="font-size: 0.9rem;">El tratamiento se realiza bajo los principios de legalidad, finalidad, proporcionalidad y seguridad. Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com">dpo_ec@unicomer.com</a></p>
+                    <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #d6eff1; border-radius: 8px; overflow: hidden;">
+                        <div style="text-align: center; background-color: #002855; padding: 20px 0;">
+                            <img src="${logoUnicomerBlancoBase64}" alt="Unicomer" style="max-height: 80px;" />
+                        </div>
+                        <div style="padding: 20px;">
+                            <p>Estimado/a <strong>${fullName}</strong>,</p>
+                            <p>Por medio del presente, le informamos que el <strong>${new Date().toLocaleString('es-EC')}</strong> hemos registrado correctamente su aceptación del consentimiento para el tratamiento de sus datos personales, conforme a la normativa vigente en materia de protección de datos personales.</p>
+                            <p>Las cláusulas aceptadas con las siguientes:</p>
+                            <ul>
+                                ${acceptedTemplatesList}
+                            </ul>
+                            <p style="font-size: 0.9rem;">El tratamiento se realiza bajo los principios de legalidad, finalidad, proporcionalidad y seguridad. Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #002855; font-weight: bold;">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #002855; font-weight: bold;">dpo_ec@unicomer.com</a></p>
+                        </div>
                     </div>
                 `;
 
