@@ -4,7 +4,6 @@ import UnicomerLogo from '../assets/unicomer.png';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
 import { lopdService } from '../services/lopdService';
-import { logoUnicomerBlancoBase64 } from '../assets/logoBlancoBase64';
 
 const client = generateClient<Schema>();
 
@@ -180,7 +179,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 const emailBody = `
                     <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #d6eff1; border-radius: 8px; overflow: hidden;">
                         <div style="text-align: center; background-color: #002855; padding: 20px 0;">
-                            <img src="${logoUnicomerBlancoBase64}" alt="Unicomer" style="max-height: 80px;" />
+                            <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_blanco.jpg" alt="Unicomer" style="max-height: 80px;" />
                         </div>
                         <div style="padding: 20px;">
                             <p>Estimado/a <strong>${fullName}</strong>,</p>
