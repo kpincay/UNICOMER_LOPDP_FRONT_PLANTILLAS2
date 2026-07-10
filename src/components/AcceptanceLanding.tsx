@@ -79,19 +79,6 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 // 2. Fetch templates for the process(es) associated with this transaction
                 const { data: allPlantillas } = await client.models.Plantilla.list();
                 const extractedProcessIds = extractProcessIds(transData);
-                setProcessIds(extractedProcessIds);
-
-                const primaryProcessId = extractedProcessIds[0] || null;
-
-                if (primaryProcessId) {
-                    try {
-                        const { data: pData, errors } = await client.models.Proceso.get({ id: primaryProcessId });
-                        if (errors) console.error('GraphQL Errors fetching proceso:', errors);
-                        setProcesoConfig(pData);
-                    } catch (e) {
-                        console.error('Network Error fetching proceso config:', e);
-                    }
-                }
 
                 // Filter templates: only show those associated with this transaction or process(es)
                 let filteredPlantillas: Schema['Plantilla']['type'][] = [];
@@ -107,7 +94,26 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     filteredPlantillas = [];
                 }
 
+                const filteredProcessIds = Array.from(new Set(
+                    filteredPlantillas
+                        .map(p => p.procesoId)
+                        .filter((id): id is string => typeof id === 'string' && id.trim().length > 0)
+                ));
+
                 setPlantillas(filteredPlantillas);
+                setProcessIds(filteredProcessIds);
+
+                const primaryProcessId = filteredProcessIds[0] || null;
+
+                if (primaryProcessId) {
+                    try {
+                        const { data: pData, errors } = await client.models.Proceso.get({ id: primaryProcessId });
+                        if (errors) console.error('GraphQL Errors fetching proceso:', errors);
+                        setProcesoConfig(pData);
+                    } catch (e) {
+                        console.error('Network Error fetching proceso config:', e);
+                    }
+                }
 
                 // Initialize checkboxes correctly
                 const initialChecked: Record<string, boolean> = {};
