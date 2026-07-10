@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Search, RefreshCw, Eye, FileText, X, CheckCircle, Clock } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
@@ -256,7 +257,7 @@ export const ReporteTransacciones: React.FC = () => {
             </div>
 
             {/* Modal de Detalle (Presentación) */}
-            {isDetailModalOpen && (
+            {isDetailModalOpen && createPortal(
                 <div className="modal-overlay" onClick={() => setIsDetailModalOpen(false)}>
                     <div className="modal-content glass-card animate-scaleUp" onClick={e => e.stopPropagation()} style={{ maxWidth: '650px' }}>
                         <div className="modal-header">
@@ -340,7 +341,8 @@ export const ReporteTransacciones: React.FC = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
