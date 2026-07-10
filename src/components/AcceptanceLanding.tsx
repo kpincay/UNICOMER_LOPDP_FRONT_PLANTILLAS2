@@ -99,7 +99,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 if (transData.plantillas && Array.isArray(transData.plantillas) && transData.plantillas.length > 0) {
                     filteredPlantillas = allPlantillas.filter(p => transData.plantillas.includes(p.id));
                 } else if (extractedProcessIds.length > 0) {
-                    filteredPlantillas = allPlantillas.filter(p => extractedProcessIds.includes(p.procesoId));
+                    filteredPlantillas = allPlantillas.filter(p => typeof p.procesoId === 'string' && extractedProcessIds.includes(p.procesoId));
                 } else {
                     // IMPORTANT: No longer falling back to all templates.
                     // This prevents privacy leaks and ensures only relevant documents are shown.
