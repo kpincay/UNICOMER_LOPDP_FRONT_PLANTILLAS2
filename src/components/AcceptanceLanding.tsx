@@ -232,14 +232,18 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     if (completed) {
         return (
             <div className="landing-container flex-center">
-                <div className="glass-card acceptance-done animate-scaleUp">
-                    <CheckCircle size={64} className="text-success" />
-                    <h2>¡Proceso Completado!</h2>
-                    <p>Muchas gracias, <strong>{transaction?.nombres} {transaction?.apellidoPaterno}</strong>.</p>
-                    <p>Tus aceptaciones de privacidad han sido registradas correctamente conforme a la LOPDP.</p>
-                    <button className="btn btn-primary mt-20" onClick={() => window.close()}>
-                        Cerrar Ventana
-                    </button>
+                <div className="glass-card acceptance-done animate-scaleUp" style={{ maxWidth: '640px', textAlign: 'center', padding: '2.5rem' }}>
+                    <CheckCircle size={72} className="text-success" />
+                    <h2 style={{ marginTop: '1rem' }}>¡Proceso completado con éxito!</h2>
+                    <p style={{ marginTop: '0.75rem', fontSize: '1.05rem' }}>
+                        Muchas gracias, <strong>{transaction?.nombres} {transaction?.apellidoPaterno}</strong>.
+                    </p>
+                    <p>
+                        Tus aceptaciones de privacidad han sido registradas correctamente conforme a la LOPDP.
+                    </p>
+                    <p style={{ marginTop: '0.5rem', color: '#4b5563' }}>
+                        No es necesario realizar ninguna acción adicional. Este proceso ha finalizado.
+                    </p>
                 </div>
             </div>
         );
