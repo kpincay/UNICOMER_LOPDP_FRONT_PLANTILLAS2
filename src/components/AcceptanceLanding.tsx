@@ -15,6 +15,33 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     const [procesoConfig, setProcesoConfig] = useState<Schema['Proceso']['type'] | null>(null);
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+    const [processIds, setProcessIds] = useState<string[]>([]);
+
+    const extractProcessIds = (transData: any): string[] => {
+        const ids = new Set<string>();
+
+        const addValue = (value: any) => {
+            if (Array.isArray(value)) {
+                value.forEach(item => addValue(item));
+                return;
+            }
+
+            if (typeof value === 'string' && value.trim()) {
+                value.split(',').map(item => item.trim()).filter(Boolean).forEach(item => ids.add(item));
+            }
+        };
+
+        addValue(transData?.process);
+        addValue(transData?.proceso);
+        addValue(transData?.procesoId ?? transData?.id_proceso ?? transData?.proceso_id);
+
+        const pendingProcessId = sessionStorage.getItem('pending_proceso_id');
+        if (pendingProcessId) {
+            ids.add(pendingProcessId);
+        }
+
+        return Array.from(ids);
+    };
 
     useEffect(() => {
         const loadTransactionData = async () => {
@@ -49,41 +76,16 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
                 setTransaction(transData);
 
-                // 2. Fetch templates for the process associated with this transaction
-                // Note: Assuming transData contains procesoId or we fetch based on the templates list
-                // For this implementation, we'll fetch all templates and filter by those listed in the transaction
-                // or just fetch all templates of the process if the backend provides the procesoId.
+                // 2. Fetch templates for the process(es) associated with this transaction
                 const { data: allPlantillas } = await client.models.Plantilla.list();
+                const extractedProcessIds = extractProcessIds(transData);
+                setProcessIds(extractedProcessIds);
 
-                // Extract processId (Checking 'process' array, 'proceso' array/string, 'procesoId', or sessionStorage)
-                let processId = null;
+                const primaryProcessId = extractedProcessIds[0] || null;
 
-                if (Array.isArray(transData.process) && transData.process.length > 0) {
-                    processId = transData.process[0];
-                } else if (typeof transData.process === 'string' && transData.process.length > 1) {
-                    processId = transData.process;
-                }
-
-                if (!processId) {
-                    if (Array.isArray(transData.proceso) && transData.proceso.length > 0) {
-                        processId = transData.proceso[0];
-                    } else if (typeof transData.proceso === 'string' && transData.proceso.length > 1) {
-                        processId = transData.proceso;
-                    }
-                }
-
-                if (!processId) {
-                    processId = transData.procesoId || transData.id_proceso || transData.proceso_id;
-                }
-
-                // Fallback to sessionStorage (specifically for QR flow)
-                if (!processId) {
-                    processId = sessionStorage.getItem('pending_proceso_id');
-                }
-
-                if (processId) {
+                if (primaryProcessId) {
                     try {
-                        const { data: pData, errors } = await client.models.Proceso.get({ id: processId });
+                        const { data: pData, errors } = await client.models.Proceso.get({ id: primaryProcessId });
                         if (errors) console.error('GraphQL Errors fetching proceso:', errors);
                         setProcesoConfig(pData);
                     } catch (e) {
@@ -91,15 +93,15 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     }
                 }
 
-                // Filter templates: only show those associated with this transaction or process
+                // Filter templates: only show those associated with this transaction or process(es)
                 let filteredPlantillas: Schema['Plantilla']['type'][] = [];
 
                 if (transData.plantillas && Array.isArray(transData.plantillas) && transData.plantillas.length > 0) {
                     filteredPlantillas = allPlantillas.filter(p => transData.plantillas.includes(p.id));
-                } else if (processId) {
-                    filteredPlantillas = allPlantillas.filter(p => p.procesoId === processId);
+                } else if (extractedProcessIds.length > 0) {
+                    filteredPlantillas = allPlantillas.filter(p => extractedProcessIds.includes(p.procesoId));
                 } else {
-                    // IMPORTANT: No longer falling back to all templates. 
+                    // IMPORTANT: No longer falling back to all templates.
                     // This prevents privacy leaks and ensures only relevant documents are shown.
                     console.warn('No processId found for transaction:', transactionId);
                     filteredPlantillas = [];
@@ -155,6 +157,9 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         setSubmitting(true);
         try {
             // 1. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
+            const acceptedPlantillas = plantillas.filter(p => !p.requiereAceptacion || checkedItems[p.id]);
+            const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
+
             await lopdService.updateTransaction(transactionId, {
                 nombres: transaction?.nombres || '',
                 apellidoPaterno: transaction?.apellidoPaterno || '',
@@ -162,13 +167,14 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 correo: transaction?.correo || '',
                 estado: 'aprobado',
                 fechaAceptacion: new Date().toISOString(),
-                aceptaciones: checkedItems
+                aceptaciones: checkedItems,
+                procesos: processIds,
+                plantillasAceptadas: acceptedPlantillaIds
             });
 
             // 2. Send confirmation email
             if (transaction?.correo) {
-                const acceptedTemplatesList = plantillas
-                    .filter(p => !p.requiereAceptacion || checkedItems[p.id])
+                const acceptedTemplatesList = acceptedPlantillas
                     .map(p => `<li>${p.nombre}</li>`)
                     .join('');
 

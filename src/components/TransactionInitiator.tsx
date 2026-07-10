@@ -94,6 +94,27 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         setEmailSuggestions([]);
     };
 
+    const buildAcceptanceUrl = (baseUrl: string | undefined, transactionId: string) => {
+        const fallbackUrl = `${window.location.origin}?id=${encodeURIComponent(transactionId)}`;
+
+        if (!baseUrl) {
+            return fallbackUrl;
+        }
+
+        try {
+            const url = new URL(baseUrl);
+            url.searchParams.delete('idProceso');
+            url.searchParams.set('id', transactionId);
+            return url.toString();
+        } catch {
+            const separator = baseUrl.includes('?') ? '&' : '?';
+            if (/[?&](id|idProceso|transactionId)=/.test(baseUrl)) {
+                return baseUrl.replace(/[?&](idProceso|transactionId)=([^&]+)/gi, '').replace(/[?&]id=([^&]+)/gi, `&id=${encodeURIComponent(transactionId)}`);
+            }
+            return `${baseUrl}${separator}id=${encodeURIComponent(transactionId)}`;
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -146,7 +167,14 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
 
             const backendUrl = parsedResult.url || parsedResult.link || parsedResult.Url || parsedResult.URL || parsedResult.url_transaccion;
             const transactionId = parsedResult.id || result.id;
-            const landingUrl = backendUrl || `${window.location.origin}?id=${transactionId}`;
+            const landingUrl = buildAcceptanceUrl(backendUrl, transactionId);
+
+            const selectedProceso = procesos.find((p) => p.id === formData.procesoId);
+            const { data: allPlantillas } = await client.models.Plantilla.list({ authMode: 'apiKey' });
+            const processPlantillas = allPlantillas.filter((p: Schema['Plantilla']['type']) => p.procesoId === formData.procesoId);
+            const templatesList = processPlantillas.length > 0
+                ? processPlantillas.map((p: Schema['Plantilla']['type']) => `<li><strong>${p.nombre}</strong>${p.codigo ? ` (${p.codigo})` : ''}</li>`).join('')
+                : '<li>No hay plantillas asociadas a este proceso.</li>';
 
             window.location.href = landingUrl;
 
@@ -159,18 +187,22 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                         <p>Estimado/a Cliente <strong>${formData.nombres} ${formData.apellidoPaterno}</strong>,</p>
                         <p>En Unicomer del Ecuador valoramos la transparencia y la protección de sus datos personales.</p>
                         <p>En cumplimiento de la normativa vigente sobre protección de datos personales, le solicitamos de manera amable su consentimiento para el tratamiento de sus datos personales.</p>
+                        <p><strong>Proceso:</strong> ${selectedProceso?.nombre || 'Proceso no identificado'}</p>
+                        <p><strong>Plantillas incluidas:</strong></p>
+                        <ul>${templatesList}</ul>
                         <p>Para otorgar su consentimiento, le pedimos por favor acceder al siguiente enlace o escanear el código QR:</p>
                         <div style="margin: 30px 0; text-align: center;">
                             <a href="${landingUrl}" style="background-color: #1554a1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Enlace al formulario de consentimiento</a>
                         </div>
-                    <p>Si el botón no funciona, puedes copiar y pegar este enlace en tu navegador:</p>
-                    <p style="word-break: break-all;"><a href="${landingUrl}">${landingUrl}</a></p>
+                        <p>Si el botón no funciona, puedes copiar y pegar este enlace en tu navegador:</p>
+                        <p style="word-break: break-all;"><a href="${landingUrl}">${landingUrl}</a></p>
                         <div style="margin: 30px 0; text-align: center;">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(landingUrl)}" alt="Código QR al formulario de consentimiento" />
                         </div>
                         <hr style="border: 0; border-top: 2px solid #1554a1; margin: 20px 0;" />
                         <p style="font-size: 0.9rem;">Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #1554a1; font-weight: bold;">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #1554a1; font-weight: bold;">dpo_ec@unicomer.com</a></p>
-                    <p style="font-size: 0.9rem;">El otorgamiento del consentimiento es voluntario y podrá revocarlo en cualquier momento, conforme a la ley aplicable.</p>
+                        <p style="font-size: 0.9rem;">El otorgamiento del consentimiento es voluntario y podrá revocarlo en cualquier momento, conforme a la ley aplicable.</p>
+                    </div>
                 </div>
             `;
 
