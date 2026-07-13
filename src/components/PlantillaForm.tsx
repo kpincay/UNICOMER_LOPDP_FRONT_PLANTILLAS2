@@ -4,12 +4,13 @@ import type { Schema } from '../../amplify/data/resource';
 
 interface PlantillaFormProps {
     plantilla?: Schema['Plantilla']['type'] | null;
+    plantillas: Schema['Plantilla']['type'][];
     procesos: Schema['Proceso']['type'][];
     onClose: () => void;
     onSave: (data: any) => Promise<void>;
 }
 
-export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, procesos, onClose, onSave }) => {
+export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, plantillas, procesos, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         nombre: '',
         codigo: '',
@@ -21,6 +22,7 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, proceso
         procesoId: '' as string | null
     });
     const [submitting, setSubmitting] = useState(false);
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
         if (plantilla) {
@@ -39,6 +41,21 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, proceso
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setErrorMsg(null);
+
+        // Validation: Check if nombre or codigo already exists
+        const nameExists = plantillas.find(p => p.nombre?.trim().toLowerCase() === formData.nombre.trim().toLowerCase() && p.id !== plantilla?.id);
+        if (nameExists) {
+            setErrorMsg('Ya existe una plantilla con este nombre.');
+            return;
+        }
+
+        const codeExists = plantillas.find(p => p.codigo?.trim().toLowerCase() === formData.codigo.trim().toLowerCase() && p.id !== plantilla?.id);
+        if (codeExists) {
+            setErrorMsg('Ya existe una plantilla con este código.');
+            return;
+        }
+
         setSubmitting(true);
         const { procesoId, ...rest } = formData;
         const dataToSave = procesoId ? { ...rest, procesoId } : rest;
@@ -56,6 +73,11 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, proceso
                     </button>
                 </div>
                 <form className="modal-body" onSubmit={handleSubmit}>
+                    {errorMsg && (
+                        <div style={{ padding: '10px', background: '#fee2e2', color: '#b91c1c', borderRadius: '4px', marginBottom: '16px', fontSize: '0.9rem' }}>
+                            {errorMsg}
+                        </div>
+                    )}
                     <div className="form-group">
                         <label>Proceso Asociado</label>
                         <select

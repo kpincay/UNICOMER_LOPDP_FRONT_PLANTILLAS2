@@ -438,6 +438,7 @@ export const Dashboard: React.FC = () => {
             {isFormOpen && (
                 <PlantillaForm
                     plantilla={selectedPlantilla}
+                    plantillas={plantillas}
                     procesos={procesos}
                     onClose={() => setIsFormOpen(false)}
                     onSave={handleSavePlantilla}
