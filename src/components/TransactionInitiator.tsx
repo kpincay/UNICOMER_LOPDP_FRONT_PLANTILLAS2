@@ -94,8 +94,8 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         setEmailSuggestions([]);
     };
 
-    const buildAcceptanceUrl = (baseUrl: string | undefined, transactionId: string) => {
-        const fallbackUrl = `${window.location.origin}?id=${encodeURIComponent(transactionId)}`;
+    const buildAcceptanceUrl = (baseUrl: string | undefined, transactionId: string, procesoId: string) => {
+        const fallbackUrl = `${window.location.origin}?id=${encodeURIComponent(transactionId)}&idProceso=${encodeURIComponent(procesoId)}`;
 
         if (!baseUrl) {
             return fallbackUrl;
@@ -103,15 +103,14 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
 
         try {
             const url = new URL(baseUrl);
-            url.searchParams.delete('idProceso');
             url.searchParams.set('id', transactionId);
+            url.searchParams.set('idProceso', procesoId);
             return url.toString();
         } catch {
             const separator = baseUrl.includes('?') ? '&' : '?';
-            if (/[?&](id|idProceso|transactionId)=/.test(baseUrl)) {
-                return baseUrl.replace(/[?&](idProceso|transactionId)=([^&]+)/gi, '').replace(/[?&]id=([^&]+)/gi, `&id=${encodeURIComponent(transactionId)}`);
-            }
-            return `${baseUrl}${separator}id=${encodeURIComponent(transactionId)}`;
+            let safeUrl = baseUrl.replace(/[?&](id|idProceso|transactionId)=([^&]+)/gi, '');
+            const newSeparator = safeUrl.includes('?') ? '&' : '?';
+            return `${safeUrl}${newSeparator}id=${encodeURIComponent(transactionId)}&idProceso=${encodeURIComponent(procesoId)}`;
         }
     };
 
@@ -167,7 +166,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
 
             const backendUrl = parsedResult.url || parsedResult.link || parsedResult.Url || parsedResult.URL || parsedResult.url_transaccion;
             const transactionId = parsedResult.id || result.id;
-            const landingUrl = buildAcceptanceUrl(backendUrl, transactionId);
+            const landingUrl = buildAcceptanceUrl(backendUrl, transactionId, formData.procesoId);
 
 
 

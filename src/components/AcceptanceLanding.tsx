@@ -33,11 +33,18 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
         addValue(transData?.process);
         addValue(transData?.proceso);
+        addValue(transData?.procesos);
         addValue(transData?.procesoId ?? transData?.id_proceso ?? transData?.proceso_id);
 
         const pendingProcessId = sessionStorage.getItem('pending_proceso_id');
         if (pendingProcessId) {
             ids.add(pendingProcessId);
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlProcessId = urlParams.get('idProceso');
+        if (urlProcessId) {
+            ids.add(urlProcessId);
         }
 
         return Array.from(ids);
