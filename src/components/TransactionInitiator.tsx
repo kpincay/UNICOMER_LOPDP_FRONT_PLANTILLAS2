@@ -107,7 +107,6 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             url.searchParams.set('idProceso', procesoId);
             return url.toString();
         } catch {
-            const separator = baseUrl.includes('?') ? '&' : '?';
             let safeUrl = baseUrl.replace(/[?&](id|idProceso|transactionId)=([^&]+)/gi, '');
             const newSeparator = safeUrl.includes('?') ? '&' : '?';
             return `${safeUrl}${newSeparator}id=${encodeURIComponent(transactionId)}&idProceso=${encodeURIComponent(procesoId)}`;
