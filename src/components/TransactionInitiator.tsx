@@ -169,11 +169,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             const transactionId = parsedResult.id || result.id;
             const landingUrl = buildAcceptanceUrl(backendUrl, transactionId);
 
-            const { data: allPlantillas } = await client.models.Plantilla.list({ authMode: 'apiKey' });
-            const processPlantillas = allPlantillas.filter((p: Schema['Plantilla']['type']) => p.procesoId === formData.procesoId);
-            const templatesList = processPlantillas.length > 0
-                ? processPlantillas.map((p: Schema['Plantilla']['type']) => `<li><strong>${p.nombre}</strong></li>`).join('')
-                : '<li>No hay plantillas asociadas a este proceso.</li>';
+
 
             window.location.href = landingUrl;
 
@@ -186,8 +182,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                         <p>Estimado/a Cliente <strong>${formData.nombres} ${formData.apellidoPaterno}</strong>,</p>
                         <p>En Unicomer del Ecuador valoramos la transparencia y la protección de sus datos personales.</p>
                         <p>En cumplimiento de la normativa vigente sobre protección de datos personales, le solicitamos de manera amable su consentimiento para el tratamiento de sus datos personales.</p>
-                        <p><strong>Plantillas incluidas:</strong></p>
-                        <ul>${templatesList}</ul>
+
                         <p>Para otorgar su consentimiento, le pedimos por favor acceder al siguiente enlace o escanear el código QR:</p>
                         <div style="margin: 30px 0; text-align: center;">
                             <a href="${landingUrl}" style="background-color: #1554a1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Enlace al formulario de consentimiento</a>
