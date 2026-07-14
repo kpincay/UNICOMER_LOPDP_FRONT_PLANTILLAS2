@@ -100,10 +100,12 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                         .filter((id): id is string => typeof id === 'string' && id.trim().length > 0)
                 ));
 
-                setPlantillas(filteredPlantillas);
-                setProcessIds(filteredProcessIds);
+                const finalProcessIds = filteredProcessIds.length > 0 ? filteredProcessIds : extractedProcessIds;
 
-                const primaryProcessId = filteredProcessIds[0] || null;
+                setPlantillas(filteredPlantillas);
+                setProcessIds(finalProcessIds);
+
+                const primaryProcessId = finalProcessIds[0] || null;
 
                 if (primaryProcessId) {
                     try {
