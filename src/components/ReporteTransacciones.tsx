@@ -217,15 +217,19 @@ export const ReporteTransacciones: React.FC = () => {
         const pIds = getProcessIds(trx);
         let relatedPlantillas = plantillas.filter(p => typeof p.procesoId === 'string' && pIds.includes(p.procesoId));
 
-        if (trx.plantillas && Array.isArray(trx.plantillas)) {
-            const extraPlantillas = plantillas.filter(p => trx.plantillas.includes(p.id));
-            const existingIds = new Set(relatedPlantillas.map(p => p.id));
-            extraPlantillas.forEach(p => {
-                if (!existingIds.has(p.id)) {
-                    relatedPlantillas.push(p);
-                }
-            });
-        }
+        const addExtraPlantillas = (arr: string[]) => {
+            if (arr && Array.isArray(arr)) {
+                const extraPlantillas = plantillas.filter(p => arr.includes(p.id));
+                const existingIds = new Set(relatedPlantillas.map(p => p.id));
+                extraPlantillas.forEach(p => {
+                    if (!existingIds.has(p.id)) relatedPlantillas.push(p);
+                });
+            }
+        };
+
+        addExtraPlantillas(trx.plantillas);
+        addExtraPlantillas(trx.plantillasAceptadas);
+
         return relatedPlantillas;
     };
 
@@ -433,6 +437,9 @@ export const ReporteTransacciones: React.FC = () => {
                                                 </div>
                                             );
                                         })}
+                                    </div>
+                                    <div style={{ marginTop: '20px', fontSize: '0.7rem', color: '#888', wordBreak: 'break-all', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '8px' }}>
+                                        <strong>DEBUG RAW DATA:</strong> {JSON.stringify(selectedTransactionDetail)}
                                     </div>
                                 </>
                             ) : (
