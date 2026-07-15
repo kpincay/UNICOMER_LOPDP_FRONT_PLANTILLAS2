@@ -184,7 +184,10 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 fechaAceptacion: new Date().toISOString(),
                 aceptaciones: checkedItems,
                 procesos: processIds,
-                plantillasAceptadas: acceptedPlantillaIds
+                process: processIds,
+                proceso: processIds,
+                plantillasAceptadas: acceptedPlantillaIds,
+                plantillas: acceptedPlantillaIds
             });
 
             // 2. Send confirmation email

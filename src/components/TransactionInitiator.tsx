@@ -146,7 +146,9 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                 telefono: formData.telefono,
                 channel: 'web',
                 storeId: 'MAIN_STORE',
-                proceso: [formData.procesoId]
+                proceso: [formData.procesoId],
+                process: [formData.procesoId],
+                procesos: [formData.procesoId]
             };
 
             const result = await lopdService.createTransaction(transactionData);
