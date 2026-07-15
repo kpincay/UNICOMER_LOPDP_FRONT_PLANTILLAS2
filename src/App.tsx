@@ -109,7 +109,7 @@ const components = {
     const { tokens } = useTheme();
     return (
       <View textAlign="center" padding={tokens.space.xl}>
-        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ marginBottom: 0, display: 'flex', justifyContent: 'center' }}>
           <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '200px', width: 'auto', objectFit: 'contain', transform: 'scale(1.3)' }} />
         </div>
         <Heading level={3} className="login-branding" style={{ marginTop: '1rem' }}>
@@ -233,18 +233,26 @@ const TransactionInitiatorPage = ({ initialProcesoId }: { initialProcesoId?: str
     fetchProcesos();
   }, [client]);
 
-  if (loading) return <div className="flex-center" style={{ height: '100vh' }}><div className="spinner"></div></div>;
+  if (loading) return <div className="request-page flex-center"><div className="spinner"></div></div>;
 
   return (
-    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', padding: 'var(--space-2xl) var(--space-lg)' }}>
-      <div className="landing-header">
-        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-          <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '150px', width: 'auto', objectFit: 'contain' }} />
+    <div className="request-page" style={{ background: 'var(--bg-primary)', minHeight: '100vh', padding: 'var(--space-2xl) var(--space-lg)' }}>
+      <div className="landing-header request-header">
+        <div className="request-logo-wrap">
+          <img src={UnicomerLogo} alt="Unicomer Logo" />
+        </div>
+        <div className="partner-logos" aria-label="Marcas asociadas">
+          <span className="partner-logo-card partner-logo-artefacta">
+            <img src="/artefacta-logo.png" alt="Artefacta" />
+          </span>
+          <span className="partner-logo-card partner-logo-radioshack">
+            <img src="/radioshack-logo.png" alt="RadioShack" />
+          </span>
         </div>
         <h1>Generar Solicitud</h1>
         <p>¡Hola! Para continuar con tu solicitud, por favor completa tus datos:</p>
       </div>
-      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <div className="request-form-wrap" style={{ maxWidth: '600px', margin: '0 auto' }}>
         <TransactionInitiator
           procesos={procesos}
           initialProcesoId={initialProcesoId || undefined}
