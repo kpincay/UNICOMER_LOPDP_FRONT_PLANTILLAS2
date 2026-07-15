@@ -172,7 +172,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         setSubmitting(true);
         try {
             // 1. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
-            const acceptedPlantillas = plantillas.filter(p => !p.requiereAceptacion || checkedItems[p.id]);
+            const acceptedPlantillas = plantillas.filter(p => checkedItems[p.id]);
             const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
 
             await lopdService.updateTransaction(transactionId, {

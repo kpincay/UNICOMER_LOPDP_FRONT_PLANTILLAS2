@@ -21,6 +21,11 @@ interface Transaction {
     channel: string;
     storeId: string;
     process: string[];
+    procesos?: string[];
+    proceso?: string[] | string;
+    procesoId?: string;
+    plantillas?: string[];
+    plantillasAceptadas?: string[];
     createdAt: number;
     aceptaciones?: Record<string, boolean>; // Campo para rastrear qué se aceptó
 }
@@ -87,9 +92,19 @@ export const ReporteTransacciones: React.FC = () => {
         }).format(new Date(ts));
     };
 
-    const getProcesoName = (trxProcess: string[]) => {
-        if (!trxProcess || trxProcess.length === 0) return 'Sin Proceso';
-        const procesoId = trxProcess[0];
+    const getProcessIds = (trx: any): string[] => {
+        if (trx.procesos && Array.isArray(trx.procesos) && trx.procesos.length > 0) return trx.procesos;
+        if (trx.process && Array.isArray(trx.process) && trx.process.length > 0) return trx.process;
+        if (trx.proceso && Array.isArray(trx.proceso) && trx.proceso.length > 0) return trx.proceso;
+        if (typeof trx.proceso === 'string') return [trx.proceso];
+        if (typeof trx.procesoId === 'string') return [trx.procesoId];
+        return [];
+    };
+
+    const getProcesoName = (trx: any) => {
+        const pIds = getProcessIds(trx);
+        if (pIds.length === 0) return 'Sin Proceso';
+        const procesoId = pIds[0];
         const proceso = procesos.find(p => p.id === procesoId);
         return proceso ? proceso.nombre : 'Proceso Desconocido';
     };
@@ -98,7 +113,7 @@ export const ReporteTransacciones: React.FC = () => {
         t.nombres?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.cedula?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.correo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        getProcesoName(t.process).toLowerCase().includes(searchTerm.toLowerCase())
+        getProcesoName(t).toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     let sortedTransactions = [...filteredTransactions];
@@ -130,7 +145,7 @@ export const ReporteTransacciones: React.FC = () => {
             t.correo || '',
             t.estado === 'aprobado' ? 'Aprobado' : 'Pendiente',
             t.ip || '',
-            getProcesoName(t.process) || ''
+            getProcesoName(t) || ''
         ]);
 
         const csvContent = [
@@ -189,10 +204,20 @@ export const ReporteTransacciones: React.FC = () => {
         }
     };
 
-    const getPlantillasForTrx = (trx: Transaction) => {
-        if (!trx.process || trx.process.length === 0) return [];
-        const procesoId = trx.process[0];
-        return plantillas.filter(p => p.procesoId === procesoId);
+    const getPlantillasForTrx = (trx: any) => {
+        const pIds = getProcessIds(trx);
+        let relatedPlantillas = plantillas.filter(p => typeof p.procesoId === 'string' && pIds.includes(p.procesoId));
+
+        if (trx.plantillas && Array.isArray(trx.plantillas)) {
+            const extraPlantillas = plantillas.filter(p => trx.plantillas.includes(p.id));
+            const existingIds = new Set(relatedPlantillas.map(p => p.id));
+            extraPlantillas.forEach(p => {
+                if (!existingIds.has(p.id)) {
+                    relatedPlantillas.push(p);
+                }
+            });
+        }
+        return relatedPlantillas;
     };
 
     return (
@@ -360,7 +385,7 @@ export const ReporteTransacciones: React.FC = () => {
                                         </div>
                                         <div className="info-item">
                                             <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Proceso</label>
-                                            <div style={{ fontWeight: 600 }}>{getProcesoName(selectedTransactionDetail.process)}</div>
+                                            <div style={{ fontWeight: 600 }}>{getProcesoName(selectedTransactionDetail)}</div>
                                         </div>
                                         <div className="info-item">
                                             <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Estado</label>
