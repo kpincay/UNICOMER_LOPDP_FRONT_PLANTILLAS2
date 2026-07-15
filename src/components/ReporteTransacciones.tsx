@@ -93,12 +93,21 @@ export const ReporteTransacciones: React.FC = () => {
     };
 
     const getProcessIds = (trx: any): string[] => {
-        if (trx.procesos && Array.isArray(trx.procesos) && trx.procesos.length > 0) return trx.procesos;
-        if (trx.process && Array.isArray(trx.process) && trx.process.length > 0) return trx.process;
-        if (trx.proceso && Array.isArray(trx.proceso) && trx.proceso.length > 0) return trx.proceso;
-        if (typeof trx.proceso === 'string') return [trx.proceso];
-        if (typeof trx.procesoId === 'string') return [trx.procesoId];
-        return [];
+        const ids = new Set<string>();
+        const addValue = (value: any) => {
+            if (Array.isArray(value)) {
+                value.forEach(item => addValue(item));
+                return;
+            }
+            if (typeof value === 'string' && value.trim()) {
+                value.split(',').map(item => item.trim()).filter(Boolean).forEach(item => ids.add(item));
+            }
+        };
+        addValue(trx?.process);
+        addValue(trx?.proceso);
+        addValue(trx?.procesos);
+        addValue(trx?.procesoId ?? trx?.id_proceso ?? trx?.proceso_id);
+        return Array.from(ids);
     };
 
     const getProcesoName = (trx: any) => {
