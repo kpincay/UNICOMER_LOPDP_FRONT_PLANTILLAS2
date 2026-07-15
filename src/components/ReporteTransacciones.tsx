@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Search, RefreshCw, Eye, FileText, X, CheckCircle, Clock } from 'lucide-react';
+import { Search, RefreshCw, Eye, FileText, X, CheckCircle, Clock, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
 import type { Schema } from '../../amplify/data/resource';
@@ -31,7 +31,8 @@ export const ReporteTransacciones: React.FC = () => {
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>('desc');
+
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
@@ -99,9 +100,22 @@ export const ReporteTransacciones: React.FC = () => {
         getProcesoName(t.process).toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    let sortedTransactions = [...filteredTransactions];
+    if (sortOrder) {
+        sortedTransactions.sort((a, b) => {
+            const getMs = (t: Transaction) => {
+                const ts = t.createdAt || t.timestamp || 0;
+                return ts.toString().length === 10 ? ts * 1000 : ts;
+            };
+            const dateA = getMs(a);
+            const dateB = getMs(b);
+            return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+        });
+    }
+
     // Pagination logic
-    const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-    const paginatedTransactions = filteredTransactions.slice(
+    const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
+    const paginatedTransactions = sortedTransactions.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
@@ -180,7 +194,15 @@ export const ReporteTransacciones: React.FC = () => {
                             <table id="reporte-table">
                                 <thead>
                                     <tr>
-                                        <th>Fecha</th>
+                                        <th 
+                                            style={{ cursor: 'pointer', userSelect: 'none' }}
+                                            onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc')}
+                                        >
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                Fecha
+                                                {sortOrder === 'asc' ? <ArrowUp size={14} /> : sortOrder === 'desc' ? <ArrowDown size={14} /> : <ArrowUpDown size={14} style={{ opacity: 0.3 }} />}
+                                            </div>
+                                        </th>
                                         <th>Cédula</th>
                                         <th>Nombres</th>
                                         <th>Correo</th>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Eye, Layers, ClipboardList, QrCode, Download, Maximize2, X, Copy, Link } from 'lucide-react';
+import { Plus, RefreshCw, Search, FileText, CheckCircle, AlertTriangle, Edit, Trash2, Layers, ClipboardList, QrCode, Download, Maximize2, X, Copy, Link } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
@@ -359,7 +359,6 @@ export const Dashboard: React.FC = () => {
                                                     </span>
                                                 </td>
                                                 <td className="actions-cell">
-                                                    <button className="btn btn-ghost btn-icon-view" title="Ver detalle"><Eye size={16} /></button>
                                                     <button className="btn btn-ghost btn-icon-edit" onClick={() => { setSelectedPlantilla(p); setIsFormOpen(true); }} title="Editar"><Edit size={16} /></button>
                                                     <button className="btn btn-ghost btn-icon-delete" onClick={() => handleDeletePlantilla(p.id)} title="Eliminar"><Trash2 size={16} /></button>
                                                 </td>
