@@ -226,7 +226,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
 
     if (generatedUrl) {
         return (
-            <div className="glass-card animate-scaleUp" style={{ padding: 'var(--space-xl)', textAlign: 'center' }}>
+            <div className="glass-card request-result-card animate-scaleUp" style={{ padding: 'var(--space-xl)', textAlign: 'center' }}>
                 <CheckCircle size={48} className="text-success" style={{ marginBottom: 'var(--space-md)' }} />
                 <h3>¡Solicitud Generada!</h3>
                 <p>La transacción se ha registrado correctamente. Comparte el siguiente enlace con el cliente:</p>
@@ -257,9 +257,9 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
     }
 
     return (
-        <div className="glass-card animate-scaleUp" style={{ padding: 'var(--space-xl)' }}>
-            <form onSubmit={handleSubmit}>
-                <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
+        <div className="glass-card request-card animate-scaleUp" style={{ padding: 'var(--space-xl)' }}>
+            <form className="request-form" onSubmit={handleSubmit}>
+                <div className="form-grid request-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-md)' }}>
                     <div className="form-group" style={{ gridColumn: 'span 2' }}>
                         <label><IdCard size={14} /> Cédula de identidad</label>
                         <input
@@ -393,7 +393,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     </div>
                 </div>
 
-                <div style={{ marginTop: 'var(--space-xl)', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <div className="request-actions" style={{ marginTop: 'var(--space-xl)', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                     <button type="button" className="btn btn-ghost" onClick={onClose} disabled={loading}>
                         Cancelar
                     </button>
