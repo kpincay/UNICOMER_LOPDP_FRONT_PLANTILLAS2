@@ -134,8 +134,8 @@ export const ReporteTransacciones: React.FC = () => {
         ]);
 
         const csvContent = [
-            headers.join(','),
-            ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            headers.join(';'),
+            ...rows.map(row => row.map(cell => `"${cell}"`).join(';'))
         ].join('\n');
 
         const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -209,8 +209,9 @@ export const ReporteTransacciones: React.FC = () => {
                         />
                     </div>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                        <button className="btn btn-ghost" onClick={handleExportCSV} title="Descargar en Excel/CSV">
-                            <Download size={20} />
+                        <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={handleExportCSV} title="Descargar en Excel/CSV">
+                            <Download size={16} />
+                            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>DESCARGAR REPORTE</span>
                         </button>
                         <button className="btn btn-ghost" onClick={fetchData} title="Refrescar datos">
                             <RefreshCw size={20} className={loading ? 'spin' : ''} />
