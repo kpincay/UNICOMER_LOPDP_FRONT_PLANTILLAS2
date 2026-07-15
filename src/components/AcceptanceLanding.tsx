@@ -237,7 +237,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
     if (loading) {
         return (
-            <div className="landing-container flex-center">
+            <div className="landing-container acceptance-page flex-center">
                 <div className="spinner"></div>
                 <p>Cargando información del proceso...</p>
             </div>
@@ -246,7 +246,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
     if (completed) {
         return (
-            <div className="landing-container flex-center">
+            <div className="landing-container acceptance-page flex-center">
                 <div className="glass-card acceptance-done animate-scaleUp" style={{ maxWidth: '640px', textAlign: 'center', padding: '2.5rem' }}>
                     <CheckCircle size={72} className="text-success" />
                     <h2 style={{ marginTop: '1rem' }}>¡Proceso completado con éxito!</h2>
@@ -265,15 +265,26 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     }
 
     return (
-        <div className="landing-container">
-            <header className="landing-header">
-                <img src={UnicomerLogo} alt="Unicomer Logo" style={{ height: '150px', width: 'auto', objectFit: 'contain', marginBottom: '1rem', transform: 'scale(1.2)', transformOrigin: 'left center' }} />
+        <div className="landing-container acceptance-page">
+            <header className="landing-header acceptance-header">
+                <div className="acceptance-logo-wrap">
+                    <img src={UnicomerLogo} alt="Unicomer Logo" />
+                </div>
+                <div className="partner-logos" aria-label="Marcas asociadas">
+                    <span className="partner-logo-card partner-logo-artefacta">
+                        <img src="/artefacta-logo.png" alt="Artefacta" />
+                    </span>
+                    <span className="partner-logo-card partner-logo-radioshack">
+                        <img src="/radioshack-logo.png" alt="RadioShack" />
+                    </span>
+                </div>
+                <div className="acceptance-kicker">Consentimiento de datos personales</div>
                 <h1>{replacePlaceholders(procesoConfig?.tituloLanding, transaction) || procesoConfig?.nombre || 'Solicitud de Aceptación'}</h1>
             </header>
 
             <main className="landing-content animate-fadeIn">
                 {!(procesoConfig?.tituloLanding?.toLowerCase().includes('buro') || procesoConfig?.tituloLanding?.toLowerCase().includes('buró') || procesoConfig?.nombre?.toLowerCase().includes('buro') || procesoConfig?.nombre?.toLowerCase().includes('buró')) && (
-                    <div className="customer-info glass-card">
+                    <div className="customer-info acceptance-intro glass-card">
                         <h3>Hola, {transaction?.nombres} {transaction?.apellidoPaterno}</h3>
                         <p>Antes de empezar, ten en cuenta que necesitamos tu consentimiento para el tratamiento de tus datos personales, en la política de privacidad.</p>
                     </div>
@@ -281,11 +292,12 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
                 <div className="plantillas-list">
                     {plantillas.map(p => (
-                        <div key={p.id} className={`plantilla-item glass-card ${p.requiereAceptacion ? 'mandatory' : ''}`}>
+                        <div key={p.id} className={`plantilla-item acceptance-item glass-card ${p.requiereAceptacion ? 'mandatory' : ''} ${checkedItems[p.id] ? 'accepted' : ''}`}>
                             <div className="plantilla-header">
                                 <FileText size={20} />
                                 <h4>{p.nombre}</h4>
                                 {p.requiereAceptacion && <span className="badge badge-warning">Requerido</span>}
+                                {!p.requiereAceptacion && <span className="badge badge-optional">Opcional</span>}
                             </div>
                             <div className="plantilla-body">
                                 <p>{replacePlaceholders(p.contenido, transaction) || 'Contenido de la política de privacidad...'}</p>
