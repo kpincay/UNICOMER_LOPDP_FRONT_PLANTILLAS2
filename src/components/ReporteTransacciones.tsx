@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Search, RefreshCw, Eye, FileText, X, CheckCircle, Clock, ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
+import { Search, RefreshCw, Eye, FileText, X, CheckCircle, Clock, ArrowUp, ArrowDown, ArrowUpDown, Download } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
 import type { Schema } from '../../amplify/data/resource';
@@ -31,7 +31,8 @@ export const ReporteTransacciones: React.FC = () => {
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>('desc');
+    const [sortConfig, setSortConfig] = useState<{ key: 'fecha' | 'cedula', direction: 'asc' | 'desc' } | null>({ key: 'fecha', direction: 'desc' });
+
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -101,17 +102,51 @@ export const ReporteTransacciones: React.FC = () => {
     );
 
     let sortedTransactions = [...filteredTransactions];
-    if (sortOrder) {
+    if (sortConfig) {
         sortedTransactions.sort((a, b) => {
-            const getMs = (t: Transaction) => {
-                const ts = t.createdAt || t.timestamp || 0;
-                return ts.toString().length === 10 ? ts * 1000 : ts;
-            };
-            const dateA = getMs(a);
-            const dateB = getMs(b);
-            return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            if (sortConfig.key === 'fecha') {
+                const getMs = (t: Transaction) => {
+                    const ts = t.createdAt || t.timestamp || 0;
+                    return ts.toString().length === 10 ? ts * 1000 : ts;
+                };
+                const dateA = getMs(a);
+                const dateB = getMs(b);
+                return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+            } else if (sortConfig.key === 'cedula') {
+                const cedA = a.cedula || '';
+                const cedB = b.cedula || '';
+                return sortConfig.direction === 'asc' ? cedA.localeCompare(cedB) : cedB.localeCompare(cedA);
+            }
+            return 0;
         });
     }
+
+    const handleExportCSV = () => {
+        const headers = ['Fecha', 'Cédula', 'Nombres', 'Correo', 'Estado', 'IP', 'Proceso'];
+        const rows = sortedTransactions.map(t => [
+            formatDate(t.createdAt || t.timestamp).replace(/,/g, ''),
+            t.cedula || '',
+            t.nombres || '',
+            t.correo || '',
+            t.estado === 'aprobado' ? 'Aprobado' : 'Pendiente',
+            t.ip || '',
+            getProcesoName(t.process) || ''
+        ]);
+
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+        ].join('\n');
+
+        const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `Reporte_Transacciones_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     // Pagination logic
     const totalPages = Math.ceil(sortedTransactions.length / itemsPerPage);
@@ -173,9 +208,14 @@ export const ReporteTransacciones: React.FC = () => {
                             onChange={(e) => handleSearchChange(e.target.value)}
                         />
                     </div>
-                    <button className="btn btn-ghost" onClick={fetchData} title="Refrescar datos">
-                        <RefreshCw size={20} className={loading ? 'spin' : ''} />
-                    </button>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                        <button className="btn btn-ghost" onClick={handleExportCSV} title="Descargar en Excel/CSV">
+                            <Download size={20} />
+                        </button>
+                        <button className="btn btn-ghost" onClick={fetchData} title="Refrescar datos">
+                            <RefreshCw size={20} className={loading ? 'spin' : ''} />
+                        </button>
+                    </div>
                 </div>
 
                 <div className="table-wrapper">
@@ -196,14 +236,22 @@ export const ReporteTransacciones: React.FC = () => {
                                     <tr>
                                         <th 
                                             style={{ cursor: 'pointer', userSelect: 'none' }}
-                                            onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc')}
+                                            onClick={() => setSortConfig(prev => prev?.key === 'fecha' && prev.direction === 'asc' ? { key: 'fecha', direction: 'desc' } : { key: 'fecha', direction: 'asc' })}
                                         >
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                                 Fecha
-                                                {sortOrder === 'asc' ? <ArrowUp size={14} /> : sortOrder === 'desc' ? <ArrowDown size={14} /> : <ArrowUpDown size={14} style={{ opacity: 0.3 }} />}
+                                                {sortConfig?.key === 'fecha' ? (sortConfig.direction === 'asc' ? <ArrowUp size={14} /> : <ArrowDown size={14} />) : <ArrowUpDown size={14} style={{ opacity: 0.3 }} />}
                                             </div>
                                         </th>
-                                        <th>Cédula</th>
+                                        <th 
+                                            style={{ cursor: 'pointer', userSelect: 'none' }}
+                                            onClick={() => setSortConfig(prev => prev?.key === 'cedula' && prev.direction === 'asc' ? { key: 'cedula', direction: 'desc' } : { key: 'cedula', direction: 'asc' })}
+                                        >
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                Cédula
+                                                {sortConfig?.key === 'cedula' ? (sortConfig.direction === 'asc' ? <ArrowUp size={14} /> : <ArrowDown size={14} />) : <ArrowUpDown size={14} style={{ opacity: 0.3 }} />}
+                                            </div>
+                                        </th>
                                         <th>Nombres</th>
                                         <th>Correo</th>
                                         <th>Estado</th>

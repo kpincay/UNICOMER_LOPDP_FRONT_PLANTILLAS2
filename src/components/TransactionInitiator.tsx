@@ -191,7 +191,7 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(landingUrl)}" alt="Código QR al formulario de consentimiento" />
                         </div>
                         <hr style="border: 0; border-top: 2px solid #1554a1; margin: 20px 0;" />
-                        <p style="font-size: 0.9rem;">Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-de-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #1554a1; font-weight: bold;">https://www.artefacta.com/politica-de-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #1554a1; font-weight: bold;">dpo_ec@unicomer.com</a></p>
+                        <p style="font-size: 0.9rem;">Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #1554a1; font-weight: bold;">https://www.artefacta.com/politica-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #1554a1; font-weight: bold;">dpo_ec@unicomer.com</a></p>
                         <p style="font-size: 0.9rem;">El otorgamiento del consentimiento es voluntario y podrá revocarlo en cualquier momento, conforme a la ley aplicable.</p>
                     </div>
                 </div>
