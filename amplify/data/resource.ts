@@ -40,7 +40,7 @@ const schema = a.schema({
       plantillasAceptadas: a.string().required(), // Comma-separated list of accepted template IDs
     })
     .authorization((allow) => [
-      allow.publicApiKey()
+      allow.publicApiKey().to(['create', 'read'])
     ]),
 
   sendEmail: a
