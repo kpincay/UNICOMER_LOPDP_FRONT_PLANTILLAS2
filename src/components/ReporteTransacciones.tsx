@@ -414,7 +414,16 @@ export const ReporteTransacciones: React.FC = () => {
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {getPlantillasForTrx(selectedTransactionDetail).map(p => {
-                                            const isAccepted = selectedTransactionDetail.aceptaciones && selectedTransactionDetail.aceptaciones[p.id];
+                                            // El backend externo de AWS elimina la variable "aceptaciones" al guardar.
+                                            // Por lo tanto, si no existe "aceptaciones", asumimos que si el estado es "aprobado",
+                                            // las plantillas obligatorias (o todas las vinculadas al proceso) fueron aceptadas.
+                                            let isAccepted = false;
+                                            if (selectedTransactionDetail.aceptaciones && selectedTransactionDetail.aceptaciones[p.id]) {
+                                                isAccepted = true;
+                                            } else if (selectedTransactionDetail.estado === 'aprobado' || selectedTransactionDetail.estado === 'APROBADO') {
+                                                isAccepted = true;
+                                            }
+
                                             return (
                                                 <div key={p.id} className="glass-card" style={{ padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <div>
