@@ -464,9 +464,6 @@ export const ReporteTransacciones: React.FC = () => {
                                             );
                                         })}
                                     </div>
-                                    <div style={{ marginTop: '20px', fontSize: '0.7rem', color: '#888', wordBreak: 'break-all', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '8px' }}>
-                                        <strong>DEBUG RAW DATA:</strong> {JSON.stringify(selectedTransactionDetail)}
-                                    </div>
                                 </>
                             ) : (
                                 <p>No se pudo cargar la información de la transacción.</p>
