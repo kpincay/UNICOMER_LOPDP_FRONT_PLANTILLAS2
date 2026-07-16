@@ -35,7 +35,7 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
       },
       {
         id: 'getProceso', method: 'QUERY', label: 'getProceso', description: 'Obtener proceso por ID', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query GetProceso($id: ID!) {\n  getProceso(id: $id) {\n    id\n    nombre\n    descripcion\n    tituloLanding\n    encabezadoLanding\n    createdAt\n    updatedAt\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
+        defaultBody: JSON.stringify({ query: `query GetProceso($id: ID!) {\n  getProceso(id: $id) {\n    id\n    nombre\n    descripcion\n    tituloLanding\n    encabezadoLanding\n    createdAt\n    updatedAt\n    plantillas {\n      items {\n        id\n        nombre\n        codigo\n        version\n        url\n        contenido\n        requiereAceptacion\n        solicitarAceptacion\n        createdAt\n        updatedAt\n      }\n    }\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
       },
       {
         id: 'createProceso', method: 'MUTATION', label: 'createProceso', description: 'Crear nuevo proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
