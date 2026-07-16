@@ -34,6 +34,15 @@ const schema = a.schema({
       allow.publicApiKey()
     ]),
 
+  Aceptacion: a
+    .model({
+      transaccionId: a.string().required(),
+      plantillasAceptadas: a.string().required(), // Comma-separated list of accepted template IDs
+    })
+    .authorization((allow) => [
+      allow.publicApiKey()
+    ]),
+
   sendEmail: a
     .mutation()
     .arguments({

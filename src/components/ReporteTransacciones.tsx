@@ -47,6 +47,7 @@ export const ReporteTransacciones: React.FC = () => {
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [selectedTransactionDetail, setSelectedTransactionDetail] = useState<Transaction | null>(null);
     const [loadingDetail, setLoadingDetail] = useState(false);
+    const [selectedAceptacionPlantillas, setSelectedAceptacionPlantillas] = useState<string[]>([]);
 
     useEffect(() => {
         fetchData();
@@ -146,7 +147,7 @@ export const ReporteTransacciones: React.FC = () => {
     }
 
     const handleExportCSV = () => {
-        const headers = ['Fecha', 'Cédula', 'Nombres', 'Correo', 'Estado', 'IP', 'Proceso'];
+        const headers = ['Fecha de Aceptación', 'Cédula', 'Nombres', 'Correo', 'Estado', 'IP', 'Proceso'];
         const rows = sortedTransactions.map(t => [
             formatDate(t.createdAt || t.timestamp).replace(/,/g, ''),
             t.cedula || '',
@@ -187,6 +188,7 @@ export const ReporteTransacciones: React.FC = () => {
     const handleOpenDetail = async (transaction: Transaction) => {
         setIsDetailModalOpen(true);
         setLoadingDetail(true);
+        setSelectedAceptacionPlantillas([]);
         try {
             const detailRes = await lopdService.getTransactionById(transaction.id);
             let detailData = transaction;
@@ -205,6 +207,20 @@ export const ReporteTransacciones: React.FC = () => {
             }
 
             setSelectedTransactionDetail(detailData);
+
+            // Fetch specific template acceptances from Amplify
+            try {
+                const { data: aceptaciones } = await client.models.Aceptacion.list({
+                    filter: { transaccionId: { eq: transaction.id } },
+                    authMode: 'apiKey'
+                });
+                if (aceptaciones && aceptaciones.length > 0) {
+                    const ids = aceptaciones[0].plantillasAceptadas.split(',').map((id: string) => id.trim()).filter(Boolean);
+                    setSelectedAceptacionPlantillas(ids);
+                }
+            } catch (err) {
+                console.error('Error fetching template acceptances from Amplify:', err);
+            }
         } catch (error) {
             console.error('Error fetching transaction detail:', error);
             setSelectedTransactionDetail(transaction);
@@ -414,11 +430,12 @@ export const ReporteTransacciones: React.FC = () => {
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {getPlantillasForTrx(selectedTransactionDetail).map(p => {
-                                            // El backend externo de AWS elimina la variable "aceptaciones" al guardar.
-                                            // Por lo tanto, si no existe "aceptaciones", asumimos que si el estado es "aprobado",
-                                            // las plantillas obligatorias (o todas las vinculadas al proceso) fueron aceptadas.
+                                            // Evaluamos usando las aceptaciones específicas guardadas en Amplify.
+                                            // Si es un registro viejo y la lista está vacía, usamos el fallback.
                                             let isAccepted = false;
-                                            if (selectedTransactionDetail.aceptaciones && selectedTransactionDetail.aceptaciones[p.id]) {
+                                            if (selectedAceptacionPlantillas.length > 0) {
+                                                isAccepted = selectedAceptacionPlantillas.includes(p.id);
+                                            } else if (selectedTransactionDetail.aceptaciones && selectedTransactionDetail.aceptaciones[p.id]) {
                                                 isAccepted = true;
                                             } else if (selectedTransactionDetail.estado === 'aprobado' || selectedTransactionDetail.estado === 'APROBADO') {
                                                 isAccepted = true;

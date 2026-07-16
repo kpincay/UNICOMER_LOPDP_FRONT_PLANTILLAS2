@@ -171,10 +171,20 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     const handleSubmit = async () => {
         setSubmitting(true);
         try {
-            // 1. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
             const acceptedPlantillas = plantillas.filter(p => checkedItems[p.id]);
             const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
 
+            // 1. Guardar la aceptación específica de plantillas en la base de datos de Amplify
+            try {
+                await client.models.Aceptacion.create({
+                    transaccionId: transactionId,
+                    plantillasAceptadas: acceptedPlantillaIds.join(',')
+                }, { authMode: 'apiKey' });
+            } catch (err) {
+                console.error('Error saving template acceptances in Amplify:', err);
+            }
+
+            // 2. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
             await lopdService.updateTransaction(transactionId, {
                 nombres: transaction?.nombres || '',
                 apellidoPaterno: transaction?.apellidoPaterno || '',
