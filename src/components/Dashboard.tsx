@@ -86,7 +86,7 @@ export const Dashboard: React.FC = () => {
     async function handleDeletePlantilla(id: string) {
         if (!confirm('¿Estás seguro de eliminar esta plantilla?')) return;
         try {
-            await client.models.Plantilla.delete({ id }, { authMode: 'apiKey' });
+            await client.models.Plantilla.update({ id, eliminada: true }, { authMode: 'apiKey' });
             fetchData();
         } catch (error) {
             console.error('Error deleting plantilla:', error);
@@ -124,6 +124,7 @@ export const Dashboard: React.FC = () => {
     };
 
     const filteredPlantillas = plantillas.filter((p: Schema['Plantilla']['type']) => {
+        if (p.eliminada) return false;
         const term = plantillaSearch.toLowerCase();
         const matchText = !term ||
             p.nombre?.toLowerCase().includes(term) ||

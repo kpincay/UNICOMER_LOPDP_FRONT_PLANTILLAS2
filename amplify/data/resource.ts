@@ -29,6 +29,7 @@ const schema = a.schema({
       solicitarAceptacion: a.boolean(),
       procesoId: a.id(),
       proceso: a.belongsTo('Proceso', 'procesoId'),
+      eliminada: a.boolean(),
     })
     .authorization((allow) => [
       allow.publicApiKey()

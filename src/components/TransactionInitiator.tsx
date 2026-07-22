@@ -57,10 +57,11 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                     }
                 });
                 if (active) {
-                    setAvailablePlantillas(data);
+                    const activePlantillas = data.filter(p => !p.eliminada);
+                    setAvailablePlantillas(activePlantillas);
                     // Por defecto se seleccionan todas
                     const initialSelected: Record<string, boolean> = {};
-                    data.forEach(p => {
+                    activePlantillas.forEach(p => {
                         initialSelected[p.id] = true;
                     });
                     setSelectedPlantillaIds(initialSelected);
