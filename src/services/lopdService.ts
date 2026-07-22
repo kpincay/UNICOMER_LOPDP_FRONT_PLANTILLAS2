@@ -16,6 +16,9 @@ export interface TransactionData {
     channel: string;
     storeId: string;
     proceso: string[]; 
+    process?: string[]; // Campo para compatibilidad con backend
+    procesos?: string[]; // Campo para compatibilidad con backend
+    plantillas?: string[]; // IDs de plantillas especificas a firmar
 }
 
 export const lopdService = {

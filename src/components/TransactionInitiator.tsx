@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Send, User, IdCard, Mail, Phone, Hash, CheckCircle, Copy } from 'lucide-react';
+import { Send, User, IdCard, Mail, Phone, Hash, CheckCircle, Copy, FileText } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
 import type { Schema } from '../../amplify/data/resource';
@@ -26,6 +26,11 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
         procesoId: '',
     });
 
+    // Estados para el manejo de las plantillas del proceso
+    const [availablePlantillas, setAvailablePlantillas] = useState<Schema['Plantilla']['type'][]>([]);
+    const [selectedPlantillaIds, setSelectedPlantillaIds] = useState<Record<string, boolean>>({});
+    const [loadingPlantillas, setLoadingPlantillas] = useState(false);
+
     const [emailSuggestions, setEmailSuggestions] = useState<string[]>([]);
     const domains = ['gmail.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'yahoo.com'];
 
@@ -37,6 +42,41 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             setFormData(prev => ({ ...prev, procesoId: defaultProceso }));
         }
     }, [procesos, initialProcesoId]);
+
+    // Cargar las plantillas asociadas al proceso actual
+    useEffect(() => {
+        if (!formData.procesoId) return;
+
+        let active = true;
+        async function fetchPlantillas() {
+            setLoadingPlantillas(true);
+            try {
+                const { data } = await client.models.Plantilla.list({
+                    filter: {
+                        procesoId: { eq: formData.procesoId }
+                    }
+                });
+                if (active) {
+                    setAvailablePlantillas(data);
+                    // Por defecto se seleccionan todas
+                    const initialSelected: Record<string, boolean> = {};
+                    data.forEach(p => {
+                        initialSelected[p.id] = true;
+                    });
+                    setSelectedPlantillaIds(initialSelected);
+                }
+            } catch (error) {
+                console.error('Error fetching plantillas for proceso:', error);
+            } finally {
+                if (active) setLoadingPlantillas(false);
+            }
+        }
+
+        fetchPlantillas();
+        return () => {
+            active = false;
+        };
+    }, [formData.procesoId]);
 
     const validateCedula = (cedula: string) => {
         if (!/^\d{10}$/.test(cedula)) return false;
@@ -136,7 +176,10 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
             const ipResponse = await fetch('https://api.ipify.org?format=json').catch(() => ({ json: () => ({ ip: '127.0.0.1' }) }));
             const { ip } = await (ipResponse as any).json();
 
-            const transactionData = {
+            // Obtener los IDs de las plantillas seleccionadas
+            const selectedIds = Object.keys(selectedPlantillaIds).filter(id => selectedPlantillaIds[id]);
+
+            const transactionData: any = {
                 cedula: formData.cedula,
                 ip: ip,
                 nombres: formData.nombres,
@@ -150,6 +193,11 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                 process: [formData.procesoId],
                 procesos: [formData.procesoId]
             };
+
+            // Si hay plantillas seleccionadas se envian especificamente
+            if (selectedIds.length > 0) {
+                transactionData.plantillas = selectedIds;
+            }
 
             const result = await lopdService.createTransaction(transactionData);
 
@@ -394,6 +442,72 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                         </select>
                     </div>
                 </div>
+
+                {loadingPlantillas && (
+                    <div style={{ marginTop: 'var(--space-md)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div className="spinner spinner-xs"></div>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Cargando plantillas asociadas...</span>
+                    </div>
+                )}
+
+                {!loadingPlantillas && availablePlantillas.length > 0 && (
+                    <div style={{ marginTop: 'var(--space-lg)' }}>
+                        <h4 style={{ marginBottom: 'var(--space-xs)', fontSize: '0.95rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <FileText size={16} /> Seleccionar plantillas a firmar
+                        </h4>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-md)' }}>
+                            De forma predeterminada se enviarán todas. Desmarca las que no requieras para esta transacción.
+                        </p>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            {availablePlantillas.map(p => (
+                                <label 
+                                    key={p.id} 
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        padding: '10px 14px',
+                                        background: 'var(--bg-secondary)',
+                                        border: '1px solid var(--border-color)',
+                                        borderRadius: 'var(--radius-sm)',
+                                        cursor: 'pointer',
+                                        transition: 'background 0.2s ease, border-color 0.2s ease',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = 'var(--bg-tertiary)';
+                                        e.currentTarget.style.borderColor = 'var(--border-focus)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = 'var(--bg-secondary)';
+                                        e.currentTarget.style.borderColor = 'var(--border-color)';
+                                    }}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedPlantillaIds[p.id] ?? false}
+                                        onChange={() => {
+                                            setSelectedPlantillaIds(prev => ({
+                                                ...prev,
+                                                [p.id]: !prev[p.id]
+                                            }));
+                                        }}
+                                        style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                    />
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <span style={{ fontSize: '0.85rem', fontWeight: '500', color: 'var(--text-primary)' }}>
+                                            {p.nombre}
+                                        </span>
+                                        {p.codigo && (
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                                                Código: {p.codigo} {p.version ? `(v${p.version})` : ''}
+                                            </span>
+                                        )}
+                                    </div>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 <div className="request-actions" style={{ marginTop: 'var(--space-xl)', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                     <button type="button" className="btn btn-ghost" onClick={onClose} disabled={loading}>
