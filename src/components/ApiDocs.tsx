@@ -56,7 +56,11 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
     items: [
       {
         id: 'listPlantillas', method: 'QUERY', label: 'listPlantillas', description: 'Listar todas las plantillas', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query ListPlantillas {\n  listPlantillas {\n    items {\n      id\n      nombre\n      codigo\n      version\n      url\n      contenido\n      requiereAceptacion\n      solicitarAceptacion\n      procesoId\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2)
+        defaultBody: JSON.stringify({ query: `query ListPlantillas {\n  listPlantillas {\n    items {\n      id\n      nombre\n      codigo\n      version\n      url\n      contenido\n      requiereAceptacion\n      solicitarAceptacion\n      procesoId\n      eliminada\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2)
+      },
+      {
+        id: 'getPlantilla', method: 'QUERY', label: 'getPlantilla', description: 'Consultar plantilla por ID', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query GetPlantilla($id: ID!) {\n  getPlantilla(id: $id) {\n    id\n    nombre\n    codigo\n    version\n    url\n    contenido\n    requiereAceptacion\n    solicitarAceptacion\n    procesoId\n    eliminada\n    createdAt\n    updatedAt\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
       },
       {
         id: 'createPlantilla', method: 'MUTATION', label: 'createPlantilla', description: 'Crear nueva plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
