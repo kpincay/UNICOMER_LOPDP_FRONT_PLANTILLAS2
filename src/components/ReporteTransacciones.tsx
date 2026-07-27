@@ -231,11 +231,17 @@ export const ReporteTransacciones: React.FC = () => {
 
     const getPlantillasForTrx = (trx: any) => {
         const pIds = getProcessIds(trx);
+        // Filtrar plantillas que corresponden al proceso de la transaccion
         let relatedPlantillas = plantillas.filter(p => typeof p.procesoId === 'string' && pIds.includes(p.procesoId));
 
         const addExtraPlantillas = (arr: string[]) => {
             if (arr && Array.isArray(arr)) {
-                const extraPlantillas = plantillas.filter(p => arr.includes(p.id));
+                // Solo se agregan plantillas adicionales si pertenecen al proceso asociado
+                const extraPlantillas = plantillas.filter(p => 
+                    arr.includes(p.id) && 
+                    typeof p.procesoId === 'string' && 
+                    pIds.includes(p.procesoId)
+                );
                 const existingIds = new Set(relatedPlantillas.map(p => p.id));
                 extraPlantillas.forEach(p => {
                     if (!existingIds.has(p.id)) relatedPlantillas.push(p);

@@ -91,7 +91,12 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 let filteredPlantillas: Schema['Plantilla']['type'][] = [];
 
                 if (transData.plantillas && Array.isArray(transData.plantillas) && transData.plantillas.length > 0) {
-                    filteredPlantillas = allPlantillas.filter(p => transData.plantillas.includes(p.id));
+                    // Filtrar para que solo se carguen las plantillas que pertenecen al proceso asociado
+                    filteredPlantillas = allPlantillas.filter(p => 
+                        transData.plantillas.includes(p.id) && 
+                        typeof p.procesoId === 'string' && 
+                        extractedProcessIds.includes(p.procesoId)
+                    );
                 } else if (extractedProcessIds.length > 0) {
                     filteredPlantillas = allPlantillas.filter(p => typeof p.procesoId === 'string' && extractedProcessIds.includes(p.procesoId) && !p.eliminada);
                 } else {
