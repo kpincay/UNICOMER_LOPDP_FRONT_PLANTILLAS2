@@ -16,8 +16,6 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
     const [processIds, setProcessIds] = useState<string[]>([]);
-    const [alreadyAcceptedIds, setAlreadyAcceptedIds] = useState<string[]>([]);
-    const [allProcessPlantillas, setAllProcessPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
 
     const extractProcessIds = (transData: any): string[] => {
         const ids = new Set<string>();
@@ -89,88 +87,27 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 const { data: allPlantillas } = await client.models.Plantilla.list();
                 const extractedProcessIds = extractProcessIds(transData);
 
-                // 2.5. Cargar aprobaciones historicas por cedula del cliente
-                const acceptedIds = new Set<string>();
-                if (transData.cedula) {
-                    try {
-                        const historicalRes = await lopdService.getHistoricalTransactions();
-                        let historicalData: any[] = [];
-                        if (historicalRes.body && typeof historicalRes.body === 'string') {
-                            try {
-                                const parsed = JSON.parse(historicalRes.body);
-                                historicalData = parsed.data || [];
-                            } catch (e) {
-                                console.error(e);
-                            }
-                        } else if (historicalRes.data) {
-                            historicalData = historicalRes.data;
-                        }
-
-                        // Filtrar aprobadas del mismo cliente
-                        const clientApprovedTrxs = historicalData.filter((t: any) => 
-                            t.cedula === transData.cedula && 
-                            (t.estado === 'aprobado' || t.estado === 'APROBADO')
-                        );
-
-                        clientApprovedTrxs.forEach((t: any) => {
-                            if (Array.isArray(t.plantillasAceptadas)) {
-                                t.plantillasAceptadas.forEach((id: string) => acceptedIds.add(id));
-                            }
-                            if (Array.isArray(t.plantillas)) {
-                                t.plantillas.forEach((id: string) => acceptedIds.add(id));
-                            }
-                            if (t.aceptaciones && typeof t.aceptaciones === 'object') {
-                                Object.keys(t.aceptaciones).forEach(id => {
-                                    if (t.aceptaciones[id]) acceptedIds.add(id);
-                                });
-                            }
-                        });
-
-                        // Obtener desde Amplify
-                        const { data: todasAceptaciones } = await client.models.Aceptacion.list({ authMode: 'apiKey' });
-                        const approvedTrxIds = clientApprovedTrxs.map((t: any) => t.id);
-                        const filtradas = todasAceptaciones.filter(a => approvedTrxIds.includes(a.transaccionId));
-                        filtradas.flatMap(a => a.plantillasAceptadas.split(',').map(id => id.trim()).filter(Boolean))
-                            .forEach(id => acceptedIds.add(id));
-
-                        setAlreadyAcceptedIds(Array.from(acceptedIds));
-                    } catch (err) {
-                        console.error('Error al cargar historico de plantillas aceptadas:', err);
-                    }
-                }
-
-                // Guardar todas las plantillas del proceso (historicas + pendientes)
-                const processPlantillas = allPlantillas.filter(p => 
-                    typeof p.procesoId === 'string' && 
-                    extractedProcessIds.includes(p.procesoId) && 
-                    !p.eliminada
-                );
-                setAllProcessPlantillas(processPlantillas);
-
-                // Filter templates: only show those associated with this transaction or process(es) that have not been accepted yet
+                // Filter templates: only show those associated with this transaction or process(es)
                 let filteredPlantillas: Schema['Plantilla']['type'][] = [];
 
                 if (transData.plantillas && Array.isArray(transData.plantillas) && transData.plantillas.length > 0) {
+                    // Filtrar para que solo se carguen las plantillas que pertenecen al proceso asociado
                     filteredPlantillas = allPlantillas.filter(p => 
                         transData.plantillas.includes(p.id) && 
                         typeof p.procesoId === 'string' && 
-                        extractedProcessIds.includes(p.procesoId) &&
-                        !acceptedIds.has(p.id)
+                        extractedProcessIds.includes(p.procesoId)
                     );
                 } else if (extractedProcessIds.length > 0) {
-                    filteredPlantillas = allPlantillas.filter(p => 
-                        typeof p.procesoId === 'string' && 
-                        extractedProcessIds.includes(p.procesoId) && 
-                        !p.eliminada &&
-                        !acceptedIds.has(p.id)
-                    );
+                    filteredPlantillas = allPlantillas.filter(p => typeof p.procesoId === 'string' && extractedProcessIds.includes(p.procesoId) && !p.eliminada);
                 } else {
+                    // IMPORTANT: No longer falling back to all templates.
+                    // This prevents privacy leaks and ensures only relevant documents are shown.
                     console.warn('No processId found for transaction:', transactionId);
                     filteredPlantillas = [];
                 }
 
                 const filteredProcessIds = Array.from(new Set(
-                    processPlantillas
+                    filteredPlantillas
                         .map(p => p.procesoId)
                         .filter((id): id is string => typeof id === 'string' && id.trim().length > 0)
                 ));
@@ -198,84 +135,6 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     initialChecked[p.id] = false;
                 });
                 setCheckedItems(initialChecked);
-
-                // Auto-aprobación si todas las plantillas del proceso ya fueron firmadas previamente
-                if (filteredPlantillas.length === 0 && transData.estado !== 'aprobado' && transData.estado !== 'APROBADO') {
-                    setSubmitting(true);
-                    try {
-                        const totalAcceptedList = Array.from(acceptedIds);
-                        await lopdService.updateTransaction(transactionId, {
-                            nombres: transData.nombres || '',
-                            apellidoPaterno: transData.apellidoPaterno || '',
-                            apellidoMaterno: transData.apellidoMaterno || '',
-                            correo: transData.correo || '',
-                            estado: 'aprobado',
-                            fechaAceptacion: new Date().toISOString(),
-                            aceptaciones: {},
-                            procesos: finalProcessIds,
-                            process: finalProcessIds,
-                            proceso: finalProcessIds,
-                            plantillasAceptadas: totalAcceptedList,
-                            plantillas: totalAcceptedList
-                        });
-
-                        try {
-                            await client.models.Aceptacion.create({
-                                transaccionId: transactionId,
-                                plantillasAceptadas: totalAcceptedList.join(',')
-                            }, { authMode: 'apiKey' });
-                        } catch (err) {
-                            console.error('Error saving template acceptances in Amplify (auto-approve):', err);
-                        }
-
-                        if (transData.correo) {
-                            const cleanName = (val: any) => val && val !== 'undefined' ? val : '';
-                            const apellidos = cleanName(transData.apellidos) || [cleanName(transData.apellidoPaterno), cleanName(transData.apellidoMaterno)].filter(Boolean).join(' ');
-                            const fullName = [cleanName(transData.nombres), apellidos].filter(Boolean).join(' ');
-
-                            const acceptedTemplatesList = processPlantillas
-                                .filter(p => acceptedIds.has(p.id))
-                                .map(p => `<li>${p.nombre}</li>`)
-                                .join('');
-
-                            const emailBody = `
-                                <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #1554a1; border-radius: 8px; overflow: hidden;">
-                                    <div style="text-align: center; background-color: #1554a1; padding: 20px 0;">
-                                        <img src="https://master.d373a3mueuc4js.amplifyapp.com/LOGO_UNICOMER_2.jpg?v=3" alt="Unicomer" width="200" style="display: inline-block; height: auto;" />
-                                    </div>
-                                    <div style="padding: 20px;">
-                                        <p>Estimado/a <strong>${fullName}</strong>,</p>
-                                        <p>Le informamos que hemos registrado correctamente su aceptación del consentimiento para el tratamiento de sus datos personales, la cual ya había sido otorgada previamente con éxito.</p>
-                                        <p>Las cláusulas vigentes autorizadas son las siguientes:</p>
-                                        <ul>
-                                            ${acceptedTemplatesList || '<li>Tratamiento General de Datos Personales</li>'}
-                                        </ul>
-                                        <hr style="border: 0; border-top: 2px solid #1554a1; margin: 20px 0;" />
-                                        <p style="font-size: 0.9rem;">Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #1554a1; font-weight: bold;">https://www.artefacta.com/politica-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #1554a1; font-weight: bold;">dpo_ec@unicomer.com</a></p>
-                                    </div>
-                                </div>
-                            `;
-
-                            try {
-                                await (client.mutations as any).sendEmail({
-                                    to: transData.correo,
-                                    subject: 'Confirmación de consentimiento para el tratamiento de datos personales - UNICOMER',
-                                    body: emailBody
-                                });
-                            } catch (emailError) {
-                                console.error('Error al enviar correo de confirmacion auto-aprobado:', emailError);
-                            }
-                        }
-
-                        setCompleted(true);
-                    } catch (e) {
-                        console.error('Error al auto-aprobar transaccion:', e);
-                    } finally {
-                        setSubmitting(false);
-                    }
-                } else if (transData.estado === 'aprobado' || transData.estado === 'APROBADO') {
-                    setCompleted(true);
-                }
 
             } catch (error) {
                 console.error('Error loading landing data:', error);
@@ -319,26 +178,16 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         try {
             const acceptedPlantillas = plantillas.filter(p => checkedItems[p.id]);
             const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
-            const totalAcceptedIds = Array.from(new Set([...alreadyAcceptedIds, ...acceptedPlantillaIds]));
 
             // 1. Guardar la aceptación específica de plantillas en la base de datos de Amplify
             try {
                 await client.models.Aceptacion.create({
                     transaccionId: transactionId,
-                    plantillasAceptadas: totalAcceptedIds.join(',')
+                    plantillasAceptadas: acceptedPlantillaIds.join(',')
                 }, { authMode: 'apiKey' });
             } catch (err) {
                 console.error('Error saving template acceptances in Amplify:', err);
             }
-
-            // Mapear todas las aceptaciones (anteriores + nuevas)
-            const totalAceptacionesMap: Record<string, boolean> = {};
-            alreadyAcceptedIds.forEach(id => {
-                totalAceptacionesMap[id] = true;
-            });
-            Object.keys(checkedItems).forEach(id => {
-                totalAceptacionesMap[id] = checkedItems[id];
-            });
 
             // 2. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
             await lopdService.updateTransaction(transactionId, {
@@ -348,21 +197,17 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 correo: transaction?.correo || '',
                 estado: 'aprobado',
                 fechaAceptacion: new Date().toISOString(),
-                aceptaciones: totalAceptacionesMap,
+                aceptaciones: checkedItems,
                 procesos: processIds,
                 process: processIds,
                 proceso: processIds,
-                plantillasAceptadas: totalAcceptedIds,
-                plantillas: totalAcceptedIds
+                plantillasAceptadas: acceptedPlantillaIds,
+                plantillas: acceptedPlantillaIds
             });
 
             // 2. Send confirmation email
             if (transaction?.correo) {
-                const totalAcceptedTemplates = allProcessPlantillas.filter(p => 
-                    totalAcceptedIds.includes(p.id)
-                );
-
-                const acceptedTemplatesList = totalAcceptedTemplates
+                const acceptedTemplatesList = acceptedPlantillas
                     .map(p => `<li>${p.nombre}</li>`)
                     .join('');
 
