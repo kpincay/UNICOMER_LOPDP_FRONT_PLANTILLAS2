@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Search, RefreshCw, Eye, FileText, X, CheckCircle, Clock, ArrowUp, ArrowDown, ArrowUpDown, Download } from 'lucide-react';
+import { Search, RefreshCw, Eye, FileText, X, CheckCircle, ArrowUp, ArrowDown, ArrowUpDown, Download } from 'lucide-react';
 import { generateClient } from 'aws-amplify/data';
 import { lopdService } from '../services/lopdService';
 import type { Schema } from '../../amplify/data/resource';
@@ -435,40 +435,49 @@ export const ReporteTransacciones: React.FC = () => {
                                     </h4>
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                                        {getPlantillasForTrx(selectedTransactionDetail).map(p => {
-                                            // Evaluamos usando las aceptaciones específicas guardadas en Amplify.
-                                            // Si es un registro viejo y la lista está vacía, usamos el fallback.
-                                            let isAccepted = false;
-                                            if (selectedAceptacionPlantillas.length > 0) {
-                                                isAccepted = selectedAceptacionPlantillas.includes(p.id);
-                                            } else if (selectedTransactionDetail.aceptaciones && selectedTransactionDetail.aceptaciones[p.id]) {
-                                                isAccepted = true;
-                                            } else if (selectedTransactionDetail.estado === 'aprobado' || selectedTransactionDetail.estado === 'APROBADO') {
-                                                isAccepted = true;
-                                            }
+                                        {(() => {
+                                            // Filtrar las plantillas del proceso que de verdad han sido aceptadas
+                                            const plantillasAceptadas = getPlantillasForTrx(selectedTransactionDetail).filter(p => {
+                                                let isAccepted = false;
+                                                if (selectedAceptacionPlantillas.length > 0) {
+                                                    isAccepted = selectedAceptacionPlantillas.includes(p.id);
+                                                } else if (selectedTransactionDetail.aceptaciones && selectedTransactionDetail.aceptaciones[p.id]) {
+                                                    isAccepted = true;
+                                                } else if (selectedTransactionDetail.estado === 'aprobado' || selectedTransactionDetail.estado === 'APROBADO') {
+                                                    isAccepted = true;
+                                                }
+                                                return isAccepted;
+                                            });
 
-                                            return (
-                                                <div key={p.id} className="glass-card" style={{ padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <div>
-                                                        <div style={{ fontWeight: 500 }}>{p.nombre}</div>
-                                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{p.codigo} v{p.version}</div>
+                                            if (plantillasAceptadas.length > 0) {
+                                                return plantillasAceptadas.map(p => (
+                                                    <div key={p.id} className="glass-card" style={{ padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                        <div>
+                                                            <div style={{ fontWeight: 500 }}>{p.nombre}</div>
+                                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{p.codigo} v{p.version}</div>
+                                                        </div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                            <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>ACEPTADO</span>
+                                                            <CheckCircle size={20} color="#10b981" />
+                                                        </div>
                                                     </div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                        {isAccepted ? (
-                                                            <>
-                                                                <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>ACEPTADO</span>
-                                                                <CheckCircle size={20} color="#10b981" />
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>NO REGISTRADO</span>
-                                                                <Clock size={20} color="#94a3b8" />
-                                                            </>
-                                                        )}
+                                                ));
+                                            } else {
+                                                return (
+                                                    <div style={{ 
+                                                        textAlign: 'center', 
+                                                        padding: '30px 20px', 
+                                                        background: 'rgba(255,255,255,0.15)', 
+                                                        borderRadius: '8px', 
+                                                        border: '1px dashed var(--border-color)',
+                                                        color: 'var(--text-muted)',
+                                                        fontSize: '0.9rem'
+                                                    }}>
+                                                        No hay plantillas aprobadas para este proceso
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            }
+                                        })()}
                                     </div>
                                 </>
                             ) : (
