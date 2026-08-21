@@ -31,7 +31,6 @@
     "aws-amplify": "^6.16.2",
     "aws-cdk-lib": "^2.234.1",
     "constructs": "^10.0.0",
-    "esbuild": "^0.28.2",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
