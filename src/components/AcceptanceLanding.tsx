@@ -85,7 +85,13 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
                 // 2. Fetch templates for the process(es) associated with this transaction
                 const { data: allPlantillas } = await client.models.Plantilla.list();
+                const { data: allRelations } = await client.models.ProcesoPlantilla.list();
                 const extractedProcessIds = extractProcessIds(transData);
+
+                // Get valid template IDs based on the extracted process IDs
+                const validPlantillaIds = allRelations
+                    .filter(rel => extractedProcessIds.includes(rel.procesoId))
+                    .map(rel => rel.plantillaId);
 
                 // Filter templates: only show those associated with this transaction or process(es)
                 let filteredPlantillas: Schema['Plantilla']['type'][] = [];
@@ -94,11 +100,10 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     // Filtrar para que solo se carguen las plantillas que pertenecen al proceso asociado
                     filteredPlantillas = allPlantillas.filter(p => 
                         transData.plantillas.includes(p.id) && 
-                        typeof p.procesoId === 'string' && 
-                        extractedProcessIds.includes(p.procesoId)
+                        validPlantillaIds.includes(p.id)
                     );
                 } else if (extractedProcessIds.length > 0) {
-                    filteredPlantillas = allPlantillas.filter(p => typeof p.procesoId === 'string' && extractedProcessIds.includes(p.procesoId) && !p.eliminada);
+                    filteredPlantillas = allPlantillas.filter(p => validPlantillaIds.includes(p.id) && !p.eliminada);
                 } else {
                     // IMPORTANT: No longer falling back to all templates.
                     // This prevents privacy leaks and ensures only relevant documents are shown.
@@ -107,9 +112,9 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 }
 
                 const filteredProcessIds = Array.from(new Set(
-                    filteredPlantillas
-                        .map(p => p.procesoId)
-                        .filter((id): id is string => typeof id === 'string' && id.trim().length > 0)
+                    allRelations
+                        .filter(rel => filteredPlantillas.some(p => p.id === rel.plantillaId))
+                        .map(rel => rel.procesoId)
                 ));
 
                 const finalProcessIds = filteredProcessIds.length > 0 ? filteredProcessIds : extractedProcessIds;

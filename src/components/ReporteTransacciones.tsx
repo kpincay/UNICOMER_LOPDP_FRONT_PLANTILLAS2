@@ -34,6 +34,7 @@ export const ReporteTransacciones: React.FC = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [procesos, setProcesos] = useState<Schema['Proceso']['type'][]>([]);
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
+    const [procesoPlantillas, setProcesoPlantillas] = useState<Schema['ProcesoPlantilla']['type'][]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState<{ key: 'fecha' | 'cedula', direction: 'asc' | 'desc' } | null>({ key: 'fecha', direction: 'desc' });
@@ -56,10 +57,11 @@ export const ReporteTransacciones: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [trxRes, procesoRes, plantillaRes] = await Promise.all([
+            const [trxRes, procesoRes, plantillaRes, pPlantillaRes] = await Promise.all([
                 lopdService.getHistoricalTransactions(),
                 client.models.Proceso.list({ authMode: 'apiKey' }),
-                client.models.Plantilla.list({ authMode: 'apiKey' })
+                client.models.Plantilla.list({ authMode: 'apiKey' }),
+                client.models.ProcesoPlantilla.list({ authMode: 'apiKey' })
             ]);
 
             let trxData: Transaction[] = [];
@@ -77,6 +79,7 @@ export const ReporteTransacciones: React.FC = () => {
             setTransactions(trxData);
             setProcesos(procesoRes.data);
             setPlantillas(plantillaRes.data);
+            setProcesoPlantillas(pPlantillaRes.data);
         } catch (error) {
             console.error('Error fetching report data:', error);
         } finally {
@@ -231,17 +234,16 @@ export const ReporteTransacciones: React.FC = () => {
 
     const getPlantillasForTrx = (trx: any) => {
         const pIds = getProcessIds(trx);
-        // Filtrar plantillas que corresponden al proceso de la transaccion
-        let relatedPlantillas = plantillas.filter(p => typeof p.procesoId === 'string' && pIds.includes(p.procesoId));
+
+        const validPlantillaIds = procesoPlantillas
+            .filter(rel => pIds.includes(rel.procesoId))
+            .map(rel => rel.plantillaId);
+
+        let relatedPlantillas = plantillas.filter(p => validPlantillaIds.includes(p.id));
 
         const addExtraPlantillas = (arr: string[]) => {
             if (arr && Array.isArray(arr)) {
-                // Solo se agregan plantillas adicionales si pertenecen al proceso asociado
-                const extraPlantillas = plantillas.filter(p => 
-                    arr.includes(p.id) && 
-                    typeof p.procesoId === 'string' && 
-                    pIds.includes(p.procesoId)
-                );
+                const extraPlantillas = plantillas.filter(p => arr.includes(p.id) && validPlantillaIds.includes(p.id));
                 const existingIds = new Set(relatedPlantillas.map(p => p.id));
                 extraPlantillas.forEach(p => {
                     if (!existingIds.has(p.id)) relatedPlantillas.push(p);

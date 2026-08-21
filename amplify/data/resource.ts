@@ -12,7 +12,7 @@ const schema = a.schema({
       descripcion: a.string(),
       tituloLanding: a.string(),
       encabezadoLanding: a.string(),
-      plantillas: a.hasMany('Plantilla', 'procesoId'),
+      plantillasAsociadas: a.hasMany('ProcesoPlantilla', 'procesoId'),
     })
     .authorization((allow) => [
       allow.publicApiKey()
@@ -27,9 +27,19 @@ const schema = a.schema({
       contenido: a.string(),
       requiereAceptacion: a.boolean(),
       solicitarAceptacion: a.boolean(),
-      procesoId: a.id(),
-      proceso: a.belongsTo('Proceso', 'procesoId'),
       eliminada: a.boolean(),
+      procesosAsociados: a.hasMany('ProcesoPlantilla', 'plantillaId'),
+    })
+    .authorization((allow) => [
+      allow.publicApiKey()
+    ]),
+
+  ProcesoPlantilla: a
+    .model({
+      procesoId: a.id().required(),
+      plantillaId: a.id().required(),
+      proceso: a.belongsTo('Proceso', 'procesoId'),
+      plantilla: a.belongsTo('Plantilla', 'plantillaId'),
     })
     .authorization((allow) => [
       allow.publicApiKey()
