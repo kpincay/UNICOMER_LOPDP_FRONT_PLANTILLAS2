@@ -12,6 +12,7 @@ const client = generateClient<Schema>();
 export const Dashboard: React.FC = () => {
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [procesos, setProcesos] = useState<Schema['Proceso']['type'][]>([]);
+    const [procesoPlantillas, setProcesoPlantillas] = useState<Schema['ProcesoPlantilla']['type'][]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'plantillas' | 'procesos' | 'reportes'>('plantillas');
     const [plantillaSearch, setPlantillaSearch] = useState('');
@@ -33,12 +34,14 @@ export const Dashboard: React.FC = () => {
     async function fetchData() {
         setLoading(true);
         try {
-            const [plantillaRes, procesoRes] = await Promise.all([
+            const [plantillaRes, procesoRes, pPlantillaRes] = await Promise.all([
                 client.models.Plantilla.list({ authMode: 'apiKey' }),
-                client.models.Proceso.list({ authMode: 'apiKey' })
+                client.models.Proceso.list({ authMode: 'apiKey' }),
+                client.models.ProcesoPlantilla.list({ authMode: 'apiKey' })
             ]);
             setPlantillas(plantillaRes.data);
             setProcesos(procesoRes.data);
+            setProcesoPlantillas(pPlantillaRes.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -47,14 +50,40 @@ export const Dashboard: React.FC = () => {
 
     async function handleSavePlantilla(data: any) {
         try {
+            const { procesosIds, ...plantillaData } = data;
+            let plantillaId = selectedPlantilla?.id;
+
             if (selectedPlantilla) {
                 await client.models.Plantilla.update({
                     id: selectedPlantilla.id,
-                    ...data
+                    ...plantillaData
                 }, { authMode: 'apiKey' });
             } else {
-                await client.models.Plantilla.create(data, { authMode: 'apiKey' });
+                const res = await client.models.Plantilla.create(plantillaData, { authMode: 'apiKey' });
+                plantillaId = res.data?.id;
             }
+
+            if (plantillaId && procesosIds !== undefined) {
+                // Find existing relations
+                const existingRelations = procesoPlantillas.filter(pp => pp.plantillaId === plantillaId);
+                const existingProcesoIds = existingRelations.map(pp => pp.procesoId);
+
+                // Add new relations
+                const toAdd = procesosIds.filter((id: string) => !existingProcesoIds.includes(id));
+                for (const pid of toAdd) {
+                    await client.models.ProcesoPlantilla.create({
+                        plantillaId,
+                        procesoId: pid
+                    }, { authMode: 'apiKey' });
+                }
+
+                // Delete removed relations
+                const toDelete = existingRelations.filter(pp => !procesosIds.includes(pp.procesoId));
+                for (const pp of toDelete) {
+                    await client.models.ProcesoPlantilla.delete({ id: pp.id }, { authMode: 'apiKey' });
+                }
+            }
+
             setIsFormOpen(false);
             setSelectedPlantilla(null);
             fetchData();
@@ -66,14 +95,40 @@ export const Dashboard: React.FC = () => {
 
     async function handleSaveProceso(data: any) {
         try {
+            const { plantillasIds, ...procesoData } = data;
+            let procesoId = selectedProceso?.id;
+
             if (selectedProceso) {
                 await client.models.Proceso.update({
                     id: selectedProceso.id,
-                    ...data
+                    ...procesoData
                 }, { authMode: 'apiKey' });
             } else {
-                await client.models.Proceso.create(data, { authMode: 'apiKey' });
+                const res = await client.models.Proceso.create(procesoData, { authMode: 'apiKey' });
+                procesoId = res.data?.id;
             }
+
+            if (procesoId && plantillasIds) {
+                // Find existing relations for this proceso
+                const existingRelations = procesoPlantillas.filter(pp => pp.procesoId === procesoId);
+                const existingPlantillaIds = existingRelations.map(pp => pp.plantillaId);
+
+                // Add new relations
+                const toAdd = plantillasIds.filter((id: string) => !existingPlantillaIds.includes(id));
+                for (const pid of toAdd) {
+                    await client.models.ProcesoPlantilla.create({
+                        procesoId,
+                        plantillaId: pid
+                    }, { authMode: 'apiKey' });
+                }
+
+                // Delete removed relations
+                const toDelete = existingRelations.filter(pp => !plantillasIds.includes(pp.plantillaId));
+                for (const pp of toDelete) {
+                    await client.models.ProcesoPlantilla.delete({ id: pp.id }, { authMode: 'apiKey' });
+                }
+            }
+
             setIsProcesoFormOpen(false);
             setSelectedProceso(null);
             fetchData();
@@ -129,7 +184,7 @@ export const Dashboard: React.FC = () => {
         const matchText = !term ||
             p.nombre?.toLowerCase().includes(term) ||
             p.codigo?.toLowerCase().includes(term);
-        const matchProceso = !plantillaProcesoFilter || p.procesoId === plantillaProcesoFilter;
+        const matchProceso = !plantillaProcesoFilter || procesoPlantillas.some(pp => pp.plantillaId === p.id && pp.procesoId === plantillaProcesoFilter);
         const matchAceptacion =
             plantillaAceptacionFilter === 'all' ||
             (plantillaAceptacionFilter === 'si' && !!p.requiereAceptacion) ||
@@ -339,16 +394,21 @@ export const Dashboard: React.FC = () => {
                                 </thead>
                                 <tbody>
                                     {filteredPlantillas.map((p: Schema['Plantilla']['type']) => {
-                                        const proceso = procesos.find((pr: Schema['Proceso']['type']) => pr.id === p.procesoId);
+                                        const pIds = procesoPlantillas.filter(pp => pp.plantillaId === p.id).map(pp => pp.procesoId);
+                                        const pNombres = pIds.map(id => procesos.find(pr => pr.id === id)?.nombre).filter(Boolean);
                                         return (
                                             <tr key={p.id}>
                                                 <td>{p.nombre}</td>
                                                 <td>{p.codigo}</td>
                                                 <td>
-                                                    {proceso ? (
-                                                        <span className="badge badge-info" style={{ background: 'rgba(59,130,246,0.1)' }}>
-                                                            {proceso.nombre}
-                                                        </span>
+                                                    {pNombres.length > 0 ? (
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start' }}>
+                                                            {pNombres.map((nombre, i) => (
+                                                                <span key={i} className="badge badge-info" style={{ background: 'rgba(59,130,246,0.1)' }}>
+                                                                    {nombre}
+                                                                </span>
+                                                            ))}
+                                                        </div>
                                                     ) : (
                                                         <span className="text-muted">Sin asignar</span>
                                                     )}
@@ -392,7 +452,7 @@ export const Dashboard: React.FC = () => {
                                 </thead>
                                 <tbody>
                                     {filteredProcesos.map((pr: Schema['Proceso']['type']) => {
-                                        const count = plantillas.filter((p: Schema['Plantilla']['type']) => p.procesoId === pr.id).length;
+                                        const count = procesoPlantillas.filter((pp: Schema['ProcesoPlantilla']['type']) => pp.procesoId === pr.id).length;
                                         return (
                                             <tr key={pr.id}>
                                                 <td style={{ fontWeight: 600 }}>{pr.nombre}</td>
@@ -440,6 +500,7 @@ export const Dashboard: React.FC = () => {
                     plantilla={selectedPlantilla}
                     plantillas={plantillas}
                     procesos={procesos}
+                    selectedProcesosIds={selectedPlantilla ? procesoPlantillas.filter(pp => pp.plantillaId === selectedPlantilla.id).map(pp => pp.procesoId) : []}
                     onClose={() => setIsFormOpen(false)}
                     onSave={handleSavePlantilla}
                 />
@@ -448,6 +509,8 @@ export const Dashboard: React.FC = () => {
             {isProcesoFormOpen && (
                 <ProcesoForm
                     proceso={selectedProceso}
+                    plantillas={plantillas}
+                    selectedPlantillasIds={selectedProceso ? procesoPlantillas.filter(pp => pp.procesoId === selectedProceso.id).map(pp => pp.plantillaId) : []}
                     onClose={() => setIsProcesoFormOpen(false)}
                     onSave={handleSaveProceso}
                 />

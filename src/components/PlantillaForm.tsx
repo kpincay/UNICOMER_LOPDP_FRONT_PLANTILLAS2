@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import Select from 'react-select';
 import type { Schema } from '../../amplify/data/resource';
 
 interface PlantillaFormProps {
     plantilla?: Schema['Plantilla']['type'] | null;
     plantillas: Schema['Plantilla']['type'][];
     procesos: Schema['Proceso']['type'][];
+    selectedProcesosIds?: string[];
     onClose: () => void;
     onSave: (data: any) => Promise<void>;
 }
 
-export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, plantillas, procesos, onClose, onSave }) => {
+export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, plantillas, procesos, selectedProcesosIds = [], onClose, onSave }) => {
     const [formData, setFormData] = useState({
         nombre: '',
         codigo: '',
@@ -19,7 +21,7 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, plantil
         contenido: '',
         requiereAceptacion: false,
         solicitarAceptacion: false,
-        procesoId: '' as string | null
+        procesosIds: [] as string[]
     });
     const [submitting, setSubmitting] = useState(false);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -34,10 +36,10 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, plantil
                 contenido: plantilla.contenido || '',
                 requiereAceptacion: !!plantilla.requiereAceptacion,
                 solicitarAceptacion: !!plantilla.solicitarAceptacion,
-                procesoId: plantilla.procesoId || ''
+                procesosIds: selectedProcesosIds
             });
         }
-    }, [plantilla]);
+    }, [plantilla, selectedProcesosIds]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -57,9 +59,7 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, plantil
         }
 
         setSubmitting(true);
-        const { procesoId, ...rest } = formData;
-        const dataToSave = procesoId ? { ...rest, procesoId } : rest;
-        await onSave(dataToSave);
+        await onSave(formData);
         setSubmitting(false);
     };
 
@@ -79,18 +79,48 @@ export const PlantillaForm: React.FC<PlantillaFormProps> = ({ plantilla, plantil
                         </div>
                     )}
                     <div className="form-group">
-                        <label>Proceso Asociado</label>
-                        <select
-                            value={formData.procesoId || ''}
-                            onChange={(e) => setFormData({ ...formData, procesoId: e.target.value || null })}
-                        >
-                            <option value="">-- Sin Proceso (Independiente) --</option>
-                            {procesos.map(proceso => (
-                                <option key={proceso.id} value={proceso.id}>
-                                    {proceso.nombre}
-                                </option>
-                            ))}
-                        </select>
+                        <label>Procesos Asociados</label>
+                        <Select
+                            isMulti
+                            options={procesos.map(p => ({ value: p.id, label: p.nombre }))}
+                            value={procesos.map(p => ({ value: p.id, label: p.nombre })).filter(opt => formData.procesosIds.includes(opt.value))}
+                            onChange={(selected) => {
+                                setFormData({
+                                    ...formData,
+                                    procesosIds: selected.map(s => s.value)
+                                });
+                            }}
+                            placeholder="Buscar y seleccionar procesos..."
+                            noOptionsMessage={() => "No se encontraron procesos"}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    borderColor: 'var(--border-color)',
+                                    boxShadow: 'none',
+                                    '&:hover': {
+                                        borderColor: 'var(--primary-color)'
+                                    }
+                                }),
+                                multiValue: (base) => ({
+                                    ...base,
+                                    backgroundColor: 'rgba(59,130,246,0.1)',
+                                    borderRadius: '4px'
+                                }),
+                                multiValueLabel: (base) => ({
+                                    ...base,
+                                    color: 'var(--primary-color)',
+                                    fontSize: '0.85rem'
+                                }),
+                                multiValueRemove: (base) => ({
+                                    ...base,
+                                    color: 'var(--primary-color)',
+                                    ':hover': {
+                                        backgroundColor: 'rgba(59,130,246,0.2)',
+                                        color: 'var(--primary-color)',
+                                    },
+                                }),
+                            }}
+                        />
                     </div>
 
                     <div className="form-row">
