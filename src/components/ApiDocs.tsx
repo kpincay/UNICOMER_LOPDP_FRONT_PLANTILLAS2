@@ -35,7 +35,7 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
       },
       {
         id: 'getProceso', method: 'QUERY', label: 'getProceso', description: 'Obtener proceso por ID', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query GetProceso($id: ID!) {\n  getProceso(id: $id) {\n    id\n    nombre\n    descripcion\n    tituloLanding\n    encabezadoLanding\n    createdAt\n    updatedAt\n    plantillas {\n      items {\n        id\n        nombre\n        codigo\n        version\n        url\n        contenido\n        requiereAceptacion\n        solicitarAceptacion\n        createdAt\n        updatedAt\n      }\n    }\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
+        defaultBody: JSON.stringify({ query: `query GetProceso($id: ID!) {\n  getProceso(id: $id) {\n    id\n    nombre\n    descripcion\n    tituloLanding\n    encabezadoLanding\n    createdAt\n    updatedAt\n    plantillasAsociadas {\n      items {\n        id\n        procesoId\n        plantillaId\n        plantilla {\n          id\n          nombre\n          codigo\n          version\n          url\n          contenido\n          requiereAceptacion\n          solicitarAceptacion\n          eliminada\n          createdAt\n          updatedAt\n        }\n      }\n    }\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
       },
       {
         id: 'createProceso', method: 'MUTATION', label: 'createProceso', description: 'Crear nuevo proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
@@ -56,15 +56,15 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
     items: [
       {
         id: 'listPlantillas', method: 'QUERY', label: 'listPlantillas', description: 'Listar todas las plantillas', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query ListPlantillas {\n  listPlantillas {\n    items {\n      id\n      nombre\n      codigo\n      version\n      url\n      contenido\n      requiereAceptacion\n      solicitarAceptacion\n      procesoId\n      eliminada\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2)
+        defaultBody: JSON.stringify({ query: `query ListPlantillas {\n  listPlantillas {\n    items {\n      id\n      nombre\n      codigo\n      version\n      url\n      contenido\n      requiereAceptacion\n      solicitarAceptacion\n      eliminada\n      createdAt\n      updatedAt\n    }\n  }\n}` }, null, 2)
       },
       {
         id: 'getPlantilla', method: 'QUERY', label: 'getPlantilla', description: 'Consultar plantilla por ID', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `query GetPlantilla($id: ID!) {\n  getPlantilla(id: $id) {\n    id\n    nombre\n    codigo\n    version\n    url\n    contenido\n    requiereAceptacion\n    solicitarAceptacion\n    procesoId\n    eliminada\n    createdAt\n    updatedAt\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
+        defaultBody: JSON.stringify({ query: `query GetPlantilla($id: ID!) {\n  getPlantilla(id: $id) {\n    id\n    nombre\n    codigo\n    version\n    url\n    contenido\n    requiereAceptacion\n    solicitarAceptacion\n    eliminada\n    createdAt\n    updatedAt\n    procesosAsociados {\n      items {\n        id\n        procesoId\n        plantillaId\n        proceso {\n          id\n          nombre\n          descripcion\n        }\n      }\n    }\n  }\n}`, variables: { id: "<ID_AQUI>" } }, null, 2)
       },
       {
         id: 'createPlantilla', method: 'MUTATION', label: 'createPlantilla', description: 'Crear nueva plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
-        defaultBody: JSON.stringify({ query: `mutation CreatePlantilla($input: CreatePlantillaInput!) {\n  createPlantilla(input: $input) {\n    id\n    nombre\n    codigo\n    version\n  }\n}`, variables: { input: { nombre: "Nueva Plantilla", codigo: "NP-001", version: "1.0", contenido: "<p>Contenido HTML</p>", requiereAceptacion: true, solicitarAceptacion: false, procesoId: "<PROCESO_ID>" } } }, null, 2)
+        defaultBody: JSON.stringify({ query: `mutation CreatePlantilla($input: CreatePlantillaInput!) {\n  createPlantilla(input: $input) {\n    id\n    nombre\n    codigo\n    version\n  }\n}`, variables: { input: { nombre: "Nueva Plantilla", codigo: "NP-001", version: "1.0", contenido: "<p>Contenido HTML</p>", requiereAceptacion: true, solicitarAceptacion: false } } }, null, 2)
       },
       {
         id: 'updatePlantilla', method: 'MUTATION', label: 'updatePlantilla', description: 'Actualizar plantilla', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
@@ -73,6 +73,50 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
       {
         id: 'deletePlantilla', method: 'MUTATION', label: 'deletePlantilla', description: 'Eliminar plantilla', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
         defaultBody: JSON.stringify({ query: `mutation DeletePlantilla($input: DeletePlantillaInput!) {\n  deletePlantilla(input: $input) {\n    id\n  }\n}`, variables: { input: { id: "<ID_AQUI>" } } }, null, 2)
+      },
+    ]
+  },
+  {
+    section: 'Asociaciones', icon: 'link', color: '#f97316', subtitle: 'ProcesoPlantilla — GraphQL (AppSync)',
+    items: [
+      {
+        id: 'listProcesoPlantillas', method: 'QUERY', label: 'listProcesoPlantillas', description: 'Listar asociaciones proceso-plantilla', color: '#10b981', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `query ListProcesoPlantillas {
+  listProcesoPlantillas {
+    items {
+      id
+      procesoId
+      plantillaId
+      proceso {
+        id
+        nombre
+      }
+      plantilla {
+        id
+        nombre
+        codigo
+      }
+    }
+  }
+}` }, null, 2)
+      },
+      {
+        id: 'createProcesoPlantilla', method: 'MUTATION', label: 'createProcesoPlantilla', description: 'Asociar plantilla a proceso', color: '#f59e0b', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation CreateProcesoPlantilla($input: CreateProcesoPlantillaInput!) {
+  createProcesoPlantilla(input: $input) {
+    id
+    procesoId
+    plantillaId
+  }
+}`, variables: { input: { procesoId: "<PROCESO_ID>", plantillaId: "<PLANTILLA_ID>" } } }, null, 2)
+      },
+      {
+        id: 'deleteProcesoPlantilla', method: 'MUTATION', label: 'deleteProcesoPlantilla', description: 'Desasociar plantilla de proceso', color: '#ef4444', type: 'graphql', url: APPSYNC_URL, headers: gqlHeaders,
+        defaultBody: JSON.stringify({ query: `mutation DeleteProcesoPlantilla($input: DeleteProcesoPlantillaInput!) {
+  deleteProcesoPlantilla(input: $input) {
+    id
+  }
+}`, variables: { input: { id: "<ID_ASOCIACION>" } } }, null, 2)
       },
     ]
   },
