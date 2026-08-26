@@ -145,6 +145,8 @@ export const TransactionInitiator: React.FC<TransactionInitiatorProps> = ({ proc
                 correo: formData.correo,
                 telefono: formData.telefono,
                 channel: 'web',
+                flujoProceso: 'Portal LOPDP',
+                communicationChannel: 'wsp',
                 storeId: 'MAIN_STORE',
                 proceso: [formData.procesoId],
                 process: [formData.procesoId],
