@@ -246,7 +246,7 @@ const TransactionInitiatorPage = ({ initialProcesoId }: { initialProcesoId?: str
             <img src="/artefacta-logo.png" alt="Artefacta" />
           </span>
           <span className="partner-logo-card partner-logo-radioshack">
-            <img src="/radioshack-logo.png" alt="RadioShack" />
+            <img src="/radioshack-logo-2.png" alt="RadioShack" />
           </span>
         </div>
         <h1>Generar Solicitud</h1>

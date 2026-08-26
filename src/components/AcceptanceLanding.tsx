@@ -298,7 +298,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                         <img src="/artefacta-logo.png" alt="Artefacta" />
                     </span>
                     <span className="partner-logo-card partner-logo-radioshack">
-                        <img src="/radioshack-logo.png" alt="RadioShack" />
+                        <img src="/radioshack-logo-2.png" alt="RadioShack" />
                     </span>
                 </div>
                 <div className="acceptance-kicker">Consentimiento de datos personales</div>
