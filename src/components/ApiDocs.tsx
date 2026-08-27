@@ -134,7 +134,7 @@ const ENDPOINTS: { section: string; icon: string; color: string; subtitle: strin
     items: [
       {
         id: 'lopdCreate', method: 'POST', label: '/rest/faceid/lopd/create', description: 'Crear transacción LOPD', color: '#3b82f6', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/create`, headers: lopdHeaders,
-        defaultBody: JSON.stringify({ cedula: "0912345678", ip: "192.168.1.1", nombres: "Juan", apellidoPaterno: "Pérez", apellidoMaterno: "López", correo: "juan@example.com", telefono: "0991234567", channel: "WEB", storeId: "STORE-001", proceso: ["proceso-id-1"], plantillas: ["plantilla-id-1"] }, null, 2)
+        defaultBody: JSON.stringify({ cedula: "0912345678", ip: "192.168.1.1", nombres: "Juan", apellidoPaterno: "Pérez", apellidoMaterno: "López", correo: "juan@example.com", telefono: "0991234567", channel: "WEB", flujoProceso: "Portal LOPDP", communicationChannel: "wsp", storeId: "STORE-001", proceso: ["proceso-id-1"], plantillas: ["plantilla-id-1"] }, null, 2)
       },
       {
         id: 'lopdGet', method: 'POST', label: '/rest/faceid/lopd/get', description: 'Obtener transacciones', color: '#10b981', type: 'rest', url: `${LOPD_BASE_URL}/rest/faceid/lopd/get`, headers: lopdHeaders,
