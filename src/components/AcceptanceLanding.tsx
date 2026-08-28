@@ -111,13 +111,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     filteredPlantillas = [];
                 }
 
-                const filteredProcessIds = Array.from(new Set(
-                    allRelations
-                        .filter(rel => filteredPlantillas.some(p => p.id === rel.plantillaId))
-                        .map(rel => rel.procesoId)
-                ));
-
-                const finalProcessIds = filteredProcessIds.length > 0 ? filteredProcessIds : extractedProcessIds;
+                const finalProcessIds = extractedProcessIds;
 
                 setPlantillas(filteredPlantillas);
                 setProcessIds(finalProcessIds);
