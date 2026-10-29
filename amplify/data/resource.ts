@@ -60,6 +60,7 @@ const schema = a.schema({
       to: a.string().required(),
       subject: a.string().required(),
       body: a.string().required(),
+      isConfirmation: a.boolean(),
     })
     .returns(a.json())
     .handler(a.handler.function(sendEmailFunction))

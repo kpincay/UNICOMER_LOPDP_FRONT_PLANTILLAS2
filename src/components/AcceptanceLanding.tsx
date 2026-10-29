@@ -234,7 +234,8 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     await (client.mutations as any).sendEmail({
                         to: transaction.correo,
                         subject: 'Confirmación de consentimiento para el tratamiento de datos personales - UNICOMER',
-                        body: emailBody
+                        body: emailBody,
+                        isConfirmation: true
                     });
                 } catch (emailError) {
                     console.error('Error al enviar el correo de confirmación:', emailError);

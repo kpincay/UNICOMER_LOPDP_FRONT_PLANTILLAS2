@@ -1,7 +1,12 @@
 import nodemailer from 'nodemailer';
 
 export const handler = async (event: any) => {
-  const { to, subject, body } = event.arguments || event;
+  const { to, subject, body, isConfirmation } = event.arguments || event;
+
+  if (!isConfirmation) {
+    console.log('Envío de correo deshabilitado para esta operación');
+    return { success: false, error: 'Envío de correo deshabilitado para esta operación' };
+  }
 
   const user = process.env.SMTP_USER; 
   const pass = process.env.SMTP_PASS;
