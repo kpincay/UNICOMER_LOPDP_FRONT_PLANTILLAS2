@@ -466,7 +466,7 @@ export const Dashboard: React.FC = () => {
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                         <div className="qr-thumbnail" style={{ background: '#fff', padding: '4px', borderRadius: '4px', display: 'flex' }}>
                                                             <QRCodeCanvas 
-                                                                value={`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${pr.id}`}
+                                                                value={`https://privacy.unicomer.com/?idProceso=${pr.id}`}
                                                                 size={32}
                                                                 level={"H"}
                                                             />
@@ -543,7 +543,7 @@ export const Dashboard: React.FC = () => {
                             }}>
                                 <QRCodeCanvas 
                                     id={`qr-gen-${selectedQRProceso.id}`}
-                                    value={`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${selectedQRProceso.id}`}
+                                    value={`https://privacy.unicomer.com/?idProceso=${selectedQRProceso.id}`}
                                     size={200}
                                     level={"H"}
                                     includeMargin={true}
@@ -573,11 +573,11 @@ export const Dashboard: React.FC = () => {
                                     textOverflow: 'ellipsis',
                                     whiteSpace: 'nowrap'
                                 }}>
-                                    {`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${selectedQRProceso.id}`}
+                                    {`https://privacy.unicomer.com/?idProceso=${selectedQRProceso.id}`}
                                 </code>
                                 <button 
                                     className="btn btn-ghost btn-xs"
-                                    onClick={() => copyURL(`https://master.d373a3mueuc4js.amplifyapp.com/?idProceso=${selectedQRProceso.id}`)}
+                                    onClick={() => copyURL(`https://privacy.unicomer.com/?idProceso=${selectedQRProceso.id}`)}
                                     title="Copiar URL"
                                 >
                                     <Copy size={16} />
