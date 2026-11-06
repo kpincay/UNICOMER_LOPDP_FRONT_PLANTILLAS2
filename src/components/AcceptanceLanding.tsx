@@ -205,37 +205,19 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
 
             // 2. Send confirmation email
             if (transaction?.correo) {
-                const acceptedTemplatesList = acceptedPlantillas
-                    .map(p => `<li>${p.nombre}</li>`)
-                    .join('');
-
                 const cleanName = (val: any) => val && val !== 'undefined' ? val : '';
                 const apellidos = cleanName(transaction?.apellidos) || [cleanName(transaction?.apellidoPaterno), cleanName(transaction?.apellidoMaterno)].filter(Boolean).join(' ');
                 const fullName = [cleanName(transaction?.nombres), apellidos].filter(Boolean).join(' ');
-
-                const emailBody = `
-                    <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 0; border: 2px solid #1554a1; border-radius: 8px; overflow: hidden;">
-                        <div style="text-align: center; background-color: #1554a1; padding: 20px 0;">
-                            <img src="https://privacy.unicomer.com/LOGO_UNICOMER_2.jpg?v=3" alt="Unicomer" width="200" style="display: inline-block; height: auto;" />
-                        </div>
-                        <div style="padding: 20px;">
-                            <p>Estimado/a <strong>${fullName}</strong>,</p>
-                            <p>Por medio del presente, le informamos que el <strong>${new Date().toLocaleString('es-EC')}</strong> hemos registrado correctamente su aceptación del consentimiento para el tratamiento de sus datos personales, conforme a la normativa vigente en materia de protección de datos personales.</p>
-                            <p>Las cláusulas aceptadas con las siguientes:</p>
-                            <ul>
-                                ${acceptedTemplatesList}
-                            </ul>
-                            <p style="font-size: 0.9rem;">El tratamiento se realiza bajo los principios de legalidad, finalidad, proporcionalidad y seguridad. Podrá conocer nuestra política en: <a href="https://www.artefacta.com/politica-proteccion-de-datos-personales" target="_blank" rel="noopener noreferrer" style="color: #1554a1; font-weight: bold;">https://www.artefacta.com/politica-proteccion-de-datos-personales</a> y ejercer sus derechos de protección de datos contactándose al correo: <a href="mailto:dpo_ec@unicomer.com" style="color: #1554a1; font-weight: bold;">dpo_ec@unicomer.com</a></p>
-                        </div>
-                    </div>
-                `;
 
                 try {
                     await (client.mutations as any).sendEmail({
                         to: transaction.correo,
                         subject: 'Confirmación de consentimiento para el tratamiento de datos personales - UNICOMER',
-                        body: emailBody,
-                        isConfirmation: true
+                        body: '',
+                        isConfirmation: true,
+                        name: fullName,
+                        consentUrl: window.location.href,
+                        acceptedClauses: acceptedPlantillas.map(plantilla => plantilla.nombre),
                     });
                 } catch (emailError) {
                     console.error('Error al enviar el correo de confirmación:', emailError);

@@ -61,6 +61,9 @@ const schema = a.schema({
       subject: a.string().required(),
       body: a.string().required(),
       isConfirmation: a.boolean(),
+      name: a.string(),
+      consentUrl: a.string(),
+      acceptedClauses: a.json(),
     })
     .returns(a.json())
     .handler(a.handler.function(sendEmailFunction))

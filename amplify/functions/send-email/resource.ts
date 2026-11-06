@@ -5,8 +5,11 @@ export const sendEmail = defineFunction({
   name: 'send-email',
   entry: './handler.ts',
   environment: {
-    SMTP_USER: process.env.SMTP_USER || 'eduardofaustos@gmail.com', // Toma la variable de entorno o usa el default
-    SMTP_PASS: secret('SMTP_PASS'),
+    APIGEE_TOKEN_URL: process.env.APIGEE_TOKEN_URL || '',
+    APIGEE_NOTIFICATION_URL: process.env.APIGEE_NOTIFICATION_URL || '',
+    APIGEE_ENVIRONMENT: process.env.APIGEE_ENVIRONMENT || '',
+    APIGEE_BASIC_AUTH: secret('APIGEE_BASIC_AUTH'),
+    NOTIFICATION_SENDER: process.env.NOTIFICATION_SENDER || 'notificaciones-dataprivacy@unicomerprivacy.com',
   },
-  timeoutSeconds: 30, // Increased for external SMTP connections
+  timeoutSeconds: 30,
 });
