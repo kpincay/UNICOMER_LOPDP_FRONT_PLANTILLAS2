@@ -209,11 +209,6 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     <p>
                         Tus aceptaciones de privacidad han sido registradas correctamente conforme a la LOPDP.
                     </p>
-                    <p style={{ marginTop: '0.5rem' }}>
-                        Estado del correo: <strong>{mailStatus}</strong>
-                        {mailStatus === 'ENVIADO' && ' (Apigee aceptó la solicitud; esto no confirma la entrega al buzón).'}
-                        {mailStatus === 'PENDIENTE' && ' (La aceptación quedó guardada, pero el envío requiere revisión o reintento).'}
-                    </p>
                     <p style={{ marginTop: '0.5rem', color: '#4b5563' }}>
                         No es necesario realizar ninguna acción adicional. Este proceso ha finalizado.
                     </p>
