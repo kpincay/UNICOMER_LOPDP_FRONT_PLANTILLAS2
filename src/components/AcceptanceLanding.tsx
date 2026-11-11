@@ -11,11 +11,11 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [completed, setCompleted] = useState(false);
+    const [mailStatus, setMailStatus] = useState('DESCONOCIDO');
     const [transaction, setTransaction] = useState<any>(null);
     const [procesoConfig, setProcesoConfig] = useState<Schema['Proceso']['type'] | null>(null);
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
-    const [processIds, setProcessIds] = useState<string[]>([]);
 
     const extractProcessIds = (transData: any): string[] => {
         const ids = new Set<string>();
@@ -113,7 +113,6 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                 const finalProcessIds = extractedProcessIds;
 
                 setPlantillas(filteredPlantillas);
-                setProcessIds(finalProcessIds);
 
                 const primaryProcessId = finalProcessIds[0] || null;
 
@@ -176,54 +175,9 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         try {
             const acceptedPlantillas = plantillas.filter(p => checkedItems[p.id]);
             const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
+            const result = await lopdService.registerAcceptance(transactionId, acceptedPlantillaIds);
 
-            // 1. Guardar la aceptación específica de plantillas en la base de datos de Amplify
-            try {
-                await client.models.Aceptacion.create({
-                    transaccionId: transactionId,
-                    plantillasAceptadas: acceptedPlantillaIds.join(',')
-                }, { authMode: 'apiKey' });
-            } catch (err) {
-                console.error('Error saving template acceptances in Amplify:', err);
-            }
-
-            // 2. Update transaction state in external backend to 'aprobado' (matching successful POST /update example)
-            await lopdService.updateTransaction(transactionId, {
-                nombres: transaction?.nombres || '',
-                apellidoPaterno: transaction?.apellidoPaterno || '',
-                apellidoMaterno: transaction?.apellidoMaterno || '',
-                correo: transaction?.correo || '',
-                estado: 'aprobado',
-                fechaAceptacion: new Date().toISOString(),
-                aceptaciones: checkedItems,
-                procesos: processIds,
-                process: processIds,
-                proceso: processIds,
-                plantillasAceptadas: acceptedPlantillaIds,
-                plantillas: acceptedPlantillaIds
-            });
-
-            // 2. Send confirmation email
-            if (transaction?.correo) {
-                const cleanName = (val: any) => val && val !== 'undefined' ? val : '';
-                const apellidos = cleanName(transaction?.apellidos) || [cleanName(transaction?.apellidoPaterno), cleanName(transaction?.apellidoMaterno)].filter(Boolean).join(' ');
-                const fullName = [cleanName(transaction?.nombres), apellidos].filter(Boolean).join(' ');
-
-                try {
-                    await (client.mutations as any).sendEmail({
-                        to: transaction.correo,
-                        subject: 'Confirmación de consentimiento para el tratamiento de datos personales - UNICOMER',
-                        body: '',
-                        isConfirmation: true,
-                        name: fullName,
-                        consentUrl: window.location.href,
-                        acceptedClauses: acceptedPlantillas.map(plantilla => plantilla.nombre),
-                    });
-                } catch (emailError) {
-                    console.error('Error al enviar el correo de confirmación:', emailError);
-                }
-            }
-
+            setMailStatus(result.correo?.estado || 'DESCONOCIDO');
             setCompleted(true);
             sessionStorage.removeItem('pending_proceso_id');
         } catch (error) {
@@ -254,6 +208,11 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
                     </p>
                     <p>
                         Tus aceptaciones de privacidad han sido registradas correctamente conforme a la LOPDP.
+                    </p>
+                    <p style={{ marginTop: '0.5rem' }}>
+                        Estado del correo: <strong>{mailStatus}</strong>
+                        {mailStatus === 'ENVIADO' && ' (Apigee aceptó la solicitud; esto no confirma la entrega al buzón).'}
+                        {mailStatus === 'PENDIENTE' && ' (La aceptación quedó guardada, pero el envío requiere revisión o reintento).'}
                     </p>
                     <p style={{ marginTop: '0.5rem', color: '#4b5563' }}>
                         No es necesario realizar ninguna acción adicional. Este proceso ha finalizado.
