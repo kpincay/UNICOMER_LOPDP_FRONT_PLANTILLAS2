@@ -11,7 +11,6 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [completed, setCompleted] = useState(false);
-    const [mailStatus, setMailStatus] = useState('DESCONOCIDO');
     const [transaction, setTransaction] = useState<any>(null);
     const [procesoConfig, setProcesoConfig] = useState<Schema['Proceso']['type'] | null>(null);
     const [plantillas, setPlantillas] = useState<Schema['Plantilla']['type'][]>([]);
@@ -175,9 +174,8 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         try {
             const acceptedPlantillas = plantillas.filter(p => checkedItems[p.id]);
             const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
-            const result = await lopdService.registerAcceptance(transactionId, acceptedPlantillaIds);
+            await lopdService.registerAcceptance(transactionId, acceptedPlantillaIds);
 
-            setMailStatus(result.correo?.estado || 'DESCONOCIDO');
             setCompleted(true);
             sessionStorage.removeItem('pending_proceso_id');
         } catch (error) {
