@@ -175,6 +175,7 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
             const acceptedPlantillas = plantillas.filter(p => checkedItems[p.id]);
             const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
             await lopdService.registerAcceptance(transactionId, acceptedPlantillaIds);
+            await lopdService.updateTransaction(transactionId, { estado: 'procesado' });
 
             setCompleted(true);
             sessionStorage.removeItem('pending_proceso_id');
