@@ -174,16 +174,19 @@ export const AcceptanceLanding: React.FC<{ transactionId: string }> = ({ transac
         try {
             const acceptedPlantillas = plantillas.filter(p => checkedItems[p.id]);
             const acceptedPlantillaIds = acceptedPlantillas.map(p => p.id);
-            const fechaTransaccion = Math.floor(Date.now() / 1000);
-            const detalles = acceptedPlantillas.map(plantilla => ({
-                plantillaId: plantilla.id,
-                codigoPlantilla: plantilla.codigo,
-                nombrePlantilla: plantilla.nombre,
-                version: plantilla.version || '',
+            const nombres = [transaction?.nombres, transaction?.apellidoPaterno, transaction?.apellidoMaterno]
+                .filter(Boolean)
+                .join(' ');
+            await lopdService.updateTransaction({
+                id: transactionId,
+                nombres,
+                correo: transaction?.correo || '',
+                telefono: transaction?.telefono || '',
                 estado: 'ACEPTADO',
-                fechaTransaccion
-            }));
-            await lopdService.updateTransaction(transactionId, { estado: 'procesado', detalles });
+                channel: transaction?.channel || 'WEB',
+                storeId: transaction?.storeId || 'MAIN_STORE',
+                process: acceptedPlantillaIds
+            });
             await lopdService.registerAcceptance(transactionId, acceptedPlantillaIds);
 
             setCompleted(true);

@@ -32,6 +32,17 @@ export interface TransactionData {
     plantillas?: string[]; // IDs de plantillas especificas a firmar
 }
 
+export interface TransactionUpdateData {
+    id: string;
+    nombres: string;
+    correo: string;
+    telefono: string;
+    estado: string;
+    channel: string;
+    storeId: string;
+    process: string[];
+}
+
 export const lopdService = {
     async registerAcceptance(transaccionId: string, plantillasAceptadas: string[]): Promise<AcceptanceResponse> {
         if (!ACCEPTANCE_API_URL || !ACCEPTANCE_API_KEY) {
@@ -101,11 +112,8 @@ export const lopdService = {
         return await response.json();
     },
 
-    /**
-     * Updates transaction state (e.g., to "procesado")
-     */
-    async updateTransaction(id: string, data: any) {
-        const response = await fetch(`${LOPD_BASE_URL}/rest/faceid/lopd/update?id=${id}`, {
+    async updateTransaction(data: TransactionUpdateData) {
+        const response = await fetch(`${LOPD_BASE_URL}/rest/faceid/lopd/update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
